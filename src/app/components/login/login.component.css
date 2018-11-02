@@ -19,3 +19,18 @@
     z-index: 2;
     opacity: .9;
 }
+
+.btn-block {
+    background-color: #ff0000;
+    border-color:grey;
+    color: white;
+    font-weight: bolder;
+}
+
+.btn-block:enabled {
+    cursor: pointer;
+}
+
+.btn-block:disabled {
+    cursor: not-allowed;
+}

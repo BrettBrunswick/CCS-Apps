@@ -10,12 +10,11 @@ import { catchError, map, tap } from 'rxjs/operators';
 export class UserService {
 
   readonly rootUrl = 'http://localhost:5000';
-
-  constructor(private http: HttpClient) { }
-
   private token: string = '';
   private tokenExpirationDate : Date;
   private isLoggedIn = false;
+
+  constructor(private http: HttpClient) { }
 
   isUserLoggedIn() 
   {

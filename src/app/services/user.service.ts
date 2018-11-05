@@ -10,20 +10,17 @@ import { catchError, map, tap } from 'rxjs/operators';
 export class UserService {
 
   readonly rootUrl = 'http://localhost:5000';
-  private token: string = '';
-  private tokenExpirationDate : Date;
-  private isLoggedIn = false;
 
   constructor(private http: HttpClient) { }
 
   isUserLoggedIn() 
   {
-    return this.isLoggedIn;
-  }
-
-  public get loginRequired(): boolean
-  {
-    return this.token.length == 0 || this.tokenExpirationDate > new Date();
+    if ( localStorage.getItem('token') == null || localStorage.getItem('tokenExpiration') == null)
+    {
+      return false;
+    } else {
+      return  new Date(localStorage.getItem('tokenExpiration')) > new Date() || localStorage.getItem('token').length > 0;
+    }
   }
 
   login(loginCredentials): Observable<boolean>
@@ -36,11 +33,8 @@ export class UserService {
     return this.http.post(this.rootUrl + '/API/Users/Login', body)
       .pipe(tap((data: any) => {
         console.log(data);
-        this.token = data.token;
         localStorage.setItem('token', data.token);
-        this.tokenExpirationDate = data.expiration
         localStorage.setItem('tokenExpiration', data.expiration);
-        this.isLoggedIn = true;
         return true;
       }));
   }
@@ -49,7 +43,6 @@ export class UserService {
   {
     localStorage.removeItem('token');
     localStorage.removeItem('tokenExpiration');
-    this.isLoggedIn = false;
   }
 
 }

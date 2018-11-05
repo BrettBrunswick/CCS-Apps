@@ -26,12 +26,12 @@ export class UserService {
     return this.token.length == 0 || this.tokenExpirationDate > new Date();
   }
 
-  login(creds): Observable<boolean>
+  login(loginCredentials): Observable<boolean>
   {
     const body: UserLogin = 
     {
-      Username: creds.Username,
-      Password: creds.Password
+      Username: loginCredentials.Username,
+      Password: loginCredentials.Password
     }
     return this.http.post(this.rootUrl + '/API/Users/Login', body)
       .pipe(tap((data: any) => {

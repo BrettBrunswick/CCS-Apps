@@ -3,9 +3,8 @@ import * as particlesJS from 'particles.js';
 import { NgForm } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
-import { UserLogin } from './UserLogin';
+import { UserLogin } from '../../models/UserLogin';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Observable} from 'rxjs';
 
 declare var particlesJS: any;
 

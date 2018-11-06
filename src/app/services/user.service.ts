@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UserLogin } from '../components/login/UserLogin';
+import { UserLogin } from '../models/UserLogin';
+import { User } from '../models/User';
 import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable({
@@ -12,6 +13,9 @@ export class UserService {
   readonly rootUrl = 'http://localhost:5000';
 
   constructor(private http: HttpClient) { }
+
+  
+  //#region Authentication
 
   isUserLoggedIn(): boolean
   {
@@ -40,7 +44,7 @@ export class UserService {
       Username: loginCredentials.Username,
       Password: loginCredentials.Password
     }
-    return this.http.post(this.rootUrl + '/API/Users/Login', body)
+    return this.http.post(this.rootUrl + '/API/Authorization/Login', body)
       .pipe(tap((data: any) => {
         console.log(data);
         localStorage.setItem('token', data.token);
@@ -58,5 +62,12 @@ export class UserService {
     localStorage.removeItem('roles');
     localStorage.removeItem('username');
   }
+
+  //#endregion
+
+  //#region User DB
+
+
+  //#endregion
 
 }

@@ -11,13 +11,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserService } from './services/user.service';
 import { AuthGuard } from './routing/auth.guard';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { AdminComponent } from './components/admin/admin.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
     LoginComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,

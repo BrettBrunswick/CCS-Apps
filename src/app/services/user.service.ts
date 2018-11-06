@@ -13,13 +13,23 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  isUserLoggedIn() 
+  isUserLoggedIn(): boolean
   {
     if ( localStorage.getItem('token') == null || localStorage.getItem('tokenExpiration') == null)
     {
       return false;
     } else {
       return  new Date(localStorage.getItem('tokenExpiration')) > new Date(Date.now());
+    }
+  }
+
+  getCurrentUser(): string 
+  {
+    if (localStorage.getItem('username') != null)
+    {
+      return localStorage.getItem('username');
+    } else {
+      return 'Unknown';
     }
   }
 
@@ -35,6 +45,8 @@ export class UserService {
         console.log(data);
         localStorage.setItem('token', data.token);
         localStorage.setItem('tokenExpiration', data.expiration);
+        localStorage.setItem('roles', data.roles);
+        localStorage.setItem('username', body.Username);
         return true;
       }));
   }
@@ -43,6 +55,8 @@ export class UserService {
   {
     localStorage.removeItem('token');
     localStorage.removeItem('tokenExpiration');
+    localStorage.removeItem('roles');
+    localStorage.removeItem('username');
   }
 
 }

@@ -19,7 +19,7 @@ export class UserService {
     {
       return false;
     } else {
-      return  new Date(localStorage.getItem('tokenExpiration')) > new Date() || localStorage.getItem('token').length > 0;
+      return  new Date(localStorage.getItem('tokenExpiration')) > new Date(Date.now());
     }
   }
 

@@ -51,7 +51,6 @@ export class LoginComponent implements OnInit {
     this.userService.login(form.value).subscribe(success => {
       if (success) 
       {
-        alert ("Welcome")
         this.router.navigate(['/']);
       }
     }, (err : HttpErrorResponse) => 

@@ -3,3 +3,7 @@
     height: auto;
     border-radius: 10px
 }
+
+.dropdown-item:hover {
+    background-color: #b42a2a;
+}

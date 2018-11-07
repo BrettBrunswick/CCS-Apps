@@ -3,11 +3,30 @@
     min-width: 50px;
     left: 0;
     padding-top: 10px;
-    position: absolute;
-    background-color: #303030;
+    padding-bottom: 10px;
+    position: relative;
+    background-color: #222222;
+    border-right-color: rgb(68, 68, 68);
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-bottom-color: rgb(68, 68, 68);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-left-color: rgb(68, 68, 68);
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
     border-radius: 5px;
 }
 
-.nav-item:hover {   
-    background-color: #fe0000;
+.nav-link.active {   
+    background-color: #b42a2a;
+}
+
+.container {
+    margin-top: px;
 }

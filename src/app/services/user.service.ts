@@ -44,7 +44,7 @@ export class UserService {
       Username: loginCredentials.Username,
       Password: loginCredentials.Password
     }
-    return this.http.post(this.rootUrl + '/API/Authorization/Login', body)
+    return this.http.post(this.rootUrl + '/API/Auth/Login', body)
       .pipe(tap((data: any) => {
         console.log(data);
         localStorage.setItem('token', data.token);
@@ -62,11 +62,6 @@ export class UserService {
     localStorage.removeItem('roles');
     localStorage.removeItem('username');
   }
-
-  //#endregion
-
-  //#region User DB
-
 
   //#endregion
 

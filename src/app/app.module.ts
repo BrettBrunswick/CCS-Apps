@@ -12,6 +12,7 @@ import { UserService } from './services/user.service';
 import { AuthGuard } from './routing/auth.guard';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AdminComponent } from './components/admin/admin.component';
+import { DataService } from './services/data.service';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { AdminComponent } from './components/admin/admin.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [AuthGuard, UserService],
+  providers: [AuthGuard, UserService, DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

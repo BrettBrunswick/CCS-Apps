@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
 import { User } from '../../models/User';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-admin',
@@ -11,10 +11,11 @@ export class AdminComponent implements OnInit {
 
   public allUsers: User[];
 
-  constructor(private userService: UserService) { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
-
+    this.dataService.getAllUsers()
+        .subscribe(data => this.allUsers = data);
   }
 
 }

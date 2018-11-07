@@ -7,15 +7,16 @@
   </div>
 
   <div class="col-10">
-
     <div class="container">
 
       <div class="jumbotron my-5">
-
-        <h2>Manage Users</h2>
+        <div class="row">
+          <h2>Manage Users</h2>
+          <button type="button" class="add-user-btn btn btn-success">Add User</button>
+        </div>
 
         <div class="table-wrapper">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-bordered dt-responsive">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-bordered">
               <thead>
                 <tr>
                   <th scope="col">Username</th>
@@ -34,6 +35,6 @@
           </div>
         
       </div>
+     
   </div>
-
 </div>

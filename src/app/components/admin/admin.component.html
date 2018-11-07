@@ -1,6 +1,30 @@
-<p>
-  admin works!
-</p>
-<ul *ngFor="let user of allUsers">
-  <li>{{user.userName}}</li>
-</ul>
+<div class="col-3 admin-vertical-nav ">
+  <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+    <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</a>
+    <a class="nav-link" id="v-pills-manage-users-tab" data-toggle="pill" routerLink="/admin/users" role="tab" aria-controls="v-pills-profile" aria-selected="false">Manage Users</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="jumbotron">
+      <h2 >Manage Users</h2>
+      <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Username</th>
+              <th scope="col">Name</th>
+              <th scope="col">Roles</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-active" *ngFor="let user of allUsers">
+              <td>{{user.userName}}</td>
+              <td>{{user.firstName + " " + user.lastName}}</td>
+              <td><span *ngFor="let role of user.roles">{{role + "; "}} </span></td>
+              <td></td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
+</div>

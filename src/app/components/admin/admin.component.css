@@ -1,0 +1,13 @@
+.admin-vertical-nav {
+    max-width: 200px;
+    min-width: 50px;
+    left: 0;
+    padding-top: 10px;
+    position: absolute;
+    background-color: #303030;
+    border-radius: 5px;
+}
+
+.nav-item:hover {   
+    background-color: #fe0000;
+}

@@ -21,7 +21,7 @@
 }
 
 .btn-block {
-    background-color: #ff0000;
+    background-color: #b42a2a;
     border-color:grey;
     color: white;
     font-weight: bolder;
@@ -33,4 +33,5 @@
 
 .btn-block:disabled {
     cursor: not-allowed;
+    color: grey;
 }

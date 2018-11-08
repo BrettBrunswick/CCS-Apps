@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { HttpClientModule } from '@angular/common/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 import { AppRoutingModule } from './routing/app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,7 +30,8 @@ import { DataService } from './services/data.service';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    DataTablesModule
+    DataTablesModule,
+    NgbModule
   ],
   providers: [
     AuthGuard, 

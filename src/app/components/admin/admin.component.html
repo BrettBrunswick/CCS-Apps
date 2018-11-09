@@ -21,6 +21,7 @@
                 <tr>
                   <th scope="col">Username</th>
                   <th scope="col">Name</th>
+                  <th scope="col">Roles</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
@@ -28,7 +29,8 @@
                 <tr class="table-active" *ngFor="let user of allUsers">
                   <td>{{user.userName}}</td>
                   <td>{{user.firstName + " " + user.lastName}}</td>
-                  <td><img class=" uk-icon-facebook-official"> </td>
+                  <td>{{user.roles}}</td>
+                  <td></td>
                 </tr>
               </tbody>
             </table>
@@ -46,40 +48,59 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
-    <form #userLoginForm="ngForm" (ngSubmit)="onLogin(userLoginForm); resetLoginForm(userLoginForm)">
+
+  <form #newUserForm="ngForm" (ngSubmit)="registerNewUser(newUserForm); resetNewUserForm(newUserForm); modal.close('Save click')">
+    <div class="modal-body">
 
       <div class="form-group">
         <label for="username">Username</label>
-        <input type="username" class="form-control" id="username" placeholder="Enter Username" name="Username" minlength="3" required>
+        <input type="username" class="form-control" id="username" placeholder="Enter Username" name="Username" #Username="ngModel" [(ngModel)]="newUser.Username" minlength="3" required>
         <small id="usernameHelp" class="form-text text-muted">Remember this. This is what the user will use to log in.</small>
       </div>
 
       <div class="form-group">
-          <label for="password">Password</label>
-          <input type="text" class="form-control" id="password" placeholder="Enter Password" name="password" minlength="3" required>
-          <small id="usernameHelp" class="form-text text-muted">Remember this. This is what the user will use to log in.</small>
-        </div>
+          <label for="roles">Roles</label>
+          <ng-select
+              [items]="allUserRoles"
+              [multiple]="true"
+              [closeOnSelect]="false"
+              [searchable]="false"
+              bindLabel="roles"
+              placeholder="Select Roles"
+              name="Roles" 
+              #Roles="ngModel"
+              [(ngModel)]="newUser.Roles">
+          </ng-select>
+          <small id="usernameHelp" class="form-text text-muted">Roles determine the permissions this user will have.</small>
+      </div>
 
-        <div class="form-group">
-            <label for="lastName">Roles</label>
-            <input type="lastName" class="form-control" id="lastName" placeholder="Enter First Name" name="LastName" required>
-            <small id="usernameHelp" class="form-text text-muted">Roles determine the permissions this user will have.</small>
+      <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" id="password" placeholder="Enter Password" name="Password" #Password="ngModel" [(ngModel)]="newUser.Password" required>
+          <small id="usernameHelp" class="form-text text-muted">Remember this. This is what the user will use to log in.</small>
         </div>
 
       <div class="form-group">
         <label for="firstName">First Name</label>
-        <input type="firstName" class="form-control" id="firstName" placeholder="Enter First Name" name="FirstName" required>
+        <input type="firstName" class="form-control" id="firstName" placeholder="Enter First Name" name="FirstName" #FirstName="ngModel" [(ngModel)]="newUser.FirstName" required>
       </div>
 
       <div class="form-group">
           <label for="lastName">Last Name</label>
-          <input type="lastName" class="form-control" id="lastName" placeholder="Enter First Name" name="LastName" required>
+          <input type="lastName" class="form-control" id="lastName" placeholder="Enter First Name" name="LastName" #LastName="ngModel" [(ngModel)]="newUser.LastName" required>
       </div>
 
-    </form>
+      <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" placeholder="Enter Email" name="Email" #LastName="ngModel" [(ngModel)]="newUser.Email" required>
+      </div>
+
   </div>
+
   <div class="modal-footer">
-    <button type="submit" class="btn btn-outline-dark" (click)="modal.close('Save click')" [disabled]=userLoginForm.invalid>Save</button>
+    <button type="button" type="submit" class="btn btn-outline-dark" [disabled]=newUserForm.invalid>Save</button>
   </div>
+
+</form>
+
 </ng-template>

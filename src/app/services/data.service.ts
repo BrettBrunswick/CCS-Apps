@@ -21,6 +21,8 @@ export class DataService {
     .set('Authorization', 'Bearer ' + localStorage.getItem("token"));
   }
 
+  
+  
   //#region User Data
 
   getAllUsers(): Observable<User[]> 
@@ -32,8 +34,19 @@ export class DataService {
     );
   }
 
+  getAllUserRoles(): Observable<string[]> 
+  {
+    return this.http.get<string[]>(this.rootUrl + '/API/Users/GetAllRoles', {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched all roles')),
+        catchError(this.handleError('getAllUserRoles', []))
+    );
+  }
+
   //#endregion
 
+
+  
 
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

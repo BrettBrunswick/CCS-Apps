@@ -1,30 +1,85 @@
-<div class="col-3 admin-vertical-nav ">
-  <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-    <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</a>
-    <a class="nav-link" id="v-pills-manage-users-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-profile" aria-selected="false">Manage Users</a>
+<div class="row">
+
+  <div class="col-3 admin-vertical-nav">
+    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Users</a>
+    </div>
+  </div>
+
+  <div class="col-10">
+    <div class="container">
+
+      <div class="jumbotron my-5">
+        <div class="row">
+          <h2>Manage Users</h2>
+          <button type="button" class="add-user-btn btn btn-success" (click)="open(content)">Add User</button>
+        </div>
+
+        <div class="table-wrapper">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Username</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="table-active" *ngFor="let user of allUsers">
+                  <td>{{user.userName}}</td>
+                  <td>{{user.firstName + " " + user.lastName}}</td>
+                  <td><img class=" uk-icon-facebook-official"> </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        
+      </div>
+     
   </div>
 </div>
 
-<div class="container">
-  <div class="jumbotron">
-      <h2 >Manage Users</h2>
-      <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">Username</th>
-              <th scope="col">Name</th>
-              <th scope="col">Roles</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="table-active" *ngFor="let user of allUsers">
-              <td>{{user.userName}}</td>
-              <td>{{user.firstName + " " + user.lastName}}</td>
-              <td><span *ngFor="let role of user.roles">{{role + "; "}} </span></td>
-              <td></td>
-            </tr>
-          </tbody>
-      </table>
-    </div>
-</div>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add User</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userLoginForm="ngForm" (ngSubmit)="onLogin(userLoginForm); resetLoginForm(userLoginForm)">
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="username" class="form-control" id="username" placeholder="Enter Username" name="Username" minlength="3" required>
+        <small id="usernameHelp" class="form-text text-muted">Remember this. This is what the user will use to log in.</small>
+      </div>
+
+      <div class="form-group">
+          <label for="password">Password</label>
+          <input type="text" class="form-control" id="password" placeholder="Enter Password" name="password" minlength="3" required>
+          <small id="usernameHelp" class="form-text text-muted">Remember this. This is what the user will use to log in.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="lastName">Roles</label>
+            <input type="lastName" class="form-control" id="lastName" placeholder="Enter First Name" name="LastName" required>
+            <small id="usernameHelp" class="form-text text-muted">Roles determine the permissions this user will have.</small>
+        </div>
+
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="firstName" class="form-control" id="firstName" placeholder="Enter First Name" name="FirstName" required>
+      </div>
+
+      <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="lastName" class="form-control" id="lastName" placeholder="Enter First Name" name="LastName" required>
+      </div>
+
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-outline-dark" (click)="modal.close('Save click')" [disabled]=userLoginForm.invalid>Save</button>
+  </div>
+</ng-template>

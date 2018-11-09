@@ -27,6 +27,12 @@
     background-color: #b42a2a;
 }
 
-.container {
-    margin-top: px;
+.table-wrapper {
+    padding: 30px;
+}
+
+.add-user-btn {
+    height: 40px;
+    margin-left:auto; 
+    margin-right:0;
 }

@@ -36,3 +36,16 @@
     margin-left:auto; 
     margin-right:0;
 }
+
+.actions {
+    text-align: center;
+}
+
+.icon {
+    padding-right: 10px;
+}
+
+.icon:hover {
+    color: #b42a2a;
+    cursor: pointer;
+}

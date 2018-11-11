@@ -7,6 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
+import { faTrashAlt, faPencilAlt } from  '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-admin',
@@ -22,6 +23,8 @@ export class AdminComponent implements OnInit, OnDestroy {
   dtTrigger: Subject<User[]> = new Subject();
 
   closeResult: string;
+  faTrashAlt = faTrashAlt;
+  faPencilAlt = faPencilAlt;
 
   constructor(private dataService: DataService, private userService: UserService, private modalService: NgbModal ) { }
 

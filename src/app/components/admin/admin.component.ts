@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from '../../models/User';
 import { NewUser } from 'src/app/models/NewUser';
 import { DataService } from 'src/app/services/data.service';
-import { UserService } from 'src/app/services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -16,8 +15,10 @@ import { faTrashAlt, faPencilAlt } from  '@fortawesome/free-solid-svg-icons';
 })
 export class AdminComponent implements OnInit, OnDestroy {
 
-  public allUsers: User[];
-  public allUserRoles: string[];
+  allUsers: User[];
+  allUserRoles: string[];
+  userToDelete: string;
+
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<User[]> = new Subject();
@@ -26,12 +27,13 @@ export class AdminComponent implements OnInit, OnDestroy {
   faTrashAlt = faTrashAlt;
   faPencilAlt = faPencilAlt;
 
-  constructor(private dataService: DataService, private userService: UserService, private modalService: NgbModal ) { }
+  constructor(private dataService: DataService, private modalService: NgbModal ) { }
 
   newUser: NewUser = new NewUser();
 
   ngOnInit() 
   {
+
     this.initializeData();
 
     this.resetNewUserForm();
@@ -64,6 +66,13 @@ export class AdminComponent implements OnInit, OnDestroy {
       this.allUserRoles = data
     });
 
+    this.resetUserToDelete();
+
+  }
+
+  resetUserToDelete(): void
+  {
+    this.userToDelete = '';
   }
 
 
@@ -87,7 +96,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   registerNewUser(form: NgForm) 
   {
     console.log(this.newUser);
-    this.userService.registerUser(form.value).subscribe(success => {
+    this.dataService.registerUser(form.value).subscribe(success => {
       if (success) 
       {
         alert('account created.');
@@ -100,20 +109,44 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   open(content) 
   {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => 
+    {
       this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
+    }, (reason) => 
+    {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  openProfileDeletion(content, userName: string) 
+  {
+    this.userToDelete = userName;
+    this.modalService.open(content);
+  }
+
+  deleteProfile()
+  {
+    this.dataService.deleteUser(this.userToDelete).subscribe(success => {
+      if (success) 
+      {
+        alert('account deleted.');
+      }
+    }, (err : HttpErrorResponse) => 
+    {
+      alert('error')
     });
   }
 
   private getDismissReason(reason: any): string 
   {
-    if (reason === ModalDismissReasons.ESC) {
+    if (reason === ModalDismissReasons.ESC) 
+    {
       return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) 
+    {
       return 'by clicking on a backdrop';
-    } else {
+    } else 
+    {
       return  `with: ${reason}`;
     }
   }

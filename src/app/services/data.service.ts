@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { of } from 'rxjs'
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { User } from '../models/User';
+import { NewUser } from '../models/NewUser';
+
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +43,33 @@ export class DataService {
         tap(_ => console.log('fetched all roles')),
         catchError(this.handleError('getAllUserRoles', []))
     );
+  }
+
+  registerUser(newUser: NewUser): Observable<boolean>
+  {
+    const body: NewUser = 
+    {
+      Username: newUser.Username,
+      Password: newUser.Password,
+      Email: newUser.Email,
+      FirstName: newUser.FirstName,
+      LastName: newUser.LastName,
+      Roles: newUser.Roles
+    }
+    return this.http.post(this.rootUrl + '/API/Auth/Register', body, {headers: this.getHeaders()})
+      .pipe(tap((data: any) => {
+        console.log(data);
+        return true;
+      }));
+  }
+
+  deleteUser(userName: string)
+  {
+    return this.http.post(this.rootUrl + '/API/Users/DeleteUser', '"' + userName + '"', {headers: this.getHeaders()})
+      .pipe(tap((data: any) => {
+        console.log(data);
+        return true;
+      }));
   }
 
   //#endregion

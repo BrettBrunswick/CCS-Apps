@@ -37,6 +37,10 @@
     margin-right:0;
 }
 
+.create-user-btn:disabled {
+    cursor: not-allowed;
+}
+
 .actions {
     text-align: center;
 }

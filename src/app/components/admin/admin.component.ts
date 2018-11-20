@@ -30,7 +30,9 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   newUser: NewUser = new NewUser();
 
-  ngOnInit() {
+  ngOnInit() 
+  {
+    this.initializeData();
 
     this.resetNewUserForm();
 
@@ -41,6 +43,16 @@ export class AdminComponent implements OnInit, OnDestroy {
       }]
     };
 
+  }
+
+  ngOnDestroy(): void 
+  {
+    this.dtTrigger.unsubscribe();
+  }
+
+  initializeData(): void
+  {
+    
     this.dataService.getAllUsers()
         .subscribe(data => {
           this.allUsers = data
@@ -52,10 +64,6 @@ export class AdminComponent implements OnInit, OnDestroy {
       this.allUserRoles = data
     });
 
-  }
-
-  ngOnDestroy(): void {
-    this.dtTrigger.unsubscribe();
   }
 
 
@@ -90,7 +98,8 @@ export class AdminComponent implements OnInit, OnDestroy {
     });
   }
 
-  open(content) {
+  open(content) 
+  {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -98,7 +107,8 @@ export class AdminComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getDismissReason(reason: any): string {
+  private getDismissReason(reason: any): string 
+  {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {

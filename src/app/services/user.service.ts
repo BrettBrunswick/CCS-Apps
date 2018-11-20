@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserLogin } from '../models/UserLogin';
-import { User } from '../models/User';
+import { NewUser } from '../models/NewUser';
 import { catchError, map, tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,19 +13,27 @@ export class UserService {
 
   readonly rootUrl = 'http://localhost:5000';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   
   //#region Authentication
 
   isUserLoggedIn(): boolean
   {
+    var result;
     if ( localStorage.getItem('token') == null || localStorage.getItem('tokenExpiration') == null)
     {
-      return false;
+      result = false;
     } else {
-      return  new Date(localStorage.getItem('tokenExpiration')) > new Date(Date.now());
+      result = new Date(localStorage.getItem('tokenExpiration')) > new Date(Date.now());
     }
+
+    if (!result)
+    {
+      this.logout();
+    }
+
+    return result;
   }
 
   getCurrentUser(): string 
@@ -65,4 +74,23 @@ export class UserService {
 
   //#endregion
 
+
+  registerUser(newUser: NewUser): Observable<boolean>
+  {
+    const body: NewUser = 
+    {
+      Username: newUser.Username,
+      Password: newUser.Password,
+      Email: newUser.Email,
+      FirstName: newUser.FirstName,
+      LastName: newUser.LastName,
+      Roles: newUser.Roles
+    }
+    return this.http.post(this.rootUrl + '/API/Auth/Register', body)
+      .pipe(tap((data: any) => {
+        console.log(data);
+        return true;
+      }));
+  }
+  
 }

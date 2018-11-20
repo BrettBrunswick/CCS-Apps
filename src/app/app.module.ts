@@ -4,7 +4,8 @@ import { FormsModule }   from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppRoutingModule } from './routing/app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,7 +32,9 @@ import { DataService } from './services/data.service';
     FormsModule,
     HttpClientModule,
     DataTablesModule,
-    NgbModule
+    NgbModule,
+    NgSelectModule,
+    FontAwesomeModule
   ],
   providers: [
     AuthGuard, 

@@ -18,7 +18,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   allUsers: User[];
   allUserRoles: string[];
   userToDelete: string;
-
+  userToEdit: string;
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<User[]> = new Subject();
@@ -66,13 +66,14 @@ export class AdminComponent implements OnInit, OnDestroy {
       this.allUserRoles = data
     });
 
-    this.resetUserToDelete();
+    this.resetUserToDeleteAndEdit();
 
   }
 
-  resetUserToDelete(): void
+  resetUserToDeleteAndEdit(): void
   {
     this.userToDelete = '';
+    this.userToEdit = '';
   }
 
 
@@ -121,6 +122,12 @@ export class AdminComponent implements OnInit, OnDestroy {
   openProfileDeletion(content, userName: string) 
   {
     this.userToDelete = userName;
+    this.modalService.open(content);
+  }
+
+  openProfileEdit(content, userName: string) 
+  {
+    this.userToEdit = userName;
     this.modalService.open(content);
   }
 

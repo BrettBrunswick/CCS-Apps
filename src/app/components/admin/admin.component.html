@@ -32,7 +32,7 @@
                   <td>{{user.roles}}</td>
                   <td class="actions">
                     <fa-icon class="icon" [icon]="faTrashAlt" title="Delete User" (click)="openProfileDeletion(profileDeletion, user.userName)"></fa-icon>
-                    <fa-icon class="icon" [icon]="faPencilAlt" title="Edit User"></fa-icon>
+                    <fa-icon class="icon" [icon]="faPencilAlt" title="Edit User" (click)="openProfileEdit(editUserModal, user.userName)"></fa-icon>
                   </td>
                 </tr>
               </tbody>
@@ -108,6 +108,47 @@
 
   </form>
 </ng-template>
+
+
+<ng-template #editUserModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Edit User</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  
+    <form #newUserForm="ngForm" (ngSubmit)="registerNewUser(editUserModal); resetNewUserForm(editUserModal); modal.close('Save click')">
+      <div class="modal-body">
+  
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="username" class="form-control" id="username" name="Username" value="{{userToEdit}}" readonly>
+        </div>
+  
+          <div class="form-group">
+            <label for="roles">Roles</label>
+            <ng-select
+                [items]="allUserRoles"
+                [multiple]="true"
+                [closeOnSelect]="false"
+                [searchable]="false"
+                bindLabel="roles"
+                placeholder="Select Roles"
+                name="Roles" 
+                #Roles="ngModel"
+                [(ngModel)]="newUser.Roles">
+            </ng-select>
+            <small id="usernameHelp" class="form-text text-muted">Roles determine what permissions this user will have.</small>
+          </div>
+      </div>
+  
+      <div class="modal-footer">
+        <button type="button" type="submit" class="btn btn-success create-user-btn" [disabled]=editUserModal.invalid>Save</button>
+      </div>
+  
+    </form>
+  </ng-template>
 
 
 <ng-template #profileDeletion let-modal>

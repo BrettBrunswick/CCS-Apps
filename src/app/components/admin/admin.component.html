@@ -1,14 +1,6 @@
 <div class="row">
 
-  <div class="col-3 admin-vertical-nav">
-    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-      <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Users</a>
-    </div>
-  </div>
-
-  <div class="col-10">
     <div class="container">
-
       <div class="jumbotron my-5">
         <div class="row">
           <h2>Manage Users</h2>
@@ -30,16 +22,16 @@
                   <td>{{user.userName}}</td>
                   <td>{{user.firstName + " " + user.lastName}}</td>
                   <td>{{user.roles}}</td>
-                  <td class="actions"><fa-icon class="icon" [icon]="faTrashAlt" title="Delete User"></fa-icon><fa-icon class="icon" [icon]="faPencilAlt" title="Edit User"></fa-icon></td>
+                  <td class="actions">
+                    <fa-icon class="icon" [icon]="faTrashAlt" title="Delete User" (click)="openProfileDeletion(profileDeletion, user.userName)"></fa-icon>
+                    <fa-icon class="icon" [icon]="faPencilAlt" title="Edit User" (click)="openProfileEdit(editUserModal, user.userName, user.roles)"></fa-icon>
+                  </td>
                 </tr>
               </tbody>
             </table>
-          </div>
-        
+          </div> 
       </div>
-     
   </div>
-</div>
 
 <ng-template #newUserModal let-modal>
   <div class="modal-header">
@@ -59,48 +51,95 @@
       </div>
 
       <div class="form-group">
-          <label for="roles">Roles</label>
-          <ng-select
-              [items]="allUserRoles"
-              [multiple]="true"
-              [closeOnSelect]="false"
-              [searchable]="false"
-              bindLabel="roles"
-              placeholder="Select Roles"
-              name="Roles" 
-              #Roles="ngModel"
-              [(ngModel)]="newUser.Roles">
-          </ng-select>
-          <small id="usernameHelp" class="form-text text-muted">Roles determine what permissions this user will have.</small>
+        <label for="is-admin">Admin?<fa-icon class="icon" [icon]="faQuestionCircle" title="Determines if the user is an Admin. Admins can add, delete, and edit users."></fa-icon></label>
+        <input type="checkbox" class="form-control" id="is-admin" name="IsAdmin" #IsAdmin="ngModel" [(ngModel)]="newUser.IsAdmin">
       </div>
 
-      <div class="form-group">
+        <div class="form-group">
           <label for="password">Password</label>
           <input type="password" class="form-control" id="password" placeholder="Enter Password" name="Password" #Password="ngModel" [(ngModel)]="newUser.Password" required>
-          <small id="passwordHelp1" class="form-text text-muted">Must be at least 5 characters long and contain 1 numerical. Remember this!</small>
+          <small id="passwordHelp" class="form-text text-muted">Must be at least 5 characters long and contain 1 numerical. Remember this!</small>
         </div>
 
-      <div class="form-group">
-        <label for="firstName">First Name</label>
-        <input type="firstName" class="form-control" id="firstName" placeholder="Enter First Name" name="FirstName" #FirstName="ngModel" [(ngModel)]="newUser.FirstName" required>
-      </div>
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="firstName" class="form-control" id="firstName" placeholder="Enter First Name" name="FirstName" #FirstName="ngModel" [(ngModel)]="newUser.FirstName" required>
+        </div>
 
-      <div class="form-group">
+        <div class="form-group">
           <label for="lastName">Last Name</label>
           <input type="lastName" class="form-control" id="lastName" placeholder="Enter First Name" name="LastName" #LastName="ngModel" [(ngModel)]="newUser.LastName" required>
-      </div>
+        </div>
 
-      <div class="form-group">
+        <div class="form-group">
           <label for="email">Email</label>
           <input type="email" class="form-control" id="email" placeholder="Enter Email" name="Email" #LastName="ngModel" [(ngModel)]="newUser.Email" required>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" type="submit" class="btn btn-success create-user-btn" [disabled]=newUserForm.invalid>Create User</button>
+    </div>
+
+  </form>
+</ng-template>
+
+
+<ng-template #editUserModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Edit User</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  
+    <form #editUserForm="ngForm" (ngSubmit)="editProfile(editUserForm); resetEditUserForm(editUserForm); modal.close('Save click')">
+      <div class="modal-body">
+  
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="username" class="form-control" id="username" name="Username" #Username="ngModel" [(ngModel)]="editUser.Username" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="username">Change Password</label>
+            <input type="username" class="form-control" id="username" name="NewPassword" #NewPassword="ngModel" [(ngModel)]="editUser.NewPassword" minlength="5" required pattern="(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{5,50})$">
+            <small id="passwordHelp" class="form-text text-muted">Must be at least 5 characters long and contain 1 numerical. Remember this!</small>
+          </div>
+  
+        <div class="form-group">
+            <label for="is-admin">Admin?<fa-icon class="icon" [icon]="faQuestionCircle" title="Determines if the user is an Admin. Admins can add, delete, and edit users."></fa-icon></label>
+            <input type="checkbox" class="form-control" id="is-admin" name="IsAdmin" #IsAdmin="ngModel" [(ngModel)]="editUser.IsAdmin">
+          </div>
+
       </div>
+  
+      <div class="modal-footer">
+        <button type="button" type="submit" class="btn btn-success create-user-btn" [disabled]="(NewPassword.invalid) && !isAdminHasChanged(editUser.IsAdmin)">Update</button>
+      </div>
+  
+    </form>
+  </ng-template>
 
-  </div>
 
-  <div class="modal-footer">
-    <button type="button" type="submit" class="btn btn-success create-user-btn" [disabled]=newUserForm.invalid>Create User</button>
-  </div>
-
-</form>
-
+<ng-template #profileDeletion let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-title">Profile Deletion</h4>
+      <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <p><strong>Are you sure you want to delete <span class="text-success">{{userToDelete}}'s</span> profile?</strong></p>
+      <p>All information associated to this user profile will be permanently deleted.
+        <span class="text-danger">This operation can not be undone.</span>
+      </p>
+    </div>
+  
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
+      <button type="button" class="btn btn-danger" (click)="modal.close('Ok click'); deleteProfile()">Delete Profile</button>
+    </div> 
 </ng-template>

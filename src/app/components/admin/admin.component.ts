@@ -1,13 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { User } from '../../models/User';
 import { NewUser } from 'src/app/models/NewUser';
 import { DataService } from 'src/app/services/data.service';
-import { UserService } from 'src/app/services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
-import { faTrashAlt, faPencilAlt } from  '@fortawesome/free-solid-svg-icons';
+import { faTrashAlt, faPencilAlt, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { EditUser } from 'src/app/models/EditUser';
+import { DataTableDirective } from 'angular-datatables';
 
 @Component({
   selector: 'app-admin',
@@ -16,25 +17,28 @@ import { faTrashAlt, faPencilAlt } from  '@fortawesome/free-solid-svg-icons';
 })
 export class AdminComponent implements OnInit, OnDestroy {
 
-  public allUsers: User[];
-  public allUserRoles: string[];
+  allUsers: User[];
+  userToDelete: string;
+  editUserInitialIsAdminValue: boolean;
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<User[]> = new Subject();
+  dtElement: DataTableDirective;
 
   closeResult: string;
   faTrashAlt = faTrashAlt;
   faPencilAlt = faPencilAlt;
+  faQuestionCircle = faQuestionCircle;
 
-  constructor(private dataService: DataService, private userService: UserService, private modalService: NgbModal ) { }
+  constructor(private dataService: DataService, private modalService: NgbModal ) { }
 
   newUser: NewUser = new NewUser();
+  editUser: EditUser = new EditUser();
 
   ngOnInit() 
   {
-    this.initializeData();
 
-    this.resetNewUserForm();
+    this.initializeData();
 
     this.dtOptions = {
       columnDefs: [{
@@ -51,21 +55,21 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   initializeData(): void
-  {
-    
+  {  
     this.dataService.getAllUsers()
         .subscribe(data => {
           this.allUsers = data
           this.dtTrigger.next()
         });
-
-    this.dataService.getAllUserRoles()
-    .subscribe(data => {
-      this.allUserRoles = data
-    });
-
+    this.resetNewUserForm();
+    this.resetUserToDeleteAndEdit();
   }
 
+  resetUserToDeleteAndEdit(): void
+  {
+    this.userToDelete = '';
+    this.resetEditUserForm();
+  }
 
   resetNewUserForm(form?: NgForm) 
   {
@@ -79,7 +83,22 @@ export class AdminComponent implements OnInit, OnDestroy {
         Email: '',
         FirstName: '',
         LastName: '',
-        Roles: []
+        IsAdmin: false
+      }
+    }
+  }
+
+  resetEditUserForm(form?: NgForm) 
+  {
+    this.editUserInitialIsAdminValue = false;
+    if (form != null)
+    {
+      form.reset();
+      this.editUser = 
+      {
+        Username: '',
+        NewPassword: '',
+        IsAdmin: false
       }
     }
   }
@@ -87,7 +106,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   registerNewUser(form: NgForm) 
   {
     console.log(this.newUser);
-    this.userService.registerUser(form.value).subscribe(success => {
+    this.dataService.registerUser(form.value).subscribe(success => {
       if (success) 
       {
         alert('account created.');
@@ -100,20 +119,70 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   open(content) 
   {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => 
+    {
       this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
+    }, (reason) => 
+    {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  openProfileDeletion(content, userName: string) 
+  {
+    this.userToDelete = userName;
+    this.modalService.open(content);
+  }
+
+  openProfileEdit(content, userName: string, roles: string[]) 
+  {
+    this.editUser.IsAdmin = roles.length > 0 ? true : false;
+    this.editUserInitialIsAdminValue = this.editUser.IsAdmin;
+    this.editUser.Username = userName;
+    this.modalService.open(content);
+  }
+
+  editProfile(form: NgForm)
+  {
+    this.dataService.editUser(form.value).subscribe(success => {
+      if (success) 
+      {
+        alert('account edited.');
+      }
+    }, (err : HttpErrorResponse) => 
+    {
+      alert('error')
+    });
+  }
+
+  isAdminHasChanged(isAdmin: boolean)
+  {
+    return !(this.editUserInitialIsAdminValue == isAdmin);
+  }
+
+  deleteProfile()
+  {
+    this.dataService.deleteUser(this.userToDelete).subscribe(success => {
+      if (success) 
+      {
+        alert('account deleted.');
+      }
+    }, (err : HttpErrorResponse) => 
+    {
+      alert('error')
     });
   }
 
   private getDismissReason(reason: any): string 
   {
-    if (reason === ModalDismissReasons.ESC) {
+    if (reason === ModalDismissReasons.ESC) 
+    {
       return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) 
+    {
       return 'by clicking on a backdrop';
-    } else {
+    } else 
+    {
       return  `with: ${reason}`;
     }
   }

@@ -4,5 +4,5 @@ export class NewUser {
     Email: string;
     FirstName: string;
     LastName: string;
-    Roles: string[];
+    IsAdmin: boolean;
 }

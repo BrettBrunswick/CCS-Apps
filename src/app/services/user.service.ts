@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserLogin } from '../models/UserLogin';
-import { NewUser } from '../models/NewUser';
-import { catchError, map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -70,27 +69,11 @@ export class UserService {
     localStorage.removeItem('tokenExpiration');
     localStorage.removeItem('roles');
     localStorage.removeItem('username');
+    if (this.router.url != '/login')
+    {
+      this.router.navigate(['/login']);
+    }
   }
 
   //#endregion
-
-
-  registerUser(newUser: NewUser): Observable<boolean>
-  {
-    const body: NewUser = 
-    {
-      Username: newUser.Username,
-      Password: newUser.Password,
-      Email: newUser.Email,
-      FirstName: newUser.FirstName,
-      LastName: newUser.LastName,
-      Roles: newUser.Roles
-    }
-    return this.http.post(this.rootUrl + '/API/Auth/Register', body)
-      .pipe(tap((data: any) => {
-        console.log(data);
-        return true;
-      }));
-  }
-  
 }

@@ -57,7 +57,7 @@
 
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" class="form-control" id="password" placeholder="Enter Password" name="Password" #Password="ngModel" [(ngModel)]="newUser.Password" required>
+          <input type="password" class="form-control" id="password" placeholder="Enter Password" name="Password" #Password="ngModel" [(ngModel)]="newUser.Password" minlength="5" required pattern="(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{5,50})$" required>
           <small id="passwordHelp" class="form-text text-muted">Must be at least 5 characters long and contain 1 numerical. Remember this!</small>
         </div>
 
@@ -73,7 +73,7 @@
 
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" class="form-control" id="email" placeholder="Enter Email" name="Email" #LastName="ngModel" [(ngModel)]="newUser.Email" required>
+          <input type="email" class="form-control" id="email" placeholder="Enter Email" name="Email" #LastName="ngModel" [(ngModel)]="newUser.Email" required pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" required>
         </div>
 
     </div>

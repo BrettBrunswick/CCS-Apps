@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from '../../models/User';
 import { NewUser } from 'src/app/models/NewUser';
 import { DataService } from 'src/app/services/data.service';
@@ -37,16 +37,13 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   ngOnInit() 
   {
-
     this.initializeData();
-
     this.dtOptions = {
       columnDefs: [{
         targets:[3],
         orderable: false
       }]
     };
-
   }
 
   ngOnDestroy(): void 
@@ -117,6 +114,37 @@ export class AdminComponent implements OnInit, OnDestroy {
     });
   }
 
+  editProfile(form: NgForm)
+  {
+    this.dataService.editUser(form.value).subscribe(success => {
+      if (success) 
+      {
+        alert('account edited.');
+      }
+    }, (err : HttpErrorResponse) => 
+    {
+      alert('error')
+    });
+  }
+
+  deleteProfile()
+  {
+    this.dataService.deleteUser(this.userToDelete).subscribe(success => {
+      if (success) 
+      {
+        alert('account deleted.');
+      }
+    }, (err : HttpErrorResponse) => 
+    {
+      alert('error')
+    });
+  }
+
+  isAdminHasChanged(isAdmin: boolean)
+  {
+    return !(this.editUserInitialIsAdminValue == isAdmin);
+  }
+
   open(content) 
   {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => 
@@ -140,37 +168,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.editUserInitialIsAdminValue = this.editUser.IsAdmin;
     this.editUser.Username = userName;
     this.modalService.open(content);
-  }
-
-  editProfile(form: NgForm)
-  {
-    this.dataService.editUser(form.value).subscribe(success => {
-      if (success) 
-      {
-        alert('account edited.');
-      }
-    }, (err : HttpErrorResponse) => 
-    {
-      alert('error')
-    });
-  }
-
-  isAdminHasChanged(isAdmin: boolean)
-  {
-    return !(this.editUserInitialIsAdminValue == isAdmin);
-  }
-
-  deleteProfile()
-  {
-    this.dataService.deleteUser(this.userToDelete).subscribe(success => {
-      if (success) 
-      {
-        alert('account deleted.');
-      }
-    }, (err : HttpErrorResponse) => 
-    {
-      alert('error')
-    });
   }
 
   private getDismissReason(reason: any): string 

@@ -47,6 +47,7 @@ export class DataService {
 
   registerUser(newUser: NewUser): Observable<boolean>
   {
+    console.log("IsAdmin: " + newUser.IsAdmin);
     const body: NewUser = 
     {
       Username: newUser.Username,
@@ -54,7 +55,7 @@ export class DataService {
       Email: newUser.Email,
       FirstName: newUser.FirstName,
       LastName: newUser.LastName,
-      Roles: newUser.Roles
+      IsAdmin: newUser.IsAdmin
     }
     return this.http.post(this.rootUrl + '/API/Auth/Register', body, {headers: this.getHeaders()})
       .pipe(tap((data: any) => {

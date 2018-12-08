@@ -36,8 +36,6 @@ export class AdminComponent implements OnInit, OnDestroy {
 
     this.initializeData();
 
-    this.resetNewUserForm();
-
     this.dtOptions = {
       columnDefs: [{
         targets:[3],
@@ -66,6 +64,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       this.allUserRoles = data
     });
 
+    this.resetNewUserForm();
     this.resetUserToDeleteAndEdit();
 
   }
@@ -89,7 +88,7 @@ export class AdminComponent implements OnInit, OnDestroy {
         Email: '',
         FirstName: '',
         LastName: '',
-        Roles: []
+        IsAdmin: false
       }
     }
   }

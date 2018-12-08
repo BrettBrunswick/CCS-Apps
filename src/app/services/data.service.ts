@@ -5,6 +5,7 @@ import { of } from 'rxjs'
 import { catchError, tap } from 'rxjs/operators';
 import { User } from '../models/User';
 import { NewUser } from '../models/NewUser';
+import { EditUser } from '../models/EditUser';
 
 
 @Injectable({
@@ -58,6 +59,22 @@ export class DataService {
       IsAdmin: newUser.IsAdmin
     }
     return this.http.post(this.rootUrl + '/API/Auth/Register', body, {headers: this.getHeaders()})
+      .pipe(tap((data: any) => {
+        console.log(data);
+        return true;
+      }));
+  }
+
+  editUser(editUser: EditUser)
+  {
+    const body: EditUser = 
+    {
+      Username: editUser.Username,
+      IsAdmin: editUser.IsAdmin,
+      NewPassword: editUser.NewPassword == undefined ? "" : editUser.NewPassword
+    }
+    console.log(body);
+    return this.http.post(this.rootUrl + '/API/Users/EditUser', body, {headers: this.getHeaders()})
       .pipe(tap((data: any) => {
         console.log(data);
         return true;

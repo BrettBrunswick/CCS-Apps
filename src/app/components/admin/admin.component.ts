@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { User } from '../../models/User';
 import { NewUser } from 'src/app/models/NewUser';
 import { DataService } from 'src/app/services/data.service';
@@ -6,7 +6,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
-import { faTrashAlt, faPencilAlt } from  '@fortawesome/free-solid-svg-icons';
+import { faTrashAlt, faPencilAlt, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { EditUser } from 'src/app/models/EditUser';
+import { DataTableDirective } from 'angular-datatables';
 
 @Component({
   selector: 'app-admin',
@@ -16,20 +18,22 @@ import { faTrashAlt, faPencilAlt } from  '@fortawesome/free-solid-svg-icons';
 export class AdminComponent implements OnInit, OnDestroy {
 
   allUsers: User[];
-  allUserRoles: string[];
   userToDelete: string;
-  userToEdit: string;
+  editUserInitialIsAdminValue: boolean;
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<User[]> = new Subject();
+  dtElement: DataTableDirective;
 
   closeResult: string;
   faTrashAlt = faTrashAlt;
   faPencilAlt = faPencilAlt;
+  faQuestionCircle = faQuestionCircle;
 
   constructor(private dataService: DataService, private modalService: NgbModal ) { }
 
   newUser: NewUser = new NewUser();
+  editUser: EditUser = new EditUser();
 
   ngOnInit() 
   {
@@ -51,30 +55,21 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   initializeData(): void
-  {
-    
+  {  
     this.dataService.getAllUsers()
         .subscribe(data => {
           this.allUsers = data
           this.dtTrigger.next()
         });
-
-    this.dataService.getAllUserRoles()
-    .subscribe(data => {
-      this.allUserRoles = data
-    });
-
     this.resetNewUserForm();
     this.resetUserToDeleteAndEdit();
-
   }
 
   resetUserToDeleteAndEdit(): void
   {
     this.userToDelete = '';
-    this.userToEdit = '';
+    this.resetEditUserForm();
   }
-
 
   resetNewUserForm(form?: NgForm) 
   {
@@ -88,6 +83,21 @@ export class AdminComponent implements OnInit, OnDestroy {
         Email: '',
         FirstName: '',
         LastName: '',
+        IsAdmin: false
+      }
+    }
+  }
+
+  resetEditUserForm(form?: NgForm) 
+  {
+    this.editUserInitialIsAdminValue = false;
+    if (form != null)
+    {
+      form.reset();
+      this.editUser = 
+      {
+        Username: '',
+        NewPassword: '',
         IsAdmin: false
       }
     }
@@ -124,10 +134,30 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.modalService.open(content);
   }
 
-  openProfileEdit(content, userName: string) 
+  openProfileEdit(content, userName: string, roles: string[]) 
   {
-    this.userToEdit = userName;
+    this.editUser.IsAdmin = roles.length > 0 ? true : false;
+    this.editUserInitialIsAdminValue = this.editUser.IsAdmin;
+    this.editUser.Username = userName;
     this.modalService.open(content);
+  }
+
+  editProfile(form: NgForm)
+  {
+    this.dataService.editUser(form.value).subscribe(success => {
+      if (success) 
+      {
+        alert('account edited.');
+      }
+    }, (err : HttpErrorResponse) => 
+    {
+      alert('error')
+    });
+  }
+
+  isAdminHasChanged(isAdmin: boolean)
+  {
+    return !(this.editUserInitialIsAdminValue == isAdmin);
   }
 
   deleteProfile()

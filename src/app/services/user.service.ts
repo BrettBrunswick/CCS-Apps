@@ -69,6 +69,10 @@ export class UserService {
     localStorage.removeItem('tokenExpiration');
     localStorage.removeItem('roles');
     localStorage.removeItem('username');
+    if (this.router.url != '/login')
+    {
+      this.router.navigate(['/login']);
+    }
   }
 
   //#endregion

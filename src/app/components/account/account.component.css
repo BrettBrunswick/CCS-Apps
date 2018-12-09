@@ -1,0 +1,10 @@
+.input-container {
+    margin-left: 10%;
+    margin-right: 10%;
+    text-align: -webkit-center;
+}
+
+.form-control {
+    max-width: 300px;
+}
+

@@ -37,6 +37,15 @@ export class DataService {
     );
   }
 
+  getUserByUsername(username: string): Observable<User[]> 
+  {
+    return this.http.get<User[]>(this.rootUrl + '/API/Users/' + username, {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched' + username)),
+        catchError(this.handleError('getUserByUsername', []))
+    );
+  }
+
   getAllUserRoles(): Observable<string[]> 
   {
     return this.http.get<string[]>(this.rootUrl + '/API/Users/GetAllRoles', {headers: this.getHeaders()})

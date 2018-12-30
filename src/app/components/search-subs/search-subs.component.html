@@ -2,8 +2,8 @@
 
     <div class="col-2">
       <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-        <a class="nav-link active" id="v-pills-search-tab" data-toggle="pill" href="#v-pills-search" role="tab" aria-controls="#v-pills-search" aria-selected="true">Search</a>
-        <a class="nav-link" id="v-pills-lists-tab" data-toggle="pill" href="#v-pills-lists" role="tab" aria-controls="v-pills-lists" aria-selected="false">Lists</a>
+        <a class="nav-link active" id="v-pills-search-tab" data-toggle="pill" href="#v-pills-search" role="tab" aria-controls="#v-pills-search" aria-selected="true">Search Subs</a>
+        <a class="nav-link" id="v-pills-lists-tab" data-toggle="pill" href="#v-pills-lists" role="tab" aria-controls="v-pills-lists" aria-selected="false">Sub Lists</a>
       </div>
     </div>
 
@@ -15,6 +15,47 @@
           <div class="container">
             <div class="jumbotron">
               <h2>Search Subs</h2>
+
+              <form #newUserForm="ngForm" (ngSubmit)="registerNewUser(newUserForm); resetNewUserForm(newUserForm); modal.close('Save click')">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="inputEmail4">Company Name</label>
+                    <input type="email" class="form-control" id="inputEmail4" placeholder="Company Name">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="inputState">Trade</label>
+                    <select id="inputState" class="form-control">
+                      <option selected>Choose...</option>
+                      <option>...</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label for="inputCity">City</label>
+                    <input type="text" class="form-control" id="inputCity" placeholder="City">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="inputState">State</label>
+                    <select id="inputState" class="form-control">
+                      <option selected>Choose...</option>
+                      <option>...</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="inputZip">Zip</label>
+                    <input type="text" class="form-control" id="inputZip" placeholder="Zip Code">
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="inputZipRadius">Radius around Zip</label>
+                    <input type="text" class="form-control" id="inputZipRadius" placeholder="Miles">
+                  </div>
+                </div>
+                <div class="btn-container">
+                  <button type="submit" class="btn btn-block btn-success">Search</button> 
+              </div>        
+              </form>
+
               <table class="table table-hover table-bordered">
                 <thead>
                   <tr>

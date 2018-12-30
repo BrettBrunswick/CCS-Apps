@@ -11,3 +11,12 @@
     color: #b42a2a;
     cursor: pointer;
 }
+
+.btn-block {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.btn-container {
+    padding-bottom: 50px;
+}

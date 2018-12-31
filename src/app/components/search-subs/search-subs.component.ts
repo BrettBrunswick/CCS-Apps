@@ -5,6 +5,7 @@ import { DataService } from 'src/app/services/data.service';
 import { DataTableDirective } from 'angular-datatables';
 import { SubContractor } from 'src/app/models/SubContractor';
 import { Contact } from 'src/app/models/Contact';
+import { Trade } from 'src/app/models/Trade';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -14,7 +15,8 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 })
 export class SearchSubsComponent implements OnInit {
 
-  subContractors: SubContractor[];  
+  subContractors: SubContractor[];
+  trades: Trade[]; 
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<SubContractor[]> = new Subject();
@@ -47,7 +49,11 @@ export class SearchSubsComponent implements OnInit {
           this.subContractors = data
           this.dtTrigger.next()
         });
-    console.log(this.subContractors);
+
+    this.dataService.getAllTrades()
+        .subscribe(data => {
+          this.trades = data
+        });
   }
 
 

@@ -25,8 +25,8 @@
                   <div class="form-group col-md-6">
                     <label for="inputState">Trade</label>
                     <select id="inputState" class="form-control">
-                      <option selected>Choose...</option>
-                      <option>...</option>
+                      <option selected>Choose Trade...</option>
+                      <option *ngFor="let trade of trades">{{trade.name}}</option>
                     </select>
                   </div>
                 </div>

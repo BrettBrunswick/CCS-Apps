@@ -7,6 +7,7 @@ import { User } from '../models/User';
 import { NewUser } from '../models/NewUser';
 import { EditUser } from '../models/EditUser';
 import { SubContractor } from '../models/Subcontractor';
+import { Trade } from '../models/Trade';
 
 @Injectable({
   providedIn: 'root'
@@ -112,7 +113,23 @@ export class DataService {
         catchError(this.handleError('getAllSubs', []))
     );
   }
-  
+
+  //#endregion
+
+
+
+  //#region Trades
+
+  getAllTrades(): Observable<Trade[]> 
+  {
+    return this.http.get<Trade[]>(this.rootUrl + '/API/Trades/GetAll', {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched all trades')),
+        catchError(this.handleError('getAllTrades', []))
+    );
+  }
+
+  //#endregion
 
 
   

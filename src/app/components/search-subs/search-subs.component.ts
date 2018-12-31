@@ -16,7 +16,8 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 export class SearchSubsComponent implements OnInit {
 
   subContractors: SubContractor[];
-  trades: Trade[]; 
+  trades: Trade[];
+  states: string[];
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<SubContractor[]> = new Subject();
@@ -53,6 +54,11 @@ export class SearchSubsComponent implements OnInit {
     this.dataService.getAllTrades()
         .subscribe(data => {
           this.trades = data
+        });
+
+      this.dataService.getAllStates()
+        .subscribe(data => {
+          this.states = data
         });
   }
 

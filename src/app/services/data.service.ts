@@ -114,18 +114,21 @@ export class DataService {
     );
   }
 
-  //#endregion
-
-
-
-  //#region Trades
-
   getAllTrades(): Observable<Trade[]> 
   {
     return this.http.get<Trade[]>(this.rootUrl + '/API/Trades/GetAll', {headers: this.getHeaders()})
       .pipe(
         tap(_ => console.log('fetched all trades')),
         catchError(this.handleError('getAllTrades', []))
+    );
+  }
+
+  getAllStates(): Observable<string[]> 
+  {
+    return this.http.get<string[]>(this.rootUrl + '/API/SubContractors/GetAllStates', {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched all states')),
+        catchError(this.handleError('getAllStates', []))
     );
   }
 

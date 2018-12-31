@@ -56,41 +56,25 @@
               </div>        
               </form>
 
-              <table class="table table-hover table-bordered">
+              <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-bordered">
                 <thead>
                   <tr>
                     <th scope="col">Company</th>
-                    <th scope="col">Location</th>
                     <th scope="col">Trade</th>
-                    <th scope="col">Specialty</th>
-                    <th scope="col">Projects</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Source</th>
+                    <th scope="col">Actions</th>                    
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="table-active">
-                    <td>Brett's HVAC</td>
-                    <td>Dayton, Ohio</td>
-                    <td>HVAC</td>
-                    <td>Residential</td>
-                    <td>12</td>
-                    <td><fa-icon class="icon" [icon]="faPlus"></fa-icon></td>
-                  </tr>
-                  <tr class="table-active">
-                    <td>College Painting</td>
-                    <td>Westerville, Ohio</td>
-                    <td>Interior Painting</td>
-                    <td>Restaraunts</td>
-                    <td>27</td>
-                    <td><fa-icon class="icon" [icon]="faPlus"></fa-icon></td>
-                  </tr>
-                  <tr class="table-active">
-                    <td>Johnson Concrete</td>
-                    <td>Cleveland, Ohio</td>
-                    <td>Paving</td>
-                    <td>Hotels</td>
-                    <td>221</td>
-                    <td><fa-icon class="icon" [icon]="faPlus"></fa-icon></td>
+                  <tr class="table-active" *ngFor="let sub of subContractors">
+                    <td>{{sub.name}}</td>
+                    <td>{{sub.trade.name}}</td>
+                    <td>{{sub.city + ", " + sub.state + " " + sub.zipCode}}</td>
+                    <td>Bluebook</td>                        
+                    <td class="actions">
+                      <fa-icon class="icon" [icon]="faPlus" title="Add To List" (click)="openProfileDeletion(profileDeletion, user.userName)"></fa-icon>
+                    </td>
                   </tr>
                 </tbody>
               </table>

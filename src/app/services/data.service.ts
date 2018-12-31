@@ -6,7 +6,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { User } from '../models/User';
 import { NewUser } from '../models/NewUser';
 import { EditUser } from '../models/EditUser';
-
+import { SubContractor } from '../models/Subcontractor';
 
 @Injectable({
   providedIn: 'root'
@@ -100,6 +100,19 @@ export class DataService {
   }
 
   //#endregion
+
+
+  //#region SubContractors
+  
+  getAllSubs(): Observable<SubContractor[]> 
+  {
+    return this.http.get<SubContractor[]>(this.rootUrl + '/API/SubContractors', {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched all subs')),
+        catchError(this.handleError('getAllSubs', []))
+    );
+  }
+  
 
 
   

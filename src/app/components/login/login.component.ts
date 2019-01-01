@@ -5,6 +5,7 @@ import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { UserLogin } from '../../models/UserLogin';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr'; 
 
 declare var particlesJS: any;
 
@@ -17,7 +18,7 @@ export class LoginComponent implements OnInit {
 
   showSpinner: boolean;
 
-  constructor(private userService: UserService, private router: Router) { 
+  constructor(private userService: UserService, private router: Router, private toastr: ToastrService) { 
 
     particlesJS.load('particles-js', '../../assets/particles.json', function() 
     {
@@ -63,7 +64,14 @@ export class LoginComponent implements OnInit {
     }, (err : HttpErrorResponse) => 
     {
       this.showSpinner = false;
-      //alert
+      if (err.status == 400)
+      {
+        this.toastr.error('Invalid Username or Password.', 'Login Failed');
+      } 
+      else 
+      {
+        this.toastr.error('There was an error connecting to the database. Please Contact IT.', 'Login Failed');
+      }
     });
   }
 

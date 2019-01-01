@@ -9,6 +9,7 @@ import { NgForm } from '@angular/forms';
 import { faTrashAlt, faPencilAlt, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { EditUser } from 'src/app/models/EditUser';
 import { DataTableDirective } from 'angular-datatables';
+import { ToastrService } from 'ngx-toastr'; 
 
 @Component({
   selector: 'app-admin',
@@ -31,7 +32,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   faPencilAlt = faPencilAlt;
   faQuestionCircle = faQuestionCircle;
 
-  constructor(private dataService: DataService, private modalService: NgbModal ) { }
+  constructor(private dataService: DataService, private modalService: NgbModal, private toastr: ToastrService) { }
 
   newUser: NewUser = new NewUser();
   editUser: EditUser = new EditUser();
@@ -109,11 +110,18 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.dataService.registerUser(form.value).subscribe(success => {
       if (success) 
       {
-        alert('account created.');
+        this.toastr.success('New User successfully registered.', 'Success');
       }
     }, (err : HttpErrorResponse) => 
     {
-      alert('Invalid Username or Password.')
+      if (err.status == 400)
+      {
+        this.toastr.error('Registration failed. If this problem persists please contact IT.', 'Error');
+      } 
+      else 
+      {
+        this.toastr.error('There was an error connecting to the database. Please Contact IT.', 'Error');
+      }
     });
   }
 

@@ -19,6 +19,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthGuard } from './routing/auth.guard';
 import { UserService } from './services/user.service';
 import { DataService } from './services/data.service';
+import { LoginSpinnerComponent } from './components/ui/login-spinner/login-spinner.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { DataService } from './services/data.service';
     NotFoundComponent,
     AdminComponent,
     AccountComponent,
-    SearchSubsComponent
+    SearchSubsComponent,
+    LoginSpinnerComponent
   ],
   imports: [
     BrowserModule,

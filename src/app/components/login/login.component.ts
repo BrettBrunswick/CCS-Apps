@@ -15,9 +15,12 @@ declare var particlesJS: any;
 })
 export class LoginComponent implements OnInit {
 
+  showSpinner: boolean;
+
   constructor(private userService: UserService, private router: Router) { 
 
-    particlesJS.load('particles-js', '../../assets/particles.json', function() {
+    particlesJS.load('particles-js', '../../assets/particles.json', function() 
+    {
       console.log('particles.json loaded...');
     });
     
@@ -25,7 +28,9 @@ export class LoginComponent implements OnInit {
 
   loginCredentials: UserLogin = new UserLogin();
 
-  ngOnInit() {
+  ngOnInit() 
+  {
+    this.showSpinner = false;
     if (this.userService.isUserLoggedIn())
     {
       this.router.navigate(['/']);
@@ -48,14 +53,17 @@ export class LoginComponent implements OnInit {
 
   onLogin(form: NgForm) 
   {
+    this.showSpinner = true;
     this.userService.login(form.value).subscribe(success => {
+      this.showSpinner = false;
       if (success) 
       {
         this.router.navigate(['/']);
       }
     }, (err : HttpErrorResponse) => 
     {
-      alert("Invalid Username or Password.")
+      this.showSpinner = false;
+      //alert
     });
   }
 

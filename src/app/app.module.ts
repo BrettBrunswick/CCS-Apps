@@ -13,6 +13,7 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { LoginComponent } from './components/login/login.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { AccountComponent } from './components/account/account.component';
+import { SearchSubsComponent } from './components/search-subs/search-subs.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 import { AuthGuard } from './routing/auth.guard';
@@ -26,7 +27,8 @@ import { DataService } from './services/data.service';
     LoginComponent,
     NotFoundComponent,
     AdminComponent,
-    AccountComponent
+    AccountComponent,
+    SearchSubsComponent
   ],
   imports: [
     BrowserModule,

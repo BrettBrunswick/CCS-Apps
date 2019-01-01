@@ -6,7 +6,8 @@ import { catchError, tap } from 'rxjs/operators';
 import { User } from '../models/User';
 import { NewUser } from '../models/NewUser';
 import { EditUser } from '../models/EditUser';
-
+import { SubContractor } from '../models/Subcontractor';
+import { Trade } from '../models/Trade';
 
 @Injectable({
   providedIn: 'root'
@@ -97,6 +98,38 @@ export class DataService {
         console.log(data);
         return true;
       }));
+  }
+
+  //#endregion
+
+
+  //#region SubContractors
+  
+  getAllSubs(): Observable<SubContractor[]> 
+  {
+    return this.http.get<SubContractor[]>(this.rootUrl + '/API/SubContractors', {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched all subs')),
+        catchError(this.handleError('getAllSubs', []))
+    );
+  }
+
+  getAllTrades(): Observable<Trade[]> 
+  {
+    return this.http.get<Trade[]>(this.rootUrl + '/API/Trades/GetAll', {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched all trades')),
+        catchError(this.handleError('getAllTrades', []))
+    );
+  }
+
+  getAllStates(): Observable<string[]> 
+  {
+    return this.http.get<string[]>(this.rootUrl + '/API/SubContractors/GetAllStates', {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched all states')),
+        catchError(this.handleError('getAllStates', []))
+    );
   }
 
   //#endregion

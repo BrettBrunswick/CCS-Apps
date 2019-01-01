@@ -1,0 +1,22 @@
+.nav-link.active {
+    background-color: #b42a2a;
+}
+
+.icon {
+    color: #00bc8c;
+    font-size: 20px;
+}
+
+.icon:hover {
+    color: #b42a2a;
+    cursor: pointer;
+}
+
+.btn-block {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.btn-container {
+    padding-bottom: 50px;
+}

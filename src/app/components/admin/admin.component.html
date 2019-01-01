@@ -7,7 +7,9 @@
           <button type="button" class="add-user-btn btn btn-success" (click)="open(newUserModal)">Add User</button>
         </div>
 
-        <div class="table-wrapper">
+        <data-spinner *ngIf="showSpinner"></data-spinner>
+
+        <div class="table-wrapper" *ngIf="!showSpinner">
             <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-bordered">
               <thead>
                 <tr>

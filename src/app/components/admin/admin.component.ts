@@ -20,6 +20,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   allUsers: User[];
   userToDelete: string;
   editUserInitialIsAdminValue: boolean;
+  showSpinner: boolean;
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<User[]> = new Subject();
@@ -52,9 +53,11 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   initializeData(): void
-  {  
+  {
+    this.showSpinner = true;
     this.dataService.getAllUsers()
         .subscribe(data => {
+          this.showSpinner = false;
           this.allUsers = data
           this.dtTrigger.next()
         });

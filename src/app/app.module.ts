@@ -20,6 +20,7 @@ import { AuthGuard } from './routing/auth.guard';
 import { UserService } from './services/user.service';
 import { DataService } from './services/data.service';
 import { LoginSpinnerComponent } from './components/ui/login-spinner/login-spinner.component';
+import { DataSpinnerComponent } from './components/ui/data-spinner/data-spinner.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { LoginSpinnerComponent } from './components/ui/login-spinner/login-spinn
     AdminComponent,
     AccountComponent,
     SearchSubsComponent,
-    LoginSpinnerComponent
+    LoginSpinnerComponent,
+    DataSpinnerComponent
   ],
   imports: [
     BrowserModule,

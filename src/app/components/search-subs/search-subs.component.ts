@@ -23,6 +23,7 @@ export class SearchSubsComponent implements OnInit {
   dtTrigger: Subject<SubContractor[]> = new Subject();
   dtElement: DataTableDirective;
 
+  showSpinner: boolean;
   faPlus = faPlus;
 
   constructor(private dataService: DataService) { }
@@ -44,9 +45,11 @@ export class SearchSubsComponent implements OnInit {
   }
 
   initializeData(): void
-  {  
+  {
+    this.showSpinner = true;
     this.dataService.getAllSubs()
         .subscribe(data => {
+          this.showSpinner = false;
           this.subContractors = data
           this.dtTrigger.next()
         });

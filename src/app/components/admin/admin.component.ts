@@ -20,12 +20,12 @@ export class AdminComponent implements OnInit, OnDestroy {
   allUsers: User[];
   userToDelete: string;
   editUserInitialIsAdminValue: boolean;
-  showSpinner: boolean;
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<User[]> = new Subject();
   dtElement: DataTableDirective;
 
+  showSpinner: boolean;
   closeResult: string;
   faTrashAlt = faTrashAlt;
   faPencilAlt = faPencilAlt;

@@ -130,11 +130,18 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.dataService.editUser(form.value).subscribe(success => {
       if (success) 
       {
-        alert('account edited.');
+        this.toastr.success('Account successfully updated.', 'Success');
       }
     }, (err : HttpErrorResponse) => 
     {
-      alert('error')
+      if (err.status == 400)
+      {
+        this.toastr.error('Account update failed. If this problem persists please contact IT.', 'Error');
+      } 
+      else 
+      {
+        this.toastr.error('There was an error connecting to the database. Please Contact IT.', 'Error');
+      }
     });
   }
 
@@ -143,11 +150,18 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.dataService.deleteUser(this.userToDelete).subscribe(success => {
       if (success) 
       {
-        alert('account deleted.');
+        this.toastr.success('User successfully deleted.', 'Success');
       }
     }, (err : HttpErrorResponse) => 
     {
-      alert('error')
+      if (err.status == 400)
+      {
+        this.toastr.error('User deletion failed. If this problem persists please contact IT.', 'Error');
+      } 
+      else 
+      {
+        this.toastr.error('There was an error connecting to the database. Please Contact IT.', 'Error');
+      }
     });
   }
 

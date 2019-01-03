@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { User } from '../../models/User';
 import { NewUser } from 'src/app/models/NewUser';
 import { DataService } from 'src/app/services/data.service';
@@ -9,6 +9,7 @@ import { NgForm } from '@angular/forms';
 import { faTrashAlt, faPencilAlt, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { EditUser } from 'src/app/models/EditUser';
 import { DataTableDirective } from 'angular-datatables';
+import { ToastrService } from 'ngx-toastr'; 
 
 @Component({
   selector: 'app-admin',
@@ -16,6 +17,7 @@ import { DataTableDirective } from 'angular-datatables';
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit, OnDestroy {
+  @ViewChild(DataTableDirective) datatableElement: DataTableDirective;
 
   allUsers: User[];
   userToDelete: string;
@@ -25,12 +27,13 @@ export class AdminComponent implements OnInit, OnDestroy {
   dtTrigger: Subject<User[]> = new Subject();
   dtElement: DataTableDirective;
 
+  showSpinner: boolean;
   closeResult: string;
   faTrashAlt = faTrashAlt;
   faPencilAlt = faPencilAlt;
   faQuestionCircle = faQuestionCircle;
 
-  constructor(private dataService: DataService, private modalService: NgbModal ) { }
+  constructor(private dataService: DataService, private modalService: NgbModal, private toastr: ToastrService) { }
 
   newUser: NewUser = new NewUser();
   editUser: EditUser = new EditUser();
@@ -52,14 +55,31 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   initializeData(): void
-  {  
+  {
+    this.showSpinner = true;
     this.dataService.getAllUsers()
-        .subscribe(data => {
-          this.allUsers = data
-          this.dtTrigger.next()
-        });
+      .subscribe(data => {
+        this.showSpinner = false;
+        this.allUsers = data
+        this.dtTrigger.next()
+      });
     this.resetNewUserForm();
     this.resetUserToDeleteAndEdit();
+  }
+
+  rerenderTable(): void 
+  {
+    this.showSpinner = true;
+    this.allUsers.splice(0, this.allUsers.length);
+    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.destroy();
+    });
+    this.dataService.getAllUsers()
+      .subscribe(data => {
+        this.showSpinner = false;
+        this.allUsers = data;
+        this.dtTrigger.next();
+      });
   }
 
   resetUserToDeleteAndEdit(): void
@@ -102,15 +122,22 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   registerNewUser(form: NgForm) 
   {
-    console.log(this.newUser);
     this.dataService.registerUser(form.value).subscribe(success => {
       if (success) 
       {
-        alert('account created.');
+        this.toastr.success('New User successfully registered.', 'Success');
+        this.rerenderTable();
       }
     }, (err : HttpErrorResponse) => 
     {
-      alert('Invalid Username or Password.')
+      if (err.status == 400)
+      {
+        this.toastr.error('Registration failed. If this problem persists please contact IT.', 'Error');
+      } 
+      else 
+      {
+        this.toastr.error('There was an error connecting to the database. Please Contact IT.', 'Error');
+      }
     });
   }
 
@@ -119,11 +146,19 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.dataService.editUser(form.value).subscribe(success => {
       if (success) 
       {
-        alert('account edited.');
+        this.toastr.success('Account successfully updated.', 'Success');
+        this.rerenderTable();
       }
     }, (err : HttpErrorResponse) => 
     {
-      alert('error')
+      if (err.status == 400)
+      {
+        this.toastr.error('Account update failed. If this problem persists please contact IT.', 'Error');
+      } 
+      else 
+      {
+        this.toastr.error('There was an error connecting to the database. Please Contact IT.', 'Error');
+      }
     });
   }
 
@@ -132,11 +167,19 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.dataService.deleteUser(this.userToDelete).subscribe(success => {
       if (success) 
       {
-        alert('account deleted.');
+        this.toastr.success('User successfully deleted.', 'Success');
+        this.rerenderTable();
       }
     }, (err : HttpErrorResponse) => 
     {
-      alert('error')
+      if (err.status == 400)
+      {
+        this.toastr.error('User deletion failed. If this problem persists please contact IT.', 'Error');
+      } 
+      else 
+      {
+        this.toastr.error('There was an error connecting to the database. Please Contact IT.', 'Error');
+      }
     });
   }
 

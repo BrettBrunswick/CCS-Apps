@@ -5,6 +5,7 @@ import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { UserLogin } from '../../models/UserLogin';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr'; 
 
 declare var particlesJS: any;
 
@@ -15,9 +16,12 @@ declare var particlesJS: any;
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private userService: UserService, private router: Router) { 
+  showSpinner: boolean;
 
-    particlesJS.load('particles-js', '../../assets/particles.json', function() {
+  constructor(private userService: UserService, private router: Router, private toastr: ToastrService) { 
+
+    particlesJS.load('particles-js', '../../assets/particles.json', function() 
+    {
       console.log('particles.json loaded...');
     });
     
@@ -25,7 +29,9 @@ export class LoginComponent implements OnInit {
 
   loginCredentials: UserLogin = new UserLogin();
 
-  ngOnInit() {
+  ngOnInit() 
+  {
+    this.showSpinner = false;
     if (this.userService.isUserLoggedIn())
     {
       this.router.navigate(['/']);
@@ -48,14 +54,24 @@ export class LoginComponent implements OnInit {
 
   onLogin(form: NgForm) 
   {
+    this.showSpinner = true;
     this.userService.login(form.value).subscribe(success => {
+      this.showSpinner = false;
       if (success) 
       {
         this.router.navigate(['/']);
       }
     }, (err : HttpErrorResponse) => 
     {
-      alert("Invalid Username or Password.")
+      this.showSpinner = false;
+      if (err.status == 400)
+      {
+        this.toastr.error('Invalid Username or Password.', 'Login Failed');
+      } 
+      else 
+      {
+        this.toastr.error('There was an error connecting to the database. Please Contact IT.', 'Login Failed');
+      }
     });
   }
 

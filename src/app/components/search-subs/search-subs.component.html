@@ -56,8 +56,10 @@
               </div>        
               </form>
 
+              <data-spinner *ngIf="showSpinner"></data-spinner>
+
               <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-bordered">
-                <thead>
+                <thead *ngIf="!showSpinner">
                   <tr>
                     <th scope="col">Company</th>
                     <th scope="col">Trade</th>
@@ -78,6 +80,7 @@
                   </tr>
                 </tbody>
               </table>
+
             </div>
           </div>
         </div>

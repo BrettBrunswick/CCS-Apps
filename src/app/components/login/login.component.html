@@ -1,6 +1,9 @@
 <div id="particles-js"></div>
 <div class="container" id="login-container">
-  <div class="jumbotron">
+
+  <login-spinner *ngIf="showSpinner"></login-spinner>
+
+  <div class="jumbotron" *ngIf="!showSpinner">
 
     <form #userLoginForm="ngForm" (ngSubmit)="onLogin(userLoginForm); resetLoginForm(userLoginForm)">
 
@@ -19,4 +22,5 @@
     </form>
 
   </div>
+
 </div>

@@ -48,7 +48,10 @@ import { DataService } from './services/data.service';
     FontAwesomeModule,
     CommonModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot({
+      closeButton: true,
+      progressBar: true    
+    })
   ],
   providers: [
     AuthGuard, 

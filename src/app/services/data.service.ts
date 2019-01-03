@@ -64,7 +64,6 @@ export class DataService {
     {
       Username: newUser.Username,
       Password: newUser.Password,
-      Email: newUser.Email,
       FirstName: newUser.FirstName,
       LastName: newUser.LastName,
       IsAdmin: newUser.IsAdmin

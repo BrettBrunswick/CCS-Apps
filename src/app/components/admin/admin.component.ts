@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { User } from '../../models/User';
 import { NewUser } from 'src/app/models/NewUser';
 import { DataService } from 'src/app/services/data.service';
@@ -17,6 +17,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit, OnDestroy {
+  @ViewChild(DataTableDirective) datatableElement: DataTableDirective;
 
   allUsers: User[];
   userToDelete: string;
@@ -57,13 +58,28 @@ export class AdminComponent implements OnInit, OnDestroy {
   {
     this.showSpinner = true;
     this.dataService.getAllUsers()
-        .subscribe(data => {
-          this.showSpinner = false;
-          this.allUsers = data
-          this.dtTrigger.next()
-        });
+      .subscribe(data => {
+        this.showSpinner = false;
+        this.allUsers = data
+        this.dtTrigger.next()
+      });
     this.resetNewUserForm();
     this.resetUserToDeleteAndEdit();
+  }
+
+  rerenderTable(): void 
+  {
+    this.showSpinner = true;
+    this.allUsers.splice(0, this.allUsers.length);
+    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.destroy();
+    });
+    this.dataService.getAllUsers()
+      .subscribe(data => {
+        this.showSpinner = false;
+        this.allUsers = data;
+        this.dtTrigger.next();
+      });
   }
 
   resetUserToDeleteAndEdit(): void
@@ -106,11 +122,11 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   registerNewUser(form: NgForm) 
   {
-    console.log(this.newUser);
     this.dataService.registerUser(form.value).subscribe(success => {
       if (success) 
       {
         this.toastr.success('New User successfully registered.', 'Success');
+        this.rerenderTable();
       }
     }, (err : HttpErrorResponse) => 
     {
@@ -131,6 +147,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       if (success) 
       {
         this.toastr.success('Account successfully updated.', 'Success');
+        this.rerenderTable();
       }
     }, (err : HttpErrorResponse) => 
     {
@@ -151,6 +168,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       if (success) 
       {
         this.toastr.success('User successfully deleted.', 'Success');
+        this.rerenderTable();
       }
     }, (err : HttpErrorResponse) => 
     {

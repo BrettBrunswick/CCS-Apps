@@ -8,6 +8,7 @@ import { NewUser } from '../models/NewUser';
 import { EditUser } from '../models/EditUser';
 import { SubContractor } from '../models/Subcontractor';
 import { Trade } from '../models/Trade';
+import { SubContractorSearchRequest } from 'src/app/models/SubContractorSearchRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -63,7 +64,6 @@ export class DataService {
     {
       Username: newUser.Username,
       Password: newUser.Password,
-      Email: newUser.Email,
       FirstName: newUser.FirstName,
       LastName: newUser.LastName,
       IsAdmin: newUser.IsAdmin
@@ -111,6 +111,30 @@ export class DataService {
       .pipe(
         tap(_ => console.log('fetched all subs')),
         catchError(this.handleError('getAllSubs', []))
+    );
+  }
+
+  isBlankOrNull(str: string)
+  {
+      return (!str || /^\s*$/.test(str));
+  }
+
+  searchSubs(request?: SubContractorSearchRequest): Observable<SubContractor[]> 
+  {
+    var companyNameParam = !this.isBlankOrNull(request.CompanyName) ? 'companyName=' + request.CompanyName.trim() : '';
+    var cityParam = !this.isBlankOrNull(request.City) ? '&city=' + request.City.trim()  : '';
+    var stateParam = !this.isBlankOrNull(request.State) && request.State.indexOf(' ') < 0 ? '&state=' + request.State : '';
+    var zipCodeParam = !this.isBlankOrNull(request.ZipCode) ? '&zipCode=' + request.ZipCode.trim()  : '';
+    var tradeParam = request.TradeId > 0 ? '&tradeId=' + request.TradeId : '';
+    var radiusParam = request.RadiusAroundZip != undefined && request.RadiusAroundZip != null ? '&radiusAroundZipCode=' + request.RadiusAroundZip : '';
+
+    var searchString = companyNameParam + cityParam + stateParam + zipCodeParam + tradeParam + radiusParam;
+    console.log('/API/SubContractors/Search?' + searchString);
+
+    return this.http.get<SubContractor[]>(this.rootUrl + '/API/SubContractors/Search?' + searchString, {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('searched subs')),
+        catchError(this.handleError('searchSubs', []))
     );
   }
 

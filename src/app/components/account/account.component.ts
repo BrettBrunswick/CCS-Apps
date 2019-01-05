@@ -22,7 +22,6 @@ export class AccountComponent implements OnInit {
     this.dataService.getUserByUsername(localStorage.getItem("username"))
         .subscribe(data => {
           this.user.Username = data["userName"],
-          this.user.Email = data["email"],
           this.user.FirstName = data["firstName"],
           this.user.LastName = data["lastName"],
           this.user.Roles = data["roles"]

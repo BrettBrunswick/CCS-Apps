@@ -97,7 +97,6 @@ export class AdminComponent implements OnInit, OnDestroy {
       {
         Username: '',
         Password: '',
-        Email: '',
         FirstName: '',
         LastName: '',
         IsAdmin: false

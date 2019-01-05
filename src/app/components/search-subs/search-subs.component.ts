@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { DataTableDirective } from 'angular-datatables';
 import { SubContractor } from 'src/app/models/SubContractor';
-import { Contact } from 'src/app/models/Contact';
+import { SubContractorSearchRequest } from 'src/app/models/SubContractorSearchRequest';
 import { Trade } from 'src/app/models/Trade';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
@@ -13,7 +13,8 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './search-subs.component.html',
   styleUrls: ['./search-subs.component.css']
 })
-export class SearchSubsComponent implements OnInit {
+export class SearchSubsComponent implements OnInit, OnDestroy {
+  @ViewChild(DataTableDirective) datatableElement: DataTableDirective;
 
   subContractors: SubContractor[];
   trades: Trade[];
@@ -27,6 +28,8 @@ export class SearchSubsComponent implements OnInit {
   faPlus = faPlus;
 
   constructor(private dataService: DataService) { }
+
+  subContractorSearchRequest= new SubContractorSearchRequest();
 
   ngOnInit() 
   {
@@ -63,6 +66,44 @@ export class SearchSubsComponent implements OnInit {
         .subscribe(data => {
           this.states = data
         });
+  }
+
+  rerenderTable(): void 
+  {
+    this.showSpinner = true;
+    this.subContractors.splice(0, this.subContractors.length);
+    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.destroy();
+    });
+  }
+
+  resetSubContractorSearchForm(form?: NgForm) 
+  {
+    if (form != null)
+    {
+      form.reset();
+      this.subContractorSearchRequest = 
+      {
+        CompanyName: undefined,
+        City: undefined,
+        State: undefined,
+        ZipCode: undefined,
+        TradeId: undefined,
+        RadiusAroundZip: undefined
+      }
+    }
+  }
+
+  searchSubContractors(form?: NgForm)
+  {
+    console.log(form.value);
+    this.rerenderTable();
+    this.dataService.searchSubs(form.value)
+      .subscribe(data => {
+        this.showSpinner = false;
+        this.subContractors = data;
+        this.dtTrigger.next();
+      });
   }
 
 

@@ -12,9 +12,9 @@ export class SubContractor {
     City: string;
     ZipCode: string;
     WebsiteURL: string;
-    PrimaryPhone: string;
-    PrimaryFax: string;
-    PrimaryEmail: string;
+    OfficePhone: string;
+    OfficeFax: string;
+    OfficeEmail: string;
     Contacts: Contact[];
     Trade: Trade;
 }

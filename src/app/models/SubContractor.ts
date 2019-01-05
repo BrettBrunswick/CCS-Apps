@@ -17,4 +17,5 @@ export class SubContractor {
     OfficeEmail: string;
     Contacts: Contact[];
     Trade: Trade;
+    Source: string;
 }

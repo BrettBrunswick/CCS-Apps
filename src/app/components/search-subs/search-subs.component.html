@@ -82,7 +82,7 @@
                     <td>{{sub.name}}</td>
                     <td>{{sub.trade.name}}</td>
                     <td>{{sub.city + ", " + sub.state + " " + sub.zipCode}}</td>
-                    <td>Bluebook</td>                        
+                    <td>{{sub.source}}</td>                        
                     <td class="actions">
                       <fa-icon class="icon" [icon]="faPlus" title="Add To List" (click)="openProfileDeletion(profileDeletion, user.userName)"></fa-icon>
                     </td>

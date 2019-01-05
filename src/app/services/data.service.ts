@@ -121,10 +121,10 @@ export class DataService {
 
   searchSubs(request?: SubContractorSearchRequest): Observable<SubContractor[]> 
   {
-    var companyNameParam = !this.isBlankOrNull(request.CompanyName) ? 'companyName=' + request.CompanyName : '';
-    var cityParam = !this.isBlankOrNull(request.City) ? '&city=' + request.City : '';
-    var stateParam = !this.isBlankOrNull(request.State) ? '&state=' + request.State : '';
-    var zipCodeParam = !this.isBlankOrNull(request.ZipCode) ? '&zipCode=' + request.ZipCode : '';
+    var companyNameParam = !this.isBlankOrNull(request.CompanyName) ? 'companyName=' + request.CompanyName.trim() : '';
+    var cityParam = !this.isBlankOrNull(request.City) ? '&city=' + request.City.trim()  : '';
+    var stateParam = !this.isBlankOrNull(request.State) && request.State.indexOf(' ') < 0 ? '&state=' + request.State : '';
+    var zipCodeParam = !this.isBlankOrNull(request.ZipCode) ? '&zipCode=' + request.ZipCode.trim()  : '';
     var tradeParam = request.TradeId > 0 ? '&tradeId=' + request.TradeId : '';
     var radiusParam = request.RadiusAroundZip != undefined && request.RadiusAroundZip != null ? '&radiusAroundZipCode=' + request.RadiusAroundZip : '';
 

@@ -125,7 +125,7 @@ export class DataService {
     var stateParam = !this.isBlankOrNull(request.State) && request.State.indexOf(' ') < 0 ? '&state=' + request.State : '';
     var zipCodeParam = !this.isBlankOrNull(request.ZipCode) ? '&zipCode=' + request.ZipCode.trim()  : '';
     var tradeParam = request.TradeId > 0 ? '&tradeId=' + request.TradeId : '';
-    var radiusParam = request.RadiusAroundZip != undefined && request.RadiusAroundZip != null ? '&radiusAroundZipCode=' + request.RadiusAroundZip : '';
+    var radiusParam = request.RadiusAroundZip != undefined && request.RadiusAroundZip != null ? '&radius=' + request.RadiusAroundZip : '';
 
     var searchString = companyNameParam + cityParam + stateParam + zipCodeParam + tradeParam + radiusParam;
     console.log('/API/SubContractors/Search?' + searchString);

@@ -59,7 +59,6 @@ export class DataService {
 
   registerUser(newUser: NewUser): Observable<boolean>
   {
-    console.log("IsAdmin: " + newUser.IsAdmin);
     const body: NewUser = 
     {
       Username: newUser.Username,

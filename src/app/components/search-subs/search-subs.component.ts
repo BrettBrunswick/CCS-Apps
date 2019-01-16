@@ -110,12 +110,12 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
 
   isRadiusRequired(): boolean
   {
-    return !this.dataService.isBlankOrNull(this.subContractorSearchRequest.City) || !this.dataService.isBlankOrNull(this.subContractorSearchRequest.ZipCode)
+    return !this.dataService.isBlankOrNull(this.subContractorSearchRequest.City) || !this.dataService.isBlankOrNull(this.subContractorSearchRequest.ZipCode);
   }
 
   isStateRequired(): boolean
   {
-    return !this.dataService.isBlankOrNull(this.subContractorSearchRequest.City)
+    return !this.dataService.isBlankOrNull(this.subContractorSearchRequest.City);
   }
 
 

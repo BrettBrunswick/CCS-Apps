@@ -119,7 +119,7 @@ export class DataService {
     var cityParam = !this.isBlankOrNull(request.City) ? '&city=' + request.City.trim()  : '';
     var stateParam = !this.isBlankOrNull(request.State) && request.State.indexOf(' ') < 0 ? '&state=' + request.State : '';
     var zipCodeParam = !this.isBlankOrNull(request.ZipCode) ? '&zipCode=' + request.ZipCode.trim()  : '';
-    var tradesParam = request.Trades != undefined ? this.getTradesParamFromArray(request.Trades) : '';
+    var tradesParam = request.TradeIds != undefined ? this.getTradesParamFromArray(request.TradeIds) : '';
     var radiusParam = request.RadiusAroundZip != undefined && request.RadiusAroundZip != null ? '&radius=' + request.RadiusAroundZip : '';
 
     var searchString = companyNameParam + cityParam + stateParam + zipCodeParam + tradesParam + radiusParam;

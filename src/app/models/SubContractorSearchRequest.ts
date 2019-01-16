@@ -3,6 +3,6 @@ export class SubContractorSearchRequest {
     City: string;
     State: string;    
     ZipCode: string;
-    Trades: number[];
+    TradeIds: number[];
     RadiusAroundZip: number;
 }

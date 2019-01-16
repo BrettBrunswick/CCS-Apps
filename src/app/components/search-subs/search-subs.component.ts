@@ -90,7 +90,7 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
         City: '',
         State: '',
         ZipCode: '',
-        Trades: [],
+        TradeIds: [],
         RadiusAroundZip: undefined
       }
     }

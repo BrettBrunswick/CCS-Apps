@@ -50,6 +50,8 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
   initializeData(): void
   {
     this.showSpinner = true;
+    this.resetSubContractorSearchForm();
+
     this.dataService.getAllSubs()
         .subscribe(data => {
           this.showSpinner = false;
@@ -84,11 +86,11 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
       form.reset();
       this.subContractorSearchRequest = 
       {
-        CompanyName: undefined,
-        City: undefined,
-        State: undefined,
-        ZipCode: undefined,
-        TradeId: undefined,
+        CompanyName: '',
+        City: '',
+        State: '',
+        ZipCode: '',
+        Trades: [],
         RadiusAroundZip: undefined
       }
     }

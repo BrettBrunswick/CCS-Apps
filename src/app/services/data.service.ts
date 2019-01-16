@@ -113,21 +113,16 @@ export class DataService {
     );
   }
 
-  isBlankOrNull(str: string)
-  {
-      return (!str || /^\s*$/.test(str));
-  }
-
   searchSubs(request?: SubContractorSearchRequest): Observable<SubContractor[]> 
   {
     var companyNameParam = !this.isBlankOrNull(request.CompanyName) ? 'companyName=' + request.CompanyName.trim() : '';
     var cityParam = !this.isBlankOrNull(request.City) ? '&city=' + request.City.trim()  : '';
     var stateParam = !this.isBlankOrNull(request.State) && request.State.indexOf(' ') < 0 ? '&state=' + request.State : '';
     var zipCodeParam = !this.isBlankOrNull(request.ZipCode) ? '&zipCode=' + request.ZipCode.trim()  : '';
-    var tradeParam = request.TradeId > 0 ? '&tradeId=' + request.TradeId : '';
+    var tradesParam = request.Trades != undefined ? this.getTradesParamFromArray(request.Trades) : '';
     var radiusParam = request.RadiusAroundZip != undefined && request.RadiusAroundZip != null ? '&radius=' + request.RadiusAroundZip : '';
 
-    var searchString = companyNameParam + cityParam + stateParam + zipCodeParam + tradeParam + radiusParam;
+    var searchString = companyNameParam + cityParam + stateParam + zipCodeParam + tradesParam + radiusParam;
     console.log('/API/SubContractors/Search?' + searchString);
 
     return this.http.get<SubContractor[]>(this.rootUrl + '/API/SubContractors/Search?' + searchString, {headers: this.getHeaders()})
@@ -135,6 +130,20 @@ export class DataService {
         tap(_ => console.log('searched subs')),
         catchError(this.handleError('searchSubs', []))
     );
+  }
+
+  isBlankOrNull(str: string)
+  {
+      return (!str || /^\s*$/.test(str));
+  }
+
+  getTradesParamFromArray(arr: number[])
+  {
+    let result: string = '';
+    arr.forEach(element => {
+      result += '&tradeIds=' + element.valueOf();
+    });
+    return result;
   }
 
   getAllTrades(): Observable<Trade[]> 

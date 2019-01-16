@@ -48,6 +48,7 @@
                   </div>
 
                   <div class="form-group col-md-4">
+                    <label for="inputCity">State</label>
                     <ng-select
                         [items]="states"
                         [multiple]="false"
@@ -66,14 +67,14 @@
                   </div>
 
                   <div class="form-group col-md-2">
-                    <label for="inputZipRadius">Radius around Zip</label>
+                    <label for="inputZipRadius">Radius</label>
                     <input type="number" class="form-control" id="inputZipRadius" placeholder="Miles" name="RadiusAroundZip" [(ngModel)]="subContractorSearchRequest.RadiusAroundZip" [required]='isRadiusRequired()'>
                   </div>
 
                 </div>
 
-                <small *ngIf='isRadiusRequired() && this.dataService.isBlankOrNull(this.subContractorSearchRequest.RadiusAroundZip)' class="form-text text-warning pb-3">* Radius must be filled out if searching by city or zip code! *</small>
                 <small *ngIf='isStateRequired() && this.dataService.isBlankOrNull(this.subContractorSearchRequest.State)' class="form-text text-warning pb-3">* State must be filled out if searching by city! *</small>
+                <small *ngIf='isRadiusRequired() && this.dataService.isBlankOrNull(this.subContractorSearchRequest.RadiusAroundZip)' class="form-text text-warning pb-3">* Radius must be filled out if searching by city or zip code! *</small>
 
                 <div class="btn-container">
                   <button type="submit" class="btn btn-block btn-success" [disabled]=subContractorSearchForm.invalid>Search</button> 

@@ -69,16 +69,17 @@
 
                   <div class="form-group col-md-2">
                     <label for="inputZipRadius">Radius</label>
-                    <input type="number" class="form-control" id="inputZipRadius" placeholder="Miles" name="RadiusAroundZip" [(ngModel)]="subContractorSearchRequest.RadiusAroundZip" min="0" max="200" [required]="isRadiusRequired()">
+                    <input type="number" class="form-control" id="inputZipRadius" placeholder="Miles" name="RadiusAroundZip" [(ngModel)]="subContractorSearchRequest.RadiusAroundZip" min="0" max="100" [required]="isRadiusRequired()">
                   </div>
 
                 </div>
 
                 <small *ngIf="isCityAndStateRequired() && isCityOrStateBlank()" class="form-text text-warning pb-3">* City AND State must be filled out if searching by City or State! *</small>
                 <small *ngIf="isRadiusRequired() && isRadiusBlank()" class="form-text text-warning pb-3">* Radius must be filled out if searching by City, State or Zip Code! *</small>
+                <small *ngIf="isRadiusRequired() && !isRadiusValid()" class="form-text text-warning pb-3">* Radius must be between 1 and 100 *</small>
 
                 <div class="btn-container">
-                  <button type="submit" class="btn btn-block btn-success" [disabled]=subContractorSearchForm.invalid>Search</button> 
+                  <button type="submit" class="btn btn-block btn-success" [disabled]="subContractorSearchForm.invalid || !isRadiusValid()">Search</button> 
                 </div>        
                 
               </form>

@@ -118,6 +118,11 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
     return this.subContractorSearchRequest.RadiusAroundZip == undefined || this.subContractorSearchRequest.RadiusAroundZip == null;
   }
 
+  isRadiusValid(): boolean
+  { 
+    return this.subContractorSearchRequest.RadiusAroundZip > 0 && this.subContractorSearchRequest.RadiusAroundZip < 101
+  }
+
   isCityAndStateRequired(): boolean
   {
     return !this.dataService.isBlankOrNull(this.subContractorSearchRequest.City) || !this.dataService.isBlankOrNull(this.subContractorSearchRequest.State);

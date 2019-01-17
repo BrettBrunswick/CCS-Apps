@@ -79,7 +79,7 @@
                 <small *ngIf="isRadiusRequired() && !isRadiusValid()" class="form-text text-warning pb-3">* Radius must be between 1 and 100 *</small>
 
                 <div class="btn-container">
-                  <button type="submit" class="btn btn-block btn-success" [disabled]="subContractorSearchForm.invalid || !isRadiusValid()">Search</button> 
+                  <button type="submit" class="btn btn-block btn-success" [disabled]="subContractorSearchForm.invalid || (isRadiusRequired() && !isRadiusValid())">Search</button> 
                 </div>        
                 
               </form>

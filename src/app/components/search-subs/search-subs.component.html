@@ -25,42 +25,61 @@
                   </div>
 
                   <div class="form-group col-md-6">
-                    <label for="inputTrade">Trade</label>
-                    <select id="inputTrade" class="form-control" name="TradeId" [(ngModel)]="subContractorSearchRequest.TradeId">
-                      <option selected>Choose Trade...</option>
-                      <option *ngFor="let trade of trades" [ngValue]="trade.id">{{trade.name}}</option>
-                    </select>
+                    <label for="inputTrade">Trades</label>
+                    <ng-select
+                        [items]="trades"
+                        [multiple]="true"
+                        [closeOnSelect]="false"
+                        [searchable]="false"
+                        bindLabel="name"
+                        bindValue="id"
+                        placeholder="Select Trades"
+                        name="TradeIds" 
+                        #TradeIds="ngModel"
+                        [(ngModel)]="subContractorSearchRequest.TradeIds">
+                    </ng-select>
                   </div> 
                 </div>
 
                 <div class="form-row">
                   <div class="form-group col-md-4">
                     <label for="inputCity">City</label>
-                    <input type="text" class="form-control" id="inputCity" placeholder="City" name="City" [(ngModel)]="subContractorSearchRequest.City">
+                    <input type="text" class="form-control" id="inputCity" placeholder="City" name="City" [(ngModel)]="subContractorSearchRequest.City" [required]="isCityAndStateRequired()" [readonly]="isCityAndStateReadonly()">
                   </div>
 
                   <div class="form-group col-md-4">
-                    <label for="inputState">State</label>
-                    <select id="inputState" class="form-control" name="State" [(ngModel)]="subContractorSearchRequest.State">
-                      <option selected>Choose State</option>
-                      <option *ngFor="let state of states">{{state}}</option>
-                    </select>
+                    <label for="inputCity">State</label>
+                    <ng-select
+                        [items]="states"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [searchable]="false"
+                        placeholder="Select State"
+                        name="State" 
+                        [(ngModel)]="subContractorSearchRequest.State"
+                        [required]="isCityAndStateRequired()"
+                        [disabled]="isCityAndStateReadonly()">
+                    </ng-select>
                   </div>
 
                   <div class="form-group col-md-2">
                     <label for="inputZip">Zip</label>
-                    <input type="text" class="form-control" id="inputZip" placeholder="Zip Code" name="ZipCode" [(ngModel)]="subContractorSearchRequest.ZipCode">
+                    <input type="text" class="form-control" id="inputZip" placeholder="Zip Code" name="ZipCode" [(ngModel)]="subContractorSearchRequest.ZipCode" minlength="5" maxlength="5" [readonly]="isCityAndStateRequired()">
                   </div>
 
                   <div class="form-group col-md-2">
-                    <label for="inputZipRadius">Radius around Zip</label>
-                    <input type="number" class="form-control" id="inputZipRadius" placeholder="Miles" name="RadiusAroundZip" [(ngModel)]="subContractorSearchRequest.RadiusAroundZip">
+                    <label for="inputRadius">Radius</label>
+                    <input type="number" class="form-control" id="inputRadius" placeholder="Miles" name="Radius" [(ngModel)]="subContractorSearchRequest.Radius" min="0" max="100" [required]="isRadiusRequired()">
                   </div>
 
                 </div>
 
+                <small *ngIf="isCityAndStateRequired() && isCityOrStateBlank()" class="form-text text-warning pb-3">* City AND State must be filled out if searching by City or State! *</small>
+                <small *ngIf="isRadiusRequired() && isRadiusBlank()" class="form-text text-warning pb-3">* Radius must be filled out if searching by City, State or Zip Code! *</small>
+                <small *ngIf="isRadiusRequired() && !isRadiusValid()" class="form-text text-warning pb-3">* Radius must be between 1 and 100 *</small>
+
                 <div class="btn-container">
-                  <button type="submit" class="btn btn-block btn-success" [disabled]=subContractorSearchForm.invalid>Search</button> 
+                  <button type="submit" class="btn btn-block btn-success" [disabled]="subContractorSearchForm.invalid || !isRadiusValid()">Search</button> 
                 </div>        
                 
               </form>

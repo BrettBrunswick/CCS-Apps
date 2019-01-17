@@ -50,6 +50,8 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
   initializeData(): void
   {
     this.showSpinner = true;
+    this.resetSubContractorSearchForm();
+
     this.dataService.getAllSubs()
         .subscribe(data => {
           this.showSpinner = false;
@@ -84,12 +86,12 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
       form.reset();
       this.subContractorSearchRequest = 
       {
-        CompanyName: undefined,
-        City: undefined,
-        State: undefined,
-        ZipCode: undefined,
-        TradeId: undefined,
-        RadiusAroundZip: undefined
+        CompanyName: '',
+        City: '',
+        State: '',
+        ZipCode: '',
+        TradeIds: [],
+        Radius: undefined
       }
     }
   }
@@ -106,5 +108,34 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
       });
   }
 
+  isRadiusRequired(): boolean
+  {
+    return !this.dataService.isBlankOrNull(this.subContractorSearchRequest.City) || !this.dataService.isBlankOrNull(this.subContractorSearchRequest.ZipCode);
+  }
+
+  isRadiusBlank(): boolean
+  {
+    return this.subContractorSearchRequest.Radius == undefined || this.subContractorSearchRequest.Radius == null;
+  }
+
+  isRadiusValid(): boolean
+  { 
+    return this.subContractorSearchRequest.Radius > 0 && this.subContractorSearchRequest.Radius < 101
+  }
+
+  isCityAndStateRequired(): boolean
+  {
+    return !this.dataService.isBlankOrNull(this.subContractorSearchRequest.City) || !this.dataService.isBlankOrNull(this.subContractorSearchRequest.State);
+  }
+
+  isCityAndStateReadonly(): boolean
+  {
+    return !this.dataService.isBlankOrNull(this.subContractorSearchRequest.ZipCode);
+  }
+
+  isCityOrStateBlank(): boolean
+  {
+    return (this.dataService.isBlankOrNull(this.subContractorSearchRequest.State) || this.dataService.isBlankOrNull(this.subContractorSearchRequest.City))
+  }
 
 }

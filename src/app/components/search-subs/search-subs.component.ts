@@ -91,7 +91,7 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
         State: '',
         ZipCode: '',
         TradeIds: [],
-        RadiusAroundZip: undefined
+        Radius: undefined
       }
     }
   }
@@ -115,12 +115,12 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
 
   isRadiusBlank(): boolean
   {
-    return this.subContractorSearchRequest.RadiusAroundZip == undefined || this.subContractorSearchRequest.RadiusAroundZip == null;
+    return this.subContractorSearchRequest.Radius == undefined || this.subContractorSearchRequest.Radius == null;
   }
 
   isRadiusValid(): boolean
   { 
-    return this.subContractorSearchRequest.RadiusAroundZip > 0 && this.subContractorSearchRequest.RadiusAroundZip < 101
+    return this.subContractorSearchRequest.Radius > 0 && this.subContractorSearchRequest.Radius < 101
   }
 
   isCityAndStateRequired(): boolean

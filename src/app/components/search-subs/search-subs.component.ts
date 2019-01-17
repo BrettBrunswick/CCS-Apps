@@ -113,10 +113,24 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
     return !this.dataService.isBlankOrNull(this.subContractorSearchRequest.City) || !this.dataService.isBlankOrNull(this.subContractorSearchRequest.ZipCode);
   }
 
-  isStateRequired(): boolean
+  isRadiusBlank(): boolean
   {
-    return !this.dataService.isBlankOrNull(this.subContractorSearchRequest.City);
+    return this.subContractorSearchRequest.RadiusAroundZip == undefined || this.subContractorSearchRequest.RadiusAroundZip == null;
   }
 
+  isCityAndStateRequired(): boolean
+  {
+    return !this.dataService.isBlankOrNull(this.subContractorSearchRequest.City) || !this.dataService.isBlankOrNull(this.subContractorSearchRequest.State);
+  }
+
+  isCityAndStateReadonly(): boolean
+  {
+    return !this.dataService.isBlankOrNull(this.subContractorSearchRequest.ZipCode);
+  }
+
+  isCityOrStateBlank(): boolean
+  {
+    return (this.dataService.isBlankOrNull(this.subContractorSearchRequest.State) || this.dataService.isBlankOrNull(this.subContractorSearchRequest.City))
+  }
 
 }

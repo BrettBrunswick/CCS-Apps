@@ -12,7 +12,7 @@ export class NavBarComponent implements OnInit {
 
   faUser = faUser;
 
-  constructor(private userService: UserService) { }
+  constructor(public userService: UserService) { }
 
   ngOnInit() {
     

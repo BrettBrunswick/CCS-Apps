@@ -15,7 +15,7 @@ import { SubContractorSearchRequest } from 'src/app/models/SubContractorSearchRe
 })
 export class DataService {
 
-  readonly rootUrl = 'http://localhost:5000';
+  readonly rootUrl = 'https://ccsappsapi.azurewebsites.net';
 
   constructor(private http: HttpClient) { }
 

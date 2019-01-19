@@ -1,2 +1,4 @@
 {
+    "appService.defaultWebAppToDeploy": "/subscriptions/f1bd6815-0e96-4051-9952-70fb25376d34/resourceGroups/ccs-apps-rg/providers/Microsoft.Web/sites/ccs-apps",
+    "appService.deploySubpath": "dist\\ccs-apps"
 }

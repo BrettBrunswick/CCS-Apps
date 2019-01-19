@@ -6,7 +6,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { User } from '../models/User';
 import { NewUser } from '../models/NewUser';
 import { EditUser } from '../models/EditUser';
-import { SubContractor } from '../models/Subcontractor';
+import { SubContractor } from '../models/SubContractor';
 import { Trade } from '../models/Trade';
 import { SubContractorSearchRequest } from 'src/app/models/SubContractorSearchRequest';
 

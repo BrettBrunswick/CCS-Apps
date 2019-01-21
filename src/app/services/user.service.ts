@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class UserService {
 
-  readonly rootUrl = 'https://ccsappsapi.azurewebsites.net/';
+  readonly rootUrl = 'https://ccsappsapi.azurewebsites.net';
 
   constructor(private http: HttpClient, private router: Router) { }
 

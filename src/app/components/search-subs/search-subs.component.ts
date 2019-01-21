@@ -4,9 +4,10 @@ import { Subject } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { DataTableDirective } from 'angular-datatables';
 import { SubContractor } from 'src/app/models/SubContractor';
+import { SubContractorList } from 'src/app/models/SubContractorList';
 import { SubContractorSearchRequest } from 'src/app/models/SubContractorSearchRequest';
 import { Trade } from 'src/app/models/Trade';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-search-subs',
@@ -17,6 +18,7 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
   @ViewChild(DataTableDirective) datatableElement: DataTableDirective;
 
   subContractors: SubContractor[];
+  subContractorLists: SubContractorList[];
   trades: Trade[];
   states: string[];
 
@@ -24,8 +26,13 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
   dtTrigger: Subject<SubContractor[]> = new Subject();
   dtElement: DataTableDirective;
 
+  dtOptionsLists: DataTables.Settings = {};
+  dtTriggerLists: Subject<SubContractorList[]> = new Subject();
+  dtElementLists: DataTableDirective;
+
   showSpinner: boolean;
   faPlus = faPlus;
+  faInfoCircle = faInfoCircle;
 
   constructor(private dataService: DataService) { }
 
@@ -45,6 +52,7 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void 
   {
     this.dtTrigger.unsubscribe();
+    this.dtTriggerLists.unsubscribe();
   }
 
   initializeData(): void
@@ -68,6 +76,13 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
         .subscribe(data => {
           this.states = data
         });
+
+        this.dataService.getAllSubLists()
+        .subscribe(data => {
+          this.showSpinner = false;
+          this.subContractorLists = data
+          this.dtTriggerLists.next()
+        });
   }
 
   rerenderTable(): void 
@@ -77,6 +92,7 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
     });
+    console.log(this.subContractorLists)
   }
 
   resetSubContractorSearchForm(form?: NgForm) 

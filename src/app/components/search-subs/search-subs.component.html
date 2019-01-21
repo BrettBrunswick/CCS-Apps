@@ -104,6 +104,7 @@
                     <td>{{sub.source}}</td>                        
                     <td class="actions">
                       <fa-icon class="icon" [icon]="faPlus" title="Add To List" (click)="openProfileDeletion(profileDeletion, user.userName)"></fa-icon>
+                      <a target="_blank" routerLink="/subs/{{sub.id}}"><fa-icon class="icon" [icon]="faInfoCircle" title="Details"></fa-icon></a>
                     </td>
                   </tr>
                 </tbody>
@@ -116,25 +117,23 @@
         <div class="tab-pane fade" id="v-pills-lists" role="tabpanel" aria-labelledby="v-pills-lists-tab">
           <div class="container">
             <div class="jumbotron">
-            <table class="table table-hover table-bordered">
-                <thead>
+              <h2>Sub Lists</h2>
+
+              <table datatable [dtOptions]="dtOptionLists" [dtTrigger]="dtTriggerLists" class="table table-hover table-bordered">
+                <thead *ngIf="!showSpinner">
                   <tr>
-                    <th scope="col">List Name</th>
-                    <th scope="col"># Subs</th>
+                    <th scope="col">Name</th>
+                    <th scope="col"># Subs</th>      
+                    <th scope="col">Actions</th>          
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="table-active">
-                    <td>Dublin HVAC Subs</td>
-                    <td>17</td>
-                  </tr>
-                  <tr class="table-active">
-                    <td>Bdubs Louisville</td>
-                    <td>21</td>
-                  </tr>
-                  <tr class="table-active">
-                    <td>Mansfield Painters</td>
-                    <td>4</td>
+                  <tr class="table-active" *ngFor="let list of subContractorLists">
+                    <td>{{list.name}}</td>
+                    <td>{{list.subContractors.length}}</td>                     
+                    <td class="actions">
+                      <fa-icon class="icon" [icon]="faPlus" title="Add To List" (click)="openProfileDeletion(profileDeletion, user.userName)"></fa-icon>
+                    </td>
                   </tr>
                 </tbody>
               </table>

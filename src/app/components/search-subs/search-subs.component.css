@@ -5,6 +5,8 @@
 .icon {
     color: #00bc8c;
     font-size: 20px;
+    padding-right: 5px;
+    padding-left: 2px;
 }
 
 .icon:hover {

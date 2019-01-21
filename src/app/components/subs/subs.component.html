@@ -1,0 +1,8 @@
+<div class="container mt-3">
+  <div class="jumbotron">
+    <h2>{{sub.Name}}</h2>
+    <agm-map #agmMap *ngIf="isLocationDefined()" [latitude]= "location.Latitude" [longitude]="location.Longitute">
+      <agm-marker [latitude]= "location.Latitude" [longitude]="location.Longitute"></agm-marker>
+    </agm-map>
+  </div>
+</div>

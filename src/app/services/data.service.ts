@@ -7,7 +7,9 @@ import { User } from '../models/User';
 import { NewUser } from '../models/NewUser';
 import { EditUser } from '../models/EditUser';
 import { SubContractor } from '../models/SubContractor';
+import { SubContractorList } from '../models/SubContractorList';
 import { Trade } from '../models/Trade';
+import { Location } from 'src/app/models/Location';
 import { SubContractorSearchRequest } from 'src/app/models/SubContractorSearchRequest';
 
 @Injectable({
@@ -113,6 +115,15 @@ export class DataService {
     );
   }
 
+  getSubById(id: number): Observable<SubContractor[]> 
+  {
+    return this.http.get<SubContractor[]>(this.rootUrl + '/API/SubContractors/' + id, {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched sub id: ' + id)),
+        catchError(this.handleError('getSubById', []))
+    );
+  }
+
   searchSubs(request?: SubContractorSearchRequest): Observable<SubContractor[]> 
   {
     var companyNameParam = !this.isBlankOrNull(request.CompanyName) ? 'companyName=' + request.CompanyName.trim() : '';
@@ -165,7 +176,34 @@ export class DataService {
   }
 
   //#endregion
+  
 
+  //#region SubContractorLists
+
+  getAllSubLists(): Observable<SubContractorList[]>
+  {
+    return this.http.get<SubContractorList[]>(this.rootUrl + '/API/SubContractorLists/GetAllSubContractorLists', {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched all sub lists')),
+        catchError(this.handleError('getAllSubs', []))
+    );
+  }
+
+  //#endregion
+
+
+  //#region Locations
+
+  getLocationByZip(zipCode: string): Observable<Location[]>
+  {
+    return this.http.get<Location[]>(this.rootUrl + '/API/Locations/GetByZip?zipcode=' + zipCode, {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched location')),
+        catchError(this.handleError('getLocationByZip', []))
+    );
+  }  
+
+  //#endregion
 
   
 

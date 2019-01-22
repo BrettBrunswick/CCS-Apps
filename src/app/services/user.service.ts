@@ -35,7 +35,7 @@ export class UserService {
     return result;
   }
 
-  getCurrentUser(): string 
+  getCurrentUsername(): string
   {
     if (localStorage.getItem('username') != null)
     {

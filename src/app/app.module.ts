@@ -26,6 +26,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthGuard } from './routing/auth.guard';
 import { UserService } from './services/user.service';
 import { DataService } from './services/data.service';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { DataService } from './services/data.service';
     SearchSubsComponent,
     LoginSpinnerComponent,
     DataSpinnerComponent,
-    SubsComponent
+    SubsComponent,
+    DashboardComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

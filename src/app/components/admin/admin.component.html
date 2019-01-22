@@ -1,7 +1,18 @@
-<div class="row">
+<div class="row content">
+
+    <div class="col-2">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+          <a class="nav-link active" id="v-pills-users-tab" data-toggle="pill" href="#v-pills-users" role="tab" aria-controls="#v-pills-users" aria-selected="true">Users</a>
+        </div>
+    </div>
+
+    <div class="col-9">
+      <div class="tab-content" id="v-pills-tabContent">
+        <div class="tab-pane fade show active" id="v-pills-users" role="tabpanel" aria-labelledby="v-pills-users-tab">
+
 
     <div class="container">
-      <div class="jumbotron my-5">
+      <div class="jumbotron">
         <div class="row">
           <h2>Manage Users</h2>
           <button type="button" class="add-user-btn btn btn-success" (click)="open(newUserModal)">Add User</button>
@@ -139,3 +150,7 @@
       <button type="button" class="btn btn-danger" (click)="modal.close('Ok click'); deleteProfile()">Delete Profile</button>
     </div> 
 </ng-template>
+</div>
+</div>
+</div>
+</div>

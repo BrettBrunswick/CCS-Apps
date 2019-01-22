@@ -7,3 +7,7 @@
 .dropdown-item:hover {
     background-color: #b42a2a;
 }
+
+.icon {
+    margin-right: 3px;
+}

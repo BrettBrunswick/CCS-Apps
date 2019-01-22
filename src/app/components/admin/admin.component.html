@@ -15,6 +15,7 @@
       <div class="jumbotron">
         <div class="row">
           <h2>Manage Users</h2>
+          <post-spinner *ngIf="showPostSpinner" class="center-spinner"></post-spinner>
           <button type="button" class="add-user-btn btn btn-success" (click)="open(newUserModal)">Add User</button>
         </div>
 

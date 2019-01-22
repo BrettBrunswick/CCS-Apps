@@ -33,3 +33,7 @@
     color: #b42a2a;
     cursor: pointer;
 }
+
+.center-spinner {
+    margin: auto;
+}

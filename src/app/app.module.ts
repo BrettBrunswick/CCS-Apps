@@ -21,6 +21,7 @@ import { SubsComponent } from './components/subs/subs.component';
 import { SearchSubsComponent } from './components/search-subs/search-subs.component';
 import { LoginSpinnerComponent } from './components/ui/login-spinner/login-spinner.component';
 import { DataSpinnerComponent } from './components/ui/data-spinner/data-spinner.component';
+import { PostSpinnerComponent } from './components/ui/post-spinner/post-spinner.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 import { AuthGuard } from './routing/auth.guard';
@@ -40,6 +41,7 @@ import { FooterComponent } from './components/footer/footer.component';
     SearchSubsComponent,
     LoginSpinnerComponent,
     DataSpinnerComponent,
+    PostSpinnerComponent,
     SubsComponent,
     DashboardComponent,
     FooterComponent

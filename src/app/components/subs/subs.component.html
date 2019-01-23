@@ -8,7 +8,7 @@
 
         <div class="location-img">
           <agm-map #agmMap *ngIf="isLocationDefined()" [latitude]= "location.Latitude" [longitude]="location.Longitute">
-            <agm-marker [latitude]="location.Latitude" [longitude]="location.Longitude"></agm-marker>
+            <agm-marker [latitude]= "location.Latitude" [longitude]="location.Longitute"></agm-marker>
           </agm-map>
           <img *ngIf="!isLocationDefined()" src="../../../assets/no-location.png" title="No Location Found!" height="325" width="325">
         </div>
@@ -44,16 +44,16 @@
               <a class="nav-link active" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="true">About</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Contact</a>
+              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="profile-notes" data-toggle="tab" href="#notes" role="tab" aria-controls="notes" aria-selected="false">Notes</a>
+                <a class="nav-link" id="notes-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="notes" aria-selected="false">Notes</a>
             </li>
           </ul>
 
         </div>
 
-        <div class="tab-content profile-tab" id="myTabContent">
+        <div class="tab-content sub-tab" id="myTabContent">
 
           <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
           
@@ -74,13 +74,26 @@
                   <p>{{sub.TradeName}}</p>
                 </div>
             </div>
+
+          </div>
+          
+          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Website:</label>
+                </div>
+                <div class="col-md-6">
+                  <p><a href="{{sub.WebsiteURL}}" target="_blank">{{sub.WebsiteURL}}</a></p>
+                </div>
+              </div>
             
             <div class="row">
               <div class="col-md-6">
-                <label>Address:</label>
+                <label>Primary Contact:</label>
               </div>
               <div class="col-md-6">
-                <p>{{sub.OfficeEmail}}</p>
+                <p>{{sub.Name}}</p>
               </div>
             </div>
             
@@ -92,69 +105,31 @@
                 <p>{{sub.OfficePhone}}</p>
               </div>
             </div>
-            
-            <div class="row">
-              <div class="col-md-6">
-                <label>Profession</label>
-              </div>
-              <div class="col-md-6">
-                <p>Information Technology</p>
-              </div>
-            </div>
-
-          </div>
-          
-          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            
-            <div class="row">
-              <div class="col-md-6">
-                <label>Experience</label>
-              </div>
-              <div class="col-md-6">
-                <p>Expert</p>
-              </div>
-            </div>
                               
             <div class="row">
               <div class="col-md-6">
-                <label>Hourly Rate</label>
+                <label>Email:</label>
               </div>
               <div class="col-md-6">
-                <p>10$/hr</p>
+                <p>{{sub.OfficeEmail}}</p>
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6">
-                <label>Total Projects</label>
+                <label>Address:</label>
               </div>
               <div class="col-md-6">
-                <p>230</p>
+                <p><span *ngIf="hasAddressLine1()">{{sub.AddressLine1}}</span><span *ngIf="hasAddressLine2()">{{", " + sub.AddressLine2}}</span></p>
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6">
-                <label>English Level</label>
+                <label>City/State:</label>
               </div>
               <div class="col-md-6">
-                <p>Expert</p>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6">
-                <label>Availability</label>
-              </div>
-              <div class="col-md-6">
-                <p>6 months</p>
-              </div>
-            </div>
-                      
-            <div class="row">
-              <div class="col-md-12">
-                <label>Your Bio</label><br/>
-                  <p>Your detail description</p>
+                <p>{{sub.City + ", " + sub.State + " "}}</p>
               </div>
             </div>
 
@@ -164,10 +139,19 @@
           
               <div class="row">
                 <div class="col-md-6">
-                  <label>notes:</label>
+                  <label>Source:</label>
                 </div>
                 <div class="col-md-6">
-                  <p>{{sub.name}}</p>
+                  <p>{{sub.Source}}</p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Notes:</label>
+                </div>
+                <div class="col-md-6">
+                  <p>...</p>
                 </div>
               </div>
               

@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { UserLogin } from '../models/UserLogin';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  readonly rootUrl = 'https://ccsappsapi.azurewebsites.net';
+  readonly rootUrl = environment.apiRootURL;
 
   constructor(private http: HttpClient, private router: Router) { }
 

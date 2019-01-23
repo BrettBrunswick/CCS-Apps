@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  googleAPIKey: 'AIzaSyDixm6D_SRDtqN23sFcH3-qHxdUV2wRWtY',
+  apiRootURL: 'https://ccsappsapi.azurewebsites.net'
 };
 
 /*

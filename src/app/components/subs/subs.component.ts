@@ -53,8 +53,8 @@ export class SubsComponent implements OnInit {
   {
     this.dataService.getLocationByZip(this.sub.ZipCode)
       .subscribe(data => {
-        this.location.Latitude = data[0]['latitude'];
-        this.location.Longitute = data[0]['longitude'];
+        this.location.Latitude = +data[0]['latitude'];
+        this.location.Longitute = +data[0]['longitude'];
         console.log(this.location);
     });
   }

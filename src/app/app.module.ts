@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { environment } from '../environments/environment';
 import { FormsModule }   from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { HttpClientModule } from '@angular/common/http';
@@ -23,12 +24,13 @@ import { LoginSpinnerComponent } from './components/ui/login-spinner/login-spinn
 import { DataSpinnerComponent } from './components/ui/data-spinner/data-spinner.component';
 import { PostSpinnerComponent } from './components/ui/post-spinner/post-spinner.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 import { AuthGuard } from './routing/auth.guard';
 import { UserService } from './services/user.service';
 import { DataService } from './services/data.service';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { FooterComponent } from './components/footer/footer.component';
+
 
 @NgModule({
   declarations: [
@@ -62,7 +64,7 @@ import { FooterComponent } from './components/footer/footer.component';
       progressBar: true    
     }),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDixm6D_SRDtqN23sFcH3-qHxdUV2wRWtY'
+      apiKey: environment.googleAPIKey
     })
   ],
   providers: [

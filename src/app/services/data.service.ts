@@ -11,13 +11,14 @@ import { SubContractorList } from '../models/SubContractorList';
 import { Trade } from '../models/Trade';
 import { Location } from 'src/app/models/Location';
 import { SubContractorSearchRequest } from 'src/app/models/SubContractorSearchRequest';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  readonly rootUrl = 'https://ccsappsapi.azurewebsites.net';
+  readonly rootUrl = environment.apiRootURL;
 
   constructor(private http: HttpClient) { }
 

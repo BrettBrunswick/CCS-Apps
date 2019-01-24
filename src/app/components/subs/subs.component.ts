@@ -16,8 +16,8 @@ export class SubsComponent implements OnInit {
 
   sub: SubContractor = new SubContractor();
 
-
   subLocation: Location = new Location();
+  showLocationSpinner = true;
 
   showSpinner = true;
   faPencilAlt = faPencilAlt;
@@ -60,6 +60,7 @@ export class SubsComponent implements OnInit {
       .subscribe(data => {
         this.subLocation.Latitude = +data[0]['latitude'];
         this.subLocation.Longitute = +data[0]['longitude'];
+        this.showLocationSpinner = false;
     });
   }
 

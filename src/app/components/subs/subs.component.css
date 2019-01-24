@@ -15,6 +15,7 @@ agm-map {
   width: 330px;
   border-right: groove;
   border-bottom: groove;
+  text-align: center;
 }
 
 .sub-head h5 {
@@ -59,4 +60,9 @@ agm-map {
 
 .border-danger {
   border-color: #E74C3C !important;
+}
+
+.location-spinner {
+  display: inline-block;
+  text-align: center;
 }

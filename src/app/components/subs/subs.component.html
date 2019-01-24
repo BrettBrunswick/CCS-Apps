@@ -33,7 +33,7 @@
         <div class="sub-head">
 
           <h1 class="display-5">{{sub.Name}}</h1>
-          <h4 class="pb-2">{{sub.TradeName}}</h4>
+          <h4 class="pb-2">{{sub.Trade.name}}</h4>
 
           <div class="location-header pb-5">
             <h5><span *ngIf="hasAddressLine1()">{{sub.AddressLine1}}</span><span *ngIf="hasAddressLine2()">{{", " + sub.AddressLine2}}</span></h5>
@@ -72,7 +72,7 @@
                   <label>Trade:</label>
                 </div>
                 <div class="col-md-6">
-                  <p>{{sub.TradeName}}</p>
+                  <p>{{sub.Trade.name}}</p>
                 </div>
             </div>
 

@@ -191,7 +191,6 @@ export class SubsComponent implements OnInit {
 
   hasFormChanged(form: any): boolean
   {
-    console.log(form.value.Trade)
     return (  this.hasFormInputChanged(form.value.editSubName, this.sub.Name)  || 
               this.hasFormInputChanged(form.value.Trade, this.sub.Trade) ||
               this.hasFormInputChanged(form.value.editSubWebsite, this.sub.WebsiteURL) ||

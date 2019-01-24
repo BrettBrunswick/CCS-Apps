@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SubContractor } from 'src/app/models/SubContractor';
+import { SubContractorList } from 'src/app/models/SubContractorList';
 import { Location } from 'src/app/models/Location';
 import { Trade } from 'src/app/models/Trade';
 import { AgmMap } from '@agm/core';
@@ -20,7 +21,6 @@ export class SubsComponent implements OnInit {
   @ViewChild(AgmMap) public agmMap: AgmMap
 
   subId = +this.route.snapshot.paramMap.get('id');
-
   sub: SubContractor = new SubContractor();
 
   subLocation: Location = new Location();
@@ -28,6 +28,10 @@ export class SubsComponent implements OnInit {
 
   trades: Trade[];
   states: string[];
+
+  subContractorLists: SubContractorList[];
+  listToAddSubTo: SubContractorList;
+
 
   showSpinner = true;
   faPencilAlt = faPencilAlt;
@@ -50,9 +54,15 @@ export class SubsComponent implements OnInit {
           this.trades = data
         });
 
-      this.dataService.getAllStates()
+    this.dataService.getAllStates()
         .subscribe(data => {
           this.states = data
+        });
+
+    this.dataService.getAllSubLists()
+        .subscribe(data => {
+          this.showSpinner = false;
+          this.subContractorLists = data
         });
   }
 
@@ -94,6 +104,11 @@ export class SubsComponent implements OnInit {
     this.modalService.open(content, {size: 'lg'});
   }
 
+  openSmall(content) 
+  {
+    this.modalService.open(content, {size: 'sm'});
+  }
+
   editSubContractor(form: NgForm)
   {
     this.showSpinner = true;
@@ -115,6 +130,14 @@ export class SubsComponent implements OnInit {
         this.toastr.error('There was an error connecting to the database. Please Contact IT.', 'Error');
       }
     });
+  }
+
+  addSubToList(form: NgForm)
+  {
+    this.showSpinner = true;
+    console.log('sub id: ' + this.subId);
+    console.log(form.value.subContractorList.name);
+    this.showSpinner = false;
   }
 
   isLocationDefined(): boolean

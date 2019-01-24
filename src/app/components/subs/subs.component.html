@@ -164,7 +164,7 @@
 
       <div class="col-sm-2">
 
-        <button class="sub-edit-btn btn btn-success mb-2"><fa-icon class="icon pr-1" [icon]="faPlus" title="Add To List" (click)="console.log('clicked')"></fa-icon>Add To List</button>
+        <button class="sub-edit-btn btn btn-success mb-2" (click)="openSmall(addSubToListModal)"><fa-icon class="icon pr-1" [icon]="faPlus" title="Add To List"></fa-icon>Add To List</button>
         <button class="sub-edit-btn btn btn-warning" (click)="open(editSubContractorModal)"><fa-icon class="icon pr-1" [icon]="faPencilAlt" title="Edit User"></fa-icon>Edit</button>
 
       </div>
@@ -173,6 +173,39 @@
 
   </div>
 </div>
+
+
+
+<ng-template #addSubToListModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Sub To List</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <form #addSubToListForm="ngForm" (ngSubmit)="addSubToList(addSubToListForm); modal.dismiss('Cross click')">
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="subContractorList">Sub List</label>
+        <ng-select
+            [required]="true"
+            [items]="subContractorLists"
+            [multiple]="false"
+            [closeOnSelect]="true"
+            [searchable]="true"
+            bindLabel="name"
+            name="subContractorList"
+            #subContractorList="ngModel"
+            [ngModel]="listToAddSubTo">
+        </ng-select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" type="submit" class="btn btn-success" [disabled]="addSubToListForm.invalid ">Save</button>
+    </div>
+  </form>
+</ng-template>
+
 
 
 <ng-template #editSubContractorModal let-modal>
@@ -283,7 +316,7 @@
       </div>
   
       <div class="modal-footer">
-        <button type="button" type="submit" class="btn btn-success create-user-btn" [disabled]="!hasFormChanged(editSubContractorForm)">Update</button>
+        <button type="button" type="submit" class="btn btn-success" [disabled]="editSubContractorForm.invalid || !hasFormChanged(editSubContractorForm)">Update</button>
       </div>
   
     </form>

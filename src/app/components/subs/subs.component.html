@@ -189,7 +189,9 @@
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="editSubName">Name</label>
-            <input type="text" class="form-control" id="editSubName" name="editSubName" [ngModel]="sub.Name">
+            <input type="text" class="form-control" id="editSubName" name="editSubName" #editSubName="ngModel" [ngModel]="sub.Name" required>
+            <div class="text-success" *ngIf="hasFormInputChanged(editSubName.value, sub.Name) && !this.dataService.isBlankOrNull(editSubName.value)">Name will be updated!</div>
+            <div class="text-danger" *ngIf="this.dataService.isBlankOrNull(editSubName.value)">Name is required!</div>
           </div>
           <div class="form-group col-md-6">
             <label for="editSubTrade">Trade</label>
@@ -201,50 +203,61 @@
                 [searchable]="true"
                 bindLabel="name"
                 name="Trade" 
+                #editSubTrade="ngModel"
                 [ngModel]="sub.Trade">
             </ng-select>
+            <div class="text-success" *ngIf="hasFormInputChanged(editSubTrade.value, sub.Trade)">Trade will be updated!</div>
+            <div class="text-danger" *ngIf="editSubTrade.value == null">Trade is required!</div>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="editSubWebsite">Website</label>
-            <input type="text" class="form-control" id="editSubWebsite" name="editSubWebsite" [ngModel]="sub.WebsiteURL">
+            <input type="text" class="form-control" id="editSubWebsite" name="editSubWebsite" #editSubWebsite="ngModel" [ngModel]="sub.WebsiteURL">
+            <div class="text-success" *ngIf="hasFormInputChanged(editSubWebsite.value, sub.WebsiteURL)">Website will be updated!</div>
           </div>
             <div class="form-group col-md-6">
               <label for="editSubContactName">Contact Name</label>
-              <input type="text" class="form-control" id="editSubContactName" name="editSubContactName" [ngModel]="sub.OfficeEmail">
+              <input type="text" class="form-control" id="editSubContactName" name="editSubContactName" #editSubContactName="ngModel" [ngModel]="sub.OfficeEmail">
+              <div class="text-success" *ngIf="hasFormInputChanged(editSubContactName.value, sub.OfficeEmail)">Contact Name will be updated!</div>
             </div>
         </div>
 
         <div class="form-row">
           <div class="form-group col-md-4">
             <label for="editSubEmail">Email</label>
-            <input type="text" class="form-control" id="editSubEmail" name="editSubEmail" [ngModel]="sub.OfficeEmail">
+            <input type="text" class="form-control" id="editSubEmail" name="editSubEmail" #editSubEmail="ngModel" [ngModel]="sub.OfficeEmail">
+            <div class="text-success" *ngIf="hasFormInputChanged(editSubEmail.value, sub.OfficeEmail)">Email will be updated!</div>
           </div>
           <div class="form-group col-md-4">
               <label for="editSubPhone">Phone</label>
-              <input type="text" class="form-control" id="editSubPhone" name="editSubPhone" [ngModel]="sub.OfficePhone">
+              <input type="text" class="form-control" id="editSubPhone" name="editSubPhone" #editSubPhone="ngModel" [ngModel]="sub.OfficePhone">
+              <div class="text-success" *ngIf="hasFormInputChanged(editSubPhone.value, sub.OfficePhone)">Phone will be updated!</div>
           </div>
             <div class="form-group col-md-4">
               <label for="editSubFax">Fax</label>
-              <input type="text" class="form-control" id="editSubFax" name="editSubFax" [ngModel]="sub.OfficeFax">
+              <input type="text" class="form-control" id="editSubFax" name="editSubFax" #editSubFax="ngModel" [ngModel]="sub.OfficeFax">
+              <div class="text-success" *ngIf="hasFormInputChanged(editSubFax.value, sub.OfficeFax)">Fax will be updated!</div>
             </div>
         </div>
 
         <div class="form-group">
           <label for="editSubAddress1">Address</label>
-          <input type="text" class="form-control" id="editSubAddress1" name="editSubAddress1" [ngModel]="sub.AddressLine1">
+          <input type="text" class="form-control" id="editSubAddress1" name="editSubAddress1" #editSubAddress1="ngModel" [ngModel]="sub.AddressLine1">
+          <div class="text-success" *ngIf="hasFormInputChanged(editSubAddress1.value, sub.AddressLine1)">Address will be updated!</div>
         </div>
         <div class="form-group">
           <label for="editSubAddress2">Address 2</label>
-          <input type="text" class="form-control" id="editSubAddress2" name="editSubAddress2" [ngModel]="sub.AddressLine2">
+          <input type="text" class="form-control" id="editSubAddress2" name="editSubAddress2" #editSubAddress2="ngModel" [ngModel]="sub.AddressLine2">
+          <div class="text-success" *ngIf="hasFormInputChanged(editSubAddress2.value, sub.AddressLine2)">Address Line 2 will be updated!</div>
         </div>
 
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="editSubCity">City</label>
-            <input type="text" class="form-control" id="editSubCity" name="editSubCity" [ngModel]="sub.City">
+            <input type="text" class="form-control" id="editSubCity" name="editSubCity" #editSubCity="ngModel" [ngModel]="sub.City">
+            <div class="text-success" *ngIf="hasFormInputChanged(editSubCity.value, sub.City)">City will be updated!</div>
           </div>
           <div class="form-group col-md-4">
             <label for="editSubState">State</label>
@@ -255,12 +268,15 @@
                 [searchable]="false"
                 placeholder="Select State"
                 name="State" 
+                #editSubState="ngModel"
                 [ngModel]="sub.State">
             </ng-select>
+            <div class="text-success" *ngIf="hasFormInputChanged(editSubState.value, sub.State)">State will be updated!</div>
           </div>
           <div class="form-group col-md-2">
             <label for="editSubZipCode">Zip</label>
-            <input type="text" class="form-control" id="editSubZipCode" name="editSubZipCode" [ngModel]="sub.ZipCode">
+            <input type="text" class="form-control" id="editSubZipCode" name="editSubZipCode" #editSubZipCode="ngModel" [ngModel]="sub.ZipCode">
+            <div class="text-success" *ngIf="hasFormInputChanged(editSubZipCode.value, sub.ZipCode)">Zip will update!</div>
           </div>
         </div>
   

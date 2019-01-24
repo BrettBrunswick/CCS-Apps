@@ -152,4 +152,18 @@ export class SubsComponent implements OnInit {
     console.log('org sub: ' + this.sub.Name);
   }
 
+  hasFormInputChanged(input: any, orgValue: any): boolean
+  {
+    if (typeof input == 'string')
+    {
+      input == null ? input = '' : input = input;
+      orgValue == null ? orgValue = '' : orgValue = orgValue;
+      return input.toLowerCase().trim() != orgValue.toLowerCase().trim();
+    } 
+    else 
+    {
+      return input == null ? false : input.id != orgValue.id;
+    }
+  }
+
 }

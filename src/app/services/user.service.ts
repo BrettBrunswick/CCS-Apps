@@ -60,6 +60,7 @@ export class UserService {
         localStorage.setItem('tokenExpiration', data.expiration);
         localStorage.setItem('roles', data.roles);
         localStorage.setItem('username', body.Username);
+        localStorage.setItem('userFirstName', data.firstName);
         return true;
       }));
   }
@@ -70,6 +71,7 @@ export class UserService {
     localStorage.removeItem('tokenExpiration');
     localStorage.removeItem('roles');
     localStorage.removeItem('username');
+    localStorage.removeItem('userFirstName');
     if (this.router.url != '/login')
     {
       this.router.navigate(['/login']);

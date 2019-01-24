@@ -164,13 +164,13 @@ export class DataService {
       State: subContractor.State,
       City: subContractor.editSubCity,     
       ZipCode: subContractor.editSubZipCode,
-      WebsiteURL: subContractor.WebsiteURL,
-      OfficePhone: subContractor.OfficePhone,
-      OfficeFax: subContractor.OfficeFax,
-      OfficeEmail: subContractor.OfficeEmail,
-      Trade: subContractor.Trade,
+      WebsiteURL: subContractor.editSubWebsite,
+      OfficePhone: subContractor.editSubPhone,
+      OfficeFax: subContractor.editSubFax,
+      OfficeEmail: subContractor.editSubEmail,
+      Trade: subContractor.Trade.id,
     }
-    console.log("json request: " + body.AddressLine1);
+    console.log(body);
     return this.http.post(this.rootUrl + '/API/SubContractors/Edit', body, {headers: this.getHeaders()})
       .pipe(tap((data: any) => {
         console.log(data);

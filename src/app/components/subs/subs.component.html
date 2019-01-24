@@ -1,4 +1,4 @@
-<div class="container emp-profile">
+<div class="container sub-profile">
   <div class="jumbotron">
     
     <data-spinner *ngIf="showSpinner"></data-spinner>
@@ -7,13 +7,13 @@
       <div class="col-md-4"> 
 
         <div class="location-img">
-          <agm-map #agmMap *ngIf="isLocationDefined()" [latitude]= "subLocation.Latitude" [longitude]="subLocation.Longitute">
+          <agm-map #agmMap *ngIf="isLocationDefined()" [latitude]= "subLocation.Latitude" [longitude]="subLocation.Longitute" [zoom]="10">
             <agm-marker [latitude]= "subLocation.Latitude" [longitude]="subLocation.Longitute"></agm-marker>
           </agm-map>
           <img *ngIf="!isLocationDefined()" src="../../../assets/no-location.png" title="No Location Found!" height="325" width="325">
         </div>
 
-        <div class="profile-work">
+        <div class="sub-work">
           
             <p>QUICK LINKS</p>
             <a href="{{sub.WebsiteURL}}" target="_blank">{{sub.WebsiteURL}}</a><br/>
@@ -29,7 +29,7 @@
 
       <div class="col-md-6 pl-4">
 
-        <div class="profile-head">
+        <div class="sub-head">
 
           <h1 class="display-5">{{sub.Name}}</h1>
           <h4 class="pb-2">{{sub.TradeName}}</h4>
@@ -53,7 +53,7 @@
 
         </div>
 
-        <div class="tab-content sub-tab" id="myTabContent">
+        <div class="tab-content sub-tab border border-danger rounded p-3" id="myTabContent">
 
           <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
           
@@ -164,8 +164,8 @@
 
       <div class="col-sm-2">
 
-        <button class="profile-edit-btn btn btn-success mb-2"><fa-icon class="icon pr-1" [icon]="faPlus" title="Add To List" (click)="console.log('clicked')"></fa-icon>Add To List</button>
-        <button class="profile-edit-btn btn btn-warning"><fa-icon class="icon pr-1" [icon]="faPencilAlt" title="Edit User" (click)="console.log('clicked')"></fa-icon>Edit</button>
+        <button class="sub-edit-btn btn btn-success mb-2"><fa-icon class="icon pr-1" [icon]="faPlus" title="Add To List" (click)="console.log('clicked')"></fa-icon>Add To List</button>
+        <button class="sub-edit-btn btn btn-warning"><fa-icon class="icon pr-1" [icon]="faPencilAlt" title="Edit User" (click)="console.log('clicked')"></fa-icon>Edit</button>
 
       </div>
 

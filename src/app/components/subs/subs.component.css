@@ -3,7 +3,7 @@ agm-map {
   width: 325px;
 }
 
-.emp-profile {
+.sub-profile {
   padding: 3%;
   margin-top: 5%;
   margin-bottom: 3%;
@@ -17,65 +17,46 @@ agm-map {
   border-bottom: groove;
 }
 
-.profile-head h1 {
-  
-}
-
-.profile-head h4 {
-  
-}
-
-.profile-head h5 {
-
+.sub-head h5 {
   line-height: 0.8;
 }
 
-.profile-edit-btn {
+.sub-edit-btn {
   width: 80%;
   padding: 2%;
   font-weight: 600;
   cursor: pointer;
 }
 
-
-.profile-head .nav-tabs {
+.sub-head .nav-tabs {
   margin-bottom: 5%;
 }
 
-.profile-head  {
-  
-}
-
-.profile-head .nav-tabs .nav-link.active {
+.sub-head .nav-tabs .nav-link.active {
   border: none;
   background-color: #b42a2a;
 }
 
-.profile-work {
-  
-}
-
-.profile-work p {
+.sub-work p {
   font-size: 12px;
   font-weight: 600;
   margin-top: 10%;
 }
 
-.profile-work a {
+.sub-work a {
   text-decoration: none;
   font-weight: 600;
   font-size: 14px;
 }
 
-.profile-work ul {
-  list-style: none;
+.sub-tab label {
+  font-weight: bold;
 }
 
-.profile-tab label {
-  font-weight: 600;
+.rounded {
+  border-radius: .5rem !important;
 }
 
-.profile-tab p {
-  font-weight: 600;
-  
+.border-danger {
+  border-color: #E74C3C !important;
 }

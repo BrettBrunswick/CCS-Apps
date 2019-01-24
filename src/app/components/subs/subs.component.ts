@@ -4,6 +4,9 @@ import { DataService } from 'src/app/services/data.service';
 import { SubContractor } from 'src/app/models/SubContractor';
 import { Location } from 'src/app/models/Location';
 import { AgmMap } from '@agm/core';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgForm } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr'; 
 import { faPlus, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -19,11 +22,14 @@ export class SubsComponent implements OnInit {
   subLocation: Location = new Location();
   showLocationSpinner = true;
 
+  editSub: SubContractor = new SubContractor();
+
   showSpinner = true;
   faPencilAlt = faPencilAlt;
   faPlus = faPlus;
 
-  constructor(private dataService: DataService, private route: ActivatedRoute) { }
+  constructor(private dataService: DataService, private route: ActivatedRoute, 
+    private modalService: NgbModal, private toastr: ToastrService) { }
 
   ngOnInit() 
   {
@@ -37,6 +43,7 @@ export class SubsComponent implements OnInit {
     this.dataService.getSubById(subId)
       .subscribe(data => {
         this.sub.Name = data['name'];
+        this.sub.Name = data['name'];
         this.sub.AddressLine1 = data['addressLine1'];
         this.sub.AddressLine2 = data['addressLine2'];
         this.sub.State = data['state'];
@@ -47,9 +54,10 @@ export class SubsComponent implements OnInit {
         this.sub.OfficeEmail = data['officeEmail'];
         this.sub.OfficeFax = data['officeFax'];
         this.sub.Source = data['source'];
-        this.sub.TradeName = data['trade']['name'];
+        this.sub.Trade = data['trade'];
+        this.editSub = this.sub;
         this.showSpinner = false;
-        console.log(this.sub)
+        console.log(this.editSub);
         this.getLocation();
       });
   }
@@ -62,6 +70,11 @@ export class SubsComponent implements OnInit {
         this.subLocation.Longitute = +data[0]['longitude'];
         this.showLocationSpinner = false;
     });
+  }
+
+  open(content) 
+  {
+    this.modalService.open(content, {size: 'lg'});
   }
 
   isLocationDefined(): boolean

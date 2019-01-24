@@ -166,7 +166,7 @@
       <div class="col-sm-2">
 
         <button class="sub-edit-btn btn btn-success mb-2"><fa-icon class="icon pr-1" [icon]="faPlus" title="Add To List" (click)="console.log('clicked')"></fa-icon>Add To List</button>
-        <button class="sub-edit-btn btn btn-warning"><fa-icon class="icon pr-1" [icon]="faPencilAlt" title="Edit User" (click)="console.log('clicked')"></fa-icon>Edit</button>
+        <button class="sub-edit-btn btn btn-warning" (click)="open(editSubContractorModal)"><fa-icon class="icon pr-1" [icon]="faPencilAlt" title="Edit User"></fa-icon>Edit</button>
 
       </div>
 
@@ -174,3 +174,68 @@
 
   </div>
 </div>
+
+
+<ng-template #editSubContractorModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Edit Sub Contractor</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  
+    <form #editSubContractorForm="ngForm" (ngSubmit)="console.log('submitted')">
+      <div class="modal-body">
+      
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="editSubName">Name</label>
+            <input type="text" class="form-control" id="editSubName" name="editSubName" [(ngModel)]="editSub.Name">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="editSubTrade">Trade</label>
+            <input type="text" class="form-control" id="editSubTrade" name="editSubTrade" [(ngModel)]="editSub.Trade.name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="editSubAddress1">Address</label>
+          <input type="text" class="form-control" id="editSubAddress1" name="editSubAddress1" [(ngModel)]="editSub.AddressLine1">
+        </div>
+        <div class="form-group">
+          <label for="editSubAddress2">Address 2</label>
+          <input type="text" class="form-control" id="editSubAddress2" name="editSubAddress2" [(ngModel)]="editSub.AddressLine2">
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="editSubCity">City</label>
+            <input type="text" class="form-control" id="editSubCity" name="editSubCity" [(ngModel)]="editSub.City">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="editSubState">State</label>
+            <select id="inputState" class="form-control">
+              <option selected>Choose...</option>
+              <option>...</option>
+            </select>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="editSubZipCode">Zip</label>
+            <input type="text" class="form-control" id="editSubZipCode" name="editSubZipCode" [(ngModel)]="editSub.ZipCode">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="gridCheck">
+            <label class="form-check-label" for="gridCheck">
+              Check me out
+            </label>
+          </div>
+        </div>
+  
+      </div>
+  
+      <div class="modal-footer">
+        <button type="button" type="submit" class="btn btn-success create-user-btn">Update</button>
+      </div>
+  
+    </form>
+  </ng-template>

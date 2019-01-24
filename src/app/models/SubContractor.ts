@@ -4,8 +4,6 @@ import { Trade } from 'src/app/models/Trade';
 export class SubContractor {
     Id: number;
     Name: string;
-    TradeId: number;
-    TradeName: string;
     AddressLine1: string;
     AddressLine2: string;
     State: string;

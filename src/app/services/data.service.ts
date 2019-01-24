@@ -29,6 +29,14 @@ export class DataService {
     .set('Authorization', 'Bearer ' + localStorage.getItem("token"));
   }
 
+  //#region Helpers
+
+  isBlankOrNull(str: string)
+  {
+      return (!str || /^\s*$/.test(str));
+  }
+
+  //#endregion
   
   
   //#region User Data
@@ -144,9 +152,20 @@ export class DataService {
     );
   }
 
-  isBlankOrNull(str: string)
+  editSubContractor(editUser: EditUser)
   {
-      return (!str || /^\s*$/.test(str));
+    const body: EditUser = 
+    {
+      Username: editUser.Username,
+      IsAdmin: editUser.IsAdmin,
+      NewPassword: editUser.NewPassword == undefined ? "" : editUser.NewPassword
+    }
+    console.log(body);
+    return this.http.post(this.rootUrl + '/API/Users/EditUser', body, {headers: this.getHeaders()})
+      .pipe(tap((data: any) => {
+        console.log(data);
+        return true;
+      }));
   }
 
   getTradesParamFromArray(arr: number[])

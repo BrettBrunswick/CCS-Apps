@@ -190,7 +190,7 @@
           <div class="form-group col-md-6">
             <label for="editSubName">Name</label>
             <input type="text" class="form-control" id="editSubName" name="editSubName" #editSubName="ngModel" [ngModel]="sub.Name" required>
-            <span class="text-success" *ngIf="hasFormInputChanged(editSubName.value, sub.Name) && !this.dataService.isBlankOrNull(editSubName.value)">Name will be updated!</span>
+            <div class="text-success" *ngIf="hasFormInputChanged(editSubName.value, sub.Name) && !this.dataService.isBlankOrNull(editSubName.value)">Name will be updated!</div>
             <div class="text-danger" *ngIf="this.dataService.isBlankOrNull(editSubName.value)">Name is required!</div>
           </div>
           <div class="form-group col-md-6">

@@ -4,6 +4,7 @@ import { DataService } from 'src/app/services/data.service';
 import { SubContractor } from 'src/app/models/SubContractor';
 import { Location } from 'src/app/models/Location';
 import { AgmMap } from '@agm/core';
+import { faPlus, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-subs',
@@ -14,9 +15,13 @@ export class SubsComponent implements OnInit {
   @ViewChild(AgmMap) public agmMap: AgmMap
 
   sub: SubContractor = new SubContractor();
-  location: Location = new Location();
+
+
+  subLocation: Location = new Location();
 
   showSpinner = true;
+  faPencilAlt = faPencilAlt;
+  faPlus = faPlus;
 
   constructor(private dataService: DataService, private route: ActivatedRoute) { }
 
@@ -53,15 +58,14 @@ export class SubsComponent implements OnInit {
   {
     this.dataService.getLocationByZip(this.sub.ZipCode)
       .subscribe(data => {
-        this.location.Latitude = +data[0]['latitude'];
-        this.location.Longitute = +data[0]['longitude'];
-        console.log(this.location);
+        this.subLocation.Latitude = +data[0]['latitude'];
+        this.subLocation.Longitute = +data[0]['longitude'];
     });
   }
 
   isLocationDefined(): boolean
   {
-    return (this.location.Longitute != undefined && this.location.Latitude != undefined);
+    return (this.subLocation.Longitute != undefined && this.subLocation.Latitude != undefined);
   }
 
   hasAddressLine1()

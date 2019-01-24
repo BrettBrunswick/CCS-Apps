@@ -7,8 +7,8 @@
       <div class="col-md-4"> 
 
         <div class="location-img">
-          <agm-map #agmMap *ngIf="isLocationDefined()" [latitude]= "location.Latitude" [longitude]="location.Longitute">
-            <agm-marker [latitude]= "location.Latitude" [longitude]="location.Longitute"></agm-marker>
+          <agm-map #agmMap *ngIf="isLocationDefined()" [latitude]= "subLocation.Latitude" [longitude]="subLocation.Longitute">
+            <agm-marker [latitude]= "subLocation.Latitude" [longitude]="subLocation.Longitute"></agm-marker>
           </agm-map>
           <img *ngIf="!isLocationDefined()" src="../../../assets/no-location.png" title="No Location Found!" height="325" width="325">
         </div>
@@ -164,8 +164,8 @@
 
       <div class="col-sm-2">
 
-        <input type="submit" class="profile-edit-btn btn btn-success mb-2" name="btnAddMore" value="Add To List"/>
-        <input type="submit" class="profile-edit-btn btn btn-warning" name="btnAddMore" value="Edit"/>
+        <button class="profile-edit-btn btn btn-success mb-2"><fa-icon class="icon pr-1" [icon]="faPlus" title="Add To List" (click)="console.log('clicked')"></fa-icon>Add To List</button>
+        <button class="profile-edit-btn btn btn-warning"><fa-icon class="icon pr-1" [icon]="faPencilAlt" title="Edit User" (click)="console.log('clicked')"></fa-icon>Edit</button>
 
       </div>
 

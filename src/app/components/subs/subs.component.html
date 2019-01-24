@@ -15,7 +15,6 @@
         </div>
 
         <div class="sub-work">
-          
             <p>QUICK LINKS</p>
             <a href="{{sub.WebsiteURL}}" target="_blank">{{sub.WebsiteURL}}</a><br/>
             <p>SIMILAR COMPANIES</p>
@@ -184,31 +183,39 @@
       </button>
     </div>
   
-    <form #editSubContractorForm="ngForm" (ngSubmit)="logEditSubForm()">
+    <form #editSubContractorForm="ngForm" (ngSubmit)="editSubContractor(editSubContractorForm)">
       <div class="modal-body">
       
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="editSubName">Name</label>
-            <input type="text" class="form-control" id="editSubName" name="editSubName" [(ngModel)]="editSub.Name">
+            <input type="text" class="form-control" id="editSubName" name="editSubName" [ngModel]="sub.Name">
           </div>
           <div class="form-group col-md-6">
             <label for="editSubTrade">Trade</label>
-            <input type="text" class="form-control" id="editSubTrade" name="editSubTrade" [(ngModel)]="editSub.Trade.name">
+            <ng-select
+                [items]="trades"
+                [multiple]="false"
+                [closeOnSelect]="true"
+                [searchable]="true"
+                bindLabel="name"
+                name="Trade" 
+                [ngModel]="sub.Trade">
+            </ng-select>
           </div>
         </div>
         <div class="form-group">
           <label for="editSubAddress1">Address</label>
-          <input type="text" class="form-control" id="editSubAddress1" name="editSubAddress1" [(ngModel)]="editSub.AddressLine1">
+          <input type="text" class="form-control" id="editSubAddress1" name="editSubAddress1" [ngModel]="sub.AddressLine1">
         </div>
         <div class="form-group">
           <label for="editSubAddress2">Address 2</label>
-          <input type="text" class="form-control" id="editSubAddress2" name="editSubAddress2" [(ngModel)]="editSub.AddressLine2">
+          <input type="text" class="form-control" id="editSubAddress2" name="editSubAddress2" [ngModel]="sub.AddressLine2">
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="editSubCity">City</label>
-            <input type="text" class="form-control" id="editSubCity" name="editSubCity" [(ngModel)]="editSub.City">
+            <input type="text" class="form-control" id="editSubCity" name="editSubCity" [ngModel]="sub.City">
           </div>
           <div class="form-group col-md-4">
             <label for="editSubState">State</label>
@@ -219,12 +226,12 @@
                 [searchable]="false"
                 placeholder="Select State"
                 name="State" 
-                [(ngModel)]="editSub.State">
+                [ngModel]="sub.State">
             </ng-select>
           </div>
           <div class="form-group col-md-2">
             <label for="editSubZipCode">Zip</label>
-            <input type="text" class="form-control" id="editSubZipCode" name="editSubZipCode" [(ngModel)]="editSub.ZipCode">
+            <input type="text" class="form-control" id="editSubZipCode" name="editSubZipCode" [ngModel]="sub.ZipCode">
           </div>
         </div>
         <div class="form-group">

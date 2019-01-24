@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
+import { HttpErrorResponse } from '@angular/common/http';
 import { SubContractor } from 'src/app/models/SubContractor';
 import { Location } from 'src/app/models/Location';
 import { Trade } from 'src/app/models/Trade';
 import { AgmMap } from '@agm/core';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr'; 
 import { faPlus, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
@@ -18,12 +19,13 @@ import { faPlus, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 export class SubsComponent implements OnInit {
   @ViewChild(AgmMap) public agmMap: AgmMap
 
+  subId = +this.route.snapshot.paramMap.get('id');
+
   sub: SubContractor = new SubContractor();
 
   subLocation: Location = new Location();
   showLocationSpinner = true;
 
-  editSub: SubContractor = new SubContractor();
   trades: Trade[];
   states: string[];
 
@@ -57,10 +59,9 @@ export class SubsComponent implements OnInit {
 
   getSubContractor()
   {
-    const subId = +this.route.snapshot.paramMap.get('id');
-    this.dataService.getSubById(subId)
+    this.dataService.getSubById(this.subId)
       .subscribe(data => {
-        this.sub.Name = data['name'];
+        this.sub.Id = data['id'];
         this.sub.Name = data['name'];
         this.sub.AddressLine1 = data['addressLine1'];
         this.sub.AddressLine2 = data['addressLine2'];
@@ -73,9 +74,7 @@ export class SubsComponent implements OnInit {
         this.sub.OfficeFax = data['officeFax'];
         this.sub.Source = data['source'];
         this.sub.Trade = data['trade'];
-        this.editSub = this.sub;
         this.showSpinner = false;
-        console.log(this.editSub);
         this.getLocation();
       });
   }
@@ -93,6 +92,29 @@ export class SubsComponent implements OnInit {
   open(content) 
   {
     this.modalService.open(content, {size: 'lg'});
+  }
+
+  editSubContractor(form: NgForm)
+  {
+    this.showSpinner = true;
+    this.dataService.editSubContractor(form.value, this.subId).subscribe(success => {
+      if (success) 
+      {
+        this.toastr.success('Account successfully updated.', 'Success');
+        this.showSpinner = false;
+      }
+    }, (err : HttpErrorResponse) => 
+    {
+      this.showSpinner = false;
+      if (err.status == 400)
+      {
+        this.toastr.error('Account update failed. If this problem persists please contact IT.', 'Error');
+      } 
+      else 
+      {
+        this.toastr.error('There was an error connecting to the database. Please Contact IT.', 'Error');
+      }
+    });
   }
 
   isLocationDefined(): boolean
@@ -127,7 +149,7 @@ export class SubsComponent implements OnInit {
 
   logEditSubForm()
   {
-    console.log(this.editSub);
+    console.log('org sub: ' + this.sub.Name);
   }
 
 }

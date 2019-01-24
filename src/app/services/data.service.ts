@@ -152,16 +152,26 @@ export class DataService {
     );
   }
 
-  editSubContractor(editUser: EditUser)
+  editSubContractor(subContractor: SubContractor, subId: number)
   {
-    const body: EditUser = 
+    console.log(subContractor);
+    const body = 
     {
-      Username: editUser.Username,
-      IsAdmin: editUser.IsAdmin,
-      NewPassword: editUser.NewPassword == undefined ? "" : editUser.NewPassword
+      SubId: subId,
+      Name: subContractor.Name,
+      AddressLine1: subContractor.AddressLine1,
+      AddressLine2: subContractor.AddressLine2,
+      State: subContractor.State,
+      City: subContractor.City,     
+      ZipCode: subContractor.ZipCode,
+      WebsiteURL: subContractor.WebsiteURL,
+      OfficePhone: subContractor.OfficePhone,
+      OfficeFax: subContractor.OfficeFax,
+      OfficeEmail: subContractor.OfficeEmail,
+      Trade: subContractor.Trade,
     }
-    console.log(body);
-    return this.http.post(this.rootUrl + '/API/Users/EditUser', body, {headers: this.getHeaders()})
+    console.log("json request: " + body);
+    return this.http.post(this.rootUrl + '/API/SubContractors/Edit', body, {headers: this.getHeaders()})
       .pipe(tap((data: any) => {
         console.log(data);
         return true;

@@ -166,4 +166,22 @@ export class SubsComponent implements OnInit {
     }
   }
 
+  hasFormChanged(form: any): boolean
+  {
+    console.log(form.value.Trade)
+    return (  this.hasFormInputChanged(form.value.editSubName, this.sub.Name)  || 
+              this.hasFormInputChanged(form.value.Trade, this.sub.Trade) ||
+              this.hasFormInputChanged(form.value.editSubWebsite, this.sub.WebsiteURL) ||
+              this.hasFormInputChanged(form.value.editSubContactName, this.sub.OfficeEmail) ||
+              this.hasFormInputChanged(form.value.editSubEmail, this.sub.OfficeEmail) ||
+              this.hasFormInputChanged(form.value.editSubPhone, this.sub.OfficePhone) ||
+              this.hasFormInputChanged(form.value.editSubFax, this.sub.OfficeFax) ||
+              this.hasFormInputChanged(form.value.editSubAddress1, this.sub.AddressLine1) ||
+              this.hasFormInputChanged(form.value.editSubAddress2, this.sub.AddressLine2) ||
+              this.hasFormInputChanged(form.value.editSubCity, this.sub.City) ||
+              this.hasFormInputChanged(form.value.State, this.sub.State) ||
+              this.hasFormInputChanged(form.value.editSubZipCode, this.sub.ZipCode)
+    );
+  }
+
 }

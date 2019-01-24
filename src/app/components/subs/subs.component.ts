@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { SubContractor } from 'src/app/models/SubContractor';
 import { Location } from 'src/app/models/Location';
+import { Trade } from 'src/app/models/Trade';
 import { AgmMap } from '@agm/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
@@ -23,6 +24,8 @@ export class SubsComponent implements OnInit {
   showLocationSpinner = true;
 
   editSub: SubContractor = new SubContractor();
+  trades: Trade[];
+  states: string[];
 
   showSpinner = true;
   faPencilAlt = faPencilAlt;
@@ -33,7 +36,22 @@ export class SubsComponent implements OnInit {
 
   ngOnInit() 
   {
+    this.initializeData();
+  }
+
+  initializeData(): void
+  {
     this.getSubContractor();
+
+    this.dataService.getAllTrades()
+        .subscribe(data => {
+          this.trades = data
+        });
+
+      this.dataService.getAllStates()
+        .subscribe(data => {
+          this.states = data
+        });
   }
 
 
@@ -105,6 +123,11 @@ export class SubsComponent implements OnInit {
   hasZipCode()
   {
     return !this.dataService.isBlankOrNull(this.sub.ZipCode);
+  }
+
+  logEditSubForm()
+  {
+    console.log(this.editSub);
   }
 
 }

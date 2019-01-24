@@ -184,7 +184,7 @@
       </button>
     </div>
   
-    <form #editSubContractorForm="ngForm" (ngSubmit)="console.log('submitted')">
+    <form #editSubContractorForm="ngForm" (ngSubmit)="logEditSubForm()">
       <div class="modal-body">
       
         <div class="form-row">
@@ -212,10 +212,15 @@
           </div>
           <div class="form-group col-md-4">
             <label for="editSubState">State</label>
-            <select id="inputState" class="form-control">
-              <option selected>Choose...</option>
-              <option>...</option>
-            </select>
+            <ng-select
+                [items]="states"
+                [multiple]="false"
+                [closeOnSelect]="true"
+                [searchable]="false"
+                placeholder="Select State"
+                name="State" 
+                [(ngModel)]="editSub.State">
+            </ng-select>
           </div>
           <div class="form-group col-md-2">
             <label for="editSubZipCode">Zip</label>

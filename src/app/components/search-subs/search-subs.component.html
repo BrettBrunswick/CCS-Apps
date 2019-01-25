@@ -14,7 +14,7 @@
         <div class="tab-pane fade show active" id="v-pills-search" role="tabpanel" aria-labelledby="v-pills-search-tab">
           <div class="container">
             <div class="jumbotron">
-              <h2>Search Subs</h2>
+              <h2 class="pb-3">Search Subs</h2>
 
               <form #subContractorSearchForm="ngForm" (ngSubmit)="searchSubContractors(subContractorSearchForm);">
 
@@ -83,10 +83,10 @@
                 
               </form>
 
-              <data-spinner *ngIf="showSpinner"></data-spinner>
+              <data-spinner *ngIf="showSubSpinner"></data-spinner>
 
               <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-bordered">
-                <thead *ngIf="!showSpinner">
+                <thead *ngIf="!showSubSpinner">
                   <tr>
                     <th scope="col">Company</th>
                     <th scope="col">Trade</th>
@@ -116,10 +116,12 @@
         <div class="tab-pane fade" id="v-pills-lists" role="tabpanel" aria-labelledby="v-pills-lists-tab">
           <div class="container">
             <div class="jumbotron">
-              <h2>Sub Lists</h2>
+              <h2 class="pb-3">Sub Lists</h2>
 
-              <table datatable [dtOptions]="dtOptionLists" [dtTrigger]="dtTriggerLists" class="table table-hover table-bordered">
-                <thead *ngIf="!showSpinner">
+              <data-spinner *ngIf="showListSpinner"></data-spinner>
+
+              <table datatable [dtOptions]="dtOptionsLists" [dtTrigger]="dtTriggerLists" class="table table-hover table-bordered">
+                <thead *ngIf="!showListSpinner">
                   <tr>
                     <th scope="col">Name</th>
                     <th scope="col"># Subs</th>      

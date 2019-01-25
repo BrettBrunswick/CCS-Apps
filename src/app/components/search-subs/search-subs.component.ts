@@ -30,7 +30,8 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
   dtTriggerLists: Subject<SubContractorList[]> = new Subject();
   dtElementLists: DataTableDirective;
 
-  showSpinner: boolean;
+  showSubSpinner: boolean;
+  showListSpinner: boolean;
   faPlus = faPlus;
   faInfoCircle = faInfoCircle;
 
@@ -57,12 +58,14 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
 
   initializeData(): void
   {
-    this.showSpinner = true;
+    this.showSubSpinner = true;
+    this.showListSpinner = true;
+
     this.resetSubContractorSearchForm();
 
     this.dataService.getAllSubs()
         .subscribe(data => {
-          this.showSpinner = false;
+          this.showSubSpinner = false;
           this.subContractors = data
           this.dtTrigger.next()
         });
@@ -79,7 +82,7 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
 
         this.dataService.getAllSubLists()
         .subscribe(data => {
-          this.showSpinner = false;
+          this.showListSpinner = false;
           this.subContractorLists = data
           this.dtTriggerLists.next()
         });
@@ -87,7 +90,7 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
 
   rerenderTable(): void 
   {
-    this.showSpinner = true;
+    this.showSubSpinner = true;
     this.subContractors.splice(0, this.subContractors.length);
     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
@@ -118,7 +121,7 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
     this.rerenderTable();
     this.dataService.searchSubs(form.value)
       .subscribe(data => {
-        this.showSpinner = false;
+        this.showSubSpinner = false;
         this.subContractors = data;
         this.dtTrigger.next();
       });

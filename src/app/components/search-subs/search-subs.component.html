@@ -44,7 +44,7 @@
                 <div class="form-row">
                   <div class="form-group col-md-4">
                     <label for="inputCity">City</label>
-                    <input type="text" class="form-control" id="inputCity" placeholder="City" name="City" [(ngModel)]="subContractorSearchRequest.City" [required]="isCityAndStateRequired()" [readonly]="isCityAndStateReadonly()">
+                    <input type="text" class="form-control" id="inputCity" placeholder="City" name="City" [(ngModel)]="subContractorSearchRequest.City"  [readonly]="isCityAndStateReadonly()">
                   </div>
 
                   <div class="form-group col-md-4">
@@ -57,26 +57,25 @@
                         placeholder="Select State"
                         name="State" 
                         [(ngModel)]="subContractorSearchRequest.State"
-                        [required]="isCityAndStateRequired()"
+                        [required]="isStateRequired()"
                         [disabled]="isCityAndStateReadonly()">
                     </ng-select>
+                    <small *ngIf="isStateRequired() && isStateBlank()" class="form-text text-warning">State must be selected if searching by City!</small>
                   </div>
 
                   <div class="form-group col-md-2">
                     <label for="inputZip">Zip</label>
-                    <input type="text" class="form-control" id="inputZip" placeholder="Zip Code" name="ZipCode" [(ngModel)]="subContractorSearchRequest.ZipCode" minlength="5" maxlength="5" [readonly]="isCityAndStateRequired()">
+                    <input type="text" class="form-control" id="inputZip" placeholder="Zip Code" name="ZipCode" [(ngModel)]="subContractorSearchRequest.ZipCode" minlength="5" maxlength="5" [readonly]="isZipDisabled()">
                   </div>
 
                   <div class="form-group col-md-2">
                     <label for="inputRadius">Radius</label>
-                    <input type="number" class="form-control" id="inputRadius" placeholder="Miles" name="Radius" [(ngModel)]="subContractorSearchRequest.Radius" min="0" max="100" [required]="isRadiusRequired()">
+                    <input type="number" class="form-control" id="inputRadius" placeholder="Miles" name="Radius" #Radius="ngModel" [(ngModel)]="subContractorSearchRequest.Radius" min="0" max="100" [required]="isRadiusRequired()" [readonly]="!isRadiusRequired()">
+                    <small *ngIf="isRadiusRequired() && !isRadiusValid() && Radius.dirty" class="form-text text-warning">Must be between 1 and 100!</small>
+                    <small *ngIf="isRadiusRequired() && isRadiusBlank()" class="form-text text-warning">Required for City or Zip!</small>
                   </div>
 
                 </div>
-
-                <small *ngIf="isCityAndStateRequired() && isCityOrStateBlank()" class="form-text text-warning pb-3">* City AND State must be filled out if searching by City or State! *</small>
-                <small *ngIf="isRadiusRequired() && isRadiusBlank()" class="form-text text-warning pb-3">* Radius must be filled out if searching by City, State or Zip Code! *</small>
-                <small *ngIf="isRadiusRequired() && !isRadiusValid()" class="form-text text-warning pb-3">* Radius must be between 1 and 100 *</small>
 
                 <div class="btn-container">
                   <button type="submit" class="btn btn-block btn-success" [disabled]="subContractorSearchForm.invalid || (isRadiusRequired() && !isRadiusValid())">Search</button> 

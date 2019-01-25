@@ -131,17 +131,17 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
 
   isRadiusBlank(): boolean
   {
-    return this.subContractorSearchRequest.Radius == undefined || this.subContractorSearchRequest.Radius == null;
+    return (this.subContractorSearchRequest.Radius == undefined || this.subContractorSearchRequest.Radius == null);
   }
 
   isRadiusValid(): boolean
   { 
-    return this.subContractorSearchRequest.Radius > 0 && this.subContractorSearchRequest.Radius < 101
+    return (this.subContractorSearchRequest.Radius > 0 && this.subContractorSearchRequest.Radius < 101);
   }
 
-  isCityAndStateRequired(): boolean
+  isStateRequired(): boolean
   {
-    return !this.dataService.isBlankOrNull(this.subContractorSearchRequest.City) || !this.dataService.isBlankOrNull(this.subContractorSearchRequest.State);
+    return !this.dataService.isBlankOrNull(this.subContractorSearchRequest.City);
   }
 
   isCityAndStateReadonly(): boolean
@@ -149,9 +149,14 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
     return !this.dataService.isBlankOrNull(this.subContractorSearchRequest.ZipCode);
   }
 
-  isCityOrStateBlank(): boolean
+  isStateBlank(): boolean
   {
-    return (this.dataService.isBlankOrNull(this.subContractorSearchRequest.State) || this.dataService.isBlankOrNull(this.subContractorSearchRequest.City))
+    return (this.dataService.isBlankOrNull(this.subContractorSearchRequest.State));
+  }
+
+  isZipDisabled(): boolean
+  {
+    return (!this.dataService.isBlankOrNull(this.subContractorSearchRequest.City) || !this.dataService.isBlankOrNull(this.subContractorSearchRequest.State));
   }
 
 }

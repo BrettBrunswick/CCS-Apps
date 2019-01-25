@@ -7,7 +7,7 @@ import { SubContractor } from 'src/app/models/SubContractor';
 import { SubContractorList } from 'src/app/models/SubContractorList';
 import { SubContractorSearchRequest } from 'src/app/models/SubContractorSearchRequest';
 import { Trade } from 'src/app/models/Trade';
-import { faPlus, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faInfoCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-search-subs',
@@ -34,6 +34,7 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
   showListSpinner: boolean;
   faPlus = faPlus;
   faInfoCircle = faInfoCircle;
+  faTrashAlt = faTrashAlt;
 
   constructor(private dataService: DataService) { }
 

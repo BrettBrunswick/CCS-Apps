@@ -34,6 +34,7 @@ export class SubsComponent implements OnInit {
 
 
   showSpinner = true;
+  showPostSpinner = true;
   faPencilAlt = faPencilAlt;
   faPlus = faPlus;
 
@@ -116,6 +117,7 @@ export class SubsComponent implements OnInit {
       if (success) 
       {
         this.toastr.success('Account successfully updated.', 'Success');
+        this.getSubContractor();
         this.showSpinner = false;
       }
     }, (err : HttpErrorResponse) => 

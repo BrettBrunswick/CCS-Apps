@@ -168,7 +168,7 @@ export class DataService {
       OfficePhone: subContractor.editSubPhone,
       OfficeFax: subContractor.editSubFax,
       OfficeEmail: subContractor.editSubEmail,
-      Trade: subContractor.Trade.id,
+      TradeId: subContractor.Trade.id,
     }
     console.log(body);
     return this.http.post(this.rootUrl + '/API/SubContractors/Edit', body, {headers: this.getHeaders()})

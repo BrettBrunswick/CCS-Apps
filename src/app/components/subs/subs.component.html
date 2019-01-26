@@ -183,7 +183,7 @@
         <span aria-hidden="true">&times;</span>
       </button>
   </div>
-  <form #addSubToListForm="ngForm" (ngSubmit)="addSubToList(addSubToListForm); modal.dismiss('Cross click')">
+  <form #addSubToListForm="ngForm" (ngSubmit)="addSubToList(addSubToListForm); modal.dismiss('Form submitted')">
     <div class="modal-body">
       <div class="form-group">
         <label for="subContractorList">Sub List</label>
@@ -216,7 +216,7 @@
       </button>
     </div>
   
-    <form #editSubContractorForm="ngForm" (ngSubmit)="editSubContractor(editSubContractorForm)">
+    <form #editSubContractorForm="ngForm" (ngSubmit)="editSubContractor(editSubContractorForm); modal.dismiss('Form submitted')">
       <div class="modal-body">
       
         <div class="form-row">

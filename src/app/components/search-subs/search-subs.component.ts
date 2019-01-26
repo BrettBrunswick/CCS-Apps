@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChildren, QueryList } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -18,7 +18,8 @@ import { faPlus, faInfoCircle, faTrashAlt } from '@fortawesome/free-solid-svg-ic
   styleUrls: ['./search-subs.component.css']
 })
 export class SearchSubsComponent implements OnInit, OnDestroy {
-  @ViewChild(DataTableDirective) datatableElement: DataTableDirective;
+  @ViewChildren(DataTableDirective)
+  dtElements: QueryList<DataTableDirective>;
 
   subContractors: SubContractor[];
   subContractorLists: SubContractorList[];
@@ -118,7 +119,7 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
   {
     this.showSubSpinner = true;
     this.subContractors.splice(0, this.subContractors.length);
-    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+    this.dtElements.first.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
     });
   }
@@ -127,7 +128,7 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
   {
     this.showListSpinner = true;
     this.subContractorLists.splice(0, this.subContractorLists.length);
-    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+    this.dtElements.last.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
     });
     this.dataService.getAllSubLists()
@@ -198,6 +199,7 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
     this.dataService.addSubToList(this.listIdToAddSubTo, this.selectedSub.id).subscribe(success => {
       if (success) 
       {
+        this.rerenderListTable();
         this.toastr.success('Sub added to list!', 'Success');
       }
     }, (err : HttpErrorResponse) => 
@@ -216,16 +218,16 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
 
   createNewList(form: NgForm) 
   {
-    this.showListSpinner = true;
     this.dataService.createSubContractorList(form.value).subscribe(success => {
       if (success) 
       {
+        this.rerenderListTable();
         this.toastr.success('List successfully created.', 'Success');
-        this.showListSpinner = false;
+        form.reset();
       }
     }, (err : HttpErrorResponse) => 
     {
-      this.showListSpinner = false;
+      form.reset();
       if (err.status == 400)
       {
         this.toastr.error('List creation failed. If this problem persists please contact IT.', 'Error');

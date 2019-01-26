@@ -16,7 +16,7 @@
         <div class="row">
           <h2>Manage Users</h2>
           <post-spinner *ngIf="showPostSpinner" class="center-spinner"></post-spinner>
-          <button type="button" class="add-user-btn btn btn-success" (click)="open(newUserModal)">Add User</button>
+          <button type="button" class="add-user-btn btn btn-success" (click)="open(newUserModal)" [disabled]="showPostSpinner || showSpinner">Add User</button>
         </div>
 
         <data-spinner *ngIf="showSpinner"></data-spinner>

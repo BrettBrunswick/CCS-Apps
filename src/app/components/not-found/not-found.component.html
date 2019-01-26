@@ -1,3 +1,17 @@
-<p>
-  not-found works!
-</p>
+<div class="container">
+  <div class="row">
+      <div class="col-md-12">
+          <div class="error-template">
+              <h1 class="display-1 text-danger">404</h1>
+              <h4 class="display-4 text-danger">Not Found</h4>
+              <div class="error-details mt-3">
+                  Sorry, an error has occured. The requested page was not found!
+              </div>
+              <div class="error-actions">
+                <a routerLink="/" class="btn btn-success btn-lg"><fa-icon class="icon" [icon]="faHome"></fa-icon>Go To Dashboard</a>
+                <a href="mailto:brett@ccsconstructionllc.com" class="btn btn-danger btn-lg"><fa-icon class="icon" [icon]="faEnvelope"></fa-icon>Contact IT</a>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

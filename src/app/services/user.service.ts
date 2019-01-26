@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { UserLogin } from '../models/UserLogin';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  readonly rootUrl = 'https://ccsappsapi.azurewebsites.net/';
+  readonly rootUrl = environment.apiRootURL;
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -35,7 +36,7 @@ export class UserService {
     return result;
   }
 
-  getCurrentUser(): string 
+  getCurrentUsername(): string
   {
     if (localStorage.getItem('username') != null)
     {
@@ -59,6 +60,7 @@ export class UserService {
         localStorage.setItem('tokenExpiration', data.expiration);
         localStorage.setItem('roles', data.roles);
         localStorage.setItem('username', body.Username);
+        localStorage.setItem('userFirstName', data.firstName);
         return true;
       }));
   }
@@ -69,6 +71,7 @@ export class UserService {
     localStorage.removeItem('tokenExpiration');
     localStorage.removeItem('roles');
     localStorage.removeItem('username');
+    localStorage.removeItem('userFirstName');
     if (this.router.url != '/login')
     {
       this.router.navigate(['/login']);

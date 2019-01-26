@@ -1,0 +1,325 @@
+<div class="container sub-profile">
+  <div class="jumbotron">
+    
+    <data-spinner *ngIf="showSpinner"></data-spinner>
+    <div *ngIf="!showSpinner" class="row">
+
+      <div class="col-md-4"> 
+
+        <div class="location-img">
+          <login-spinner *ngIf="showLocationSpinner" class="location-spinner"></login-spinner>
+          <agm-map #agmMap *ngIf="isLocationDefined() && !showLocationSpinner" [latitude]= "subLocation.Latitude" [longitude]="subLocation.Longitute" [zoom]="10">
+            <agm-marker [latitude]= "subLocation.Latitude" [longitude]="subLocation.Longitute"></agm-marker>
+          </agm-map>
+          <img *ngIf="!isLocationDefined() && !showLocationSpinner" src="../../../assets/no-location.png" title="No Location Found!" height="325" width="325">
+        </div>
+
+        <div class="sub-work">
+            <p>QUICK LINKS</p>
+            <a href="{{sub.WebsiteURL}}" target="_blank">{{sub.WebsiteURL}}</a><br/>
+            <p>SIMILAR COMPANIES</p>
+            <a href="">Web Designer</a><br/>
+            <a href="">Web Developer</a><br/>
+            <a href="">WordPress</a><br/>
+            <a href="">WooCommerce</a><br/>
+            <a href="">PHP, .Net</a><br/>
+        </div>
+
+      </div>
+
+      <div class="col-md-6 pl-4">
+
+        <div class="sub-head">
+
+          <h1 class="display-5">{{sub.Name}}</h1>
+          <h4 class="pb-2">{{sub.Trade.name}}</h4>
+
+          <div class="location-header pb-5">
+            <h5><span *ngIf="hasAddressLine1()">{{sub.AddressLine1}}</span><span *ngIf="hasAddressLine2()">{{", " + sub.AddressLine2}}</span></h5>
+            <h5><span>{{sub.City + " "}}</span><span>{{sub.State + " "}}</span><span>{{sub.ZipCode}}</span></h5>
+          </div>
+
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="true">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="notes-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="notes" aria-selected="false">Notes</a>
+            </li>
+          </ul>
+
+        </div>
+
+        <div class="tab-content sub-tab border border-danger rounded p-3" id="myTabContent">
+
+          <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
+          
+            <div class="row">
+              <div class="col-md-6">
+                <label>Name:</label>
+              </div>
+              <div class="col-md-6">
+                <p>{{sub.Name}}</p>
+              </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                  <label>Trade:</label>
+                </div>
+                <div class="col-md-6">
+                  <p>{{sub.Trade.name}}</p>
+                </div>
+            </div>
+
+          </div>
+          
+          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Website:</label>
+                </div>
+                <div class="col-md-6">
+                  <p><a href="{{sub.WebsiteURL}}" target="_blank">{{sub.WebsiteURL}}</a></p>
+                </div>
+              </div>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <label>Primary Contact:</label>
+              </div>
+              <div class="col-md-6">
+                <p>{{sub.Name}}</p>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <label>Phone:</label>
+              </div>
+              <div class="col-md-6">
+                <p>{{sub.OfficePhone}}</p>
+              </div>
+            </div>
+                              
+            <div class="row">
+              <div class="col-md-6">
+                <label>Email:</label>
+              </div>
+              <div class="col-md-6">
+                <p>{{sub.OfficeEmail}}</p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <label>Address:</label>
+              </div>
+              <div class="col-md-6">
+                <p><span *ngIf="hasAddressLine1()">{{sub.AddressLine1}}</span><span *ngIf="hasAddressLine2()">{{", " + sub.AddressLine2}}</span></p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <label>City/State:</label>
+              </div>
+              <div class="col-md-6">
+                <p>{{sub.City + ", " + sub.State + " "}}</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="tab-pane fade show" id="notes" role="tabpanel" aria-labelledby="notes-tab">
+          
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Source:</label>
+                </div>
+                <div class="col-md-6">
+                  <p>{{sub.Source}}</p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Notes:</label>
+                </div>
+                <div class="col-md-6">
+                  <p>...</p>
+                </div>
+              </div>
+              
+          </div>
+        
+        </div>    
+
+      
+      </div>
+
+      <div class="col-sm-2">
+
+        <button class="sub-edit-btn btn btn-success mb-2" (click)="openSmall(addSubToListModal)"><fa-icon class="icon pr-1" [icon]="faPlus" title="Add To List"></fa-icon>Add To List</button>
+        <button class="sub-edit-btn btn btn-warning" (click)="open(editSubContractorModal)"><fa-icon class="icon pr-1" [icon]="faPencilAlt" title="Edit User"></fa-icon>Edit</button>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+
+<ng-template #addSubToListModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Sub To List</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <form #addSubToListForm="ngForm" (ngSubmit)="addSubToList(addSubToListForm); modal.dismiss('Form submitted')">
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="subContractorList">Sub List</label>
+        <ng-select 
+            [multiple]="false"
+            [closeOnSelect]="true"
+            [searchable]="true"
+            [(ngModel)]="listIdToAddSubTo"
+            [ngModelOptions]="{standalone:true}">
+            <ng-option *ngFor="let list of allSubContractorLists" [value]="list.id" [disabled]="isSubAlreadyInList(list.id)">{{list.name}}</ng-option>
+        </ng-select>
+      </div>
+    </div>
+    <ul class="list-group p-4">
+      <h4>Belongs To:</h4>
+        <li *ngIf="listsSubBelongsTo.length < 1" class="list-group-item disabled">None</li>
+        <li *ngFor="let list of listsSubBelongsTo" class="list-group-item list-group-item-action" target="_blank" routerLink="/subs/lists/{{list.id}}">{{list.name}}</li>
+    </ul>
+    <div class="modal-footer">
+      <button type="button" type="submit" class="btn btn-success" [disabled]="addSubToListForm.invalid || !(listIdToAddSubTo > 0)">Save</button>
+    </div>
+  </form>
+</ng-template>
+
+
+
+<ng-template #editSubContractorModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Edit Sub Contractor</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  
+    <form #editSubContractorForm="ngForm" (ngSubmit)="editSubContractor(editSubContractorForm); modal.dismiss('Form submitted')">
+      <div class="modal-body">
+      
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="editSubName">Name</label>
+            <input type="text" class="form-control" id="editSubName" name="editSubName" #editSubName="ngModel" [ngModel]="sub.Name" required>
+            <div class="text-success" *ngIf="hasFormInputChanged(editSubName.value, sub.Name) && !this.dataService.isBlankOrNull(editSubName.value)">Name will be updated!</div>
+            <div class="text-danger" *ngIf="this.dataService.isBlankOrNull(editSubName.value)">Name is required!</div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="editSubTrade">Trade</label>
+            <ng-select
+                [required]="true"
+                [items]="trades"
+                [multiple]="false"
+                [closeOnSelect]="true"
+                [searchable]="true"
+                bindLabel="name"
+                name="Trade" 
+                #editSubTrade="ngModel"
+                [ngModel]="sub.Trade">
+            </ng-select>
+            <div class="text-success" *ngIf="hasFormInputChanged(editSubTrade.value, sub.Trade)">Trade will be updated!</div>
+            <div class="text-danger" *ngIf="editSubTrade.value == null">Trade is required!</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="editSubWebsite">Website</label>
+            <input type="text" class="form-control" id="editSubWebsite" name="editSubWebsite" #editSubWebsite="ngModel" [ngModel]="sub.WebsiteURL">
+            <div class="text-success" *ngIf="hasFormInputChanged(editSubWebsite.value, sub.WebsiteURL)">Website will be updated!</div>
+          </div>
+            <div class="form-group col-md-6">
+              <label for="editSubContactName">Contact Name</label>
+              <input type="text" class="form-control" id="editSubContactName" name="editSubContactName" #editSubContactName="ngModel" [ngModel]="sub.OfficeEmail">
+              <div class="text-success" *ngIf="hasFormInputChanged(editSubContactName.value, sub.OfficeEmail)">Contact Name will be updated!</div>
+            </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="editSubEmail">Email</label>
+            <input type="text" class="form-control" id="editSubEmail" name="editSubEmail" #editSubEmail="ngModel" [ngModel]="sub.OfficeEmail">
+            <div class="text-success" *ngIf="hasFormInputChanged(editSubEmail.value, sub.OfficeEmail)">Email will be updated!</div>
+          </div>
+          <div class="form-group col-md-4">
+              <label for="editSubPhone">Phone</label>
+              <input type="text" class="form-control" id="editSubPhone" name="editSubPhone" #editSubPhone="ngModel" [ngModel]="sub.OfficePhone">
+              <div class="text-success" *ngIf="hasFormInputChanged(editSubPhone.value, sub.OfficePhone)">Phone will be updated!</div>
+          </div>
+            <div class="form-group col-md-4">
+              <label for="editSubFax">Fax</label>
+              <input type="text" class="form-control" id="editSubFax" name="editSubFax" #editSubFax="ngModel" [ngModel]="sub.OfficeFax">
+              <div class="text-success" *ngIf="hasFormInputChanged(editSubFax.value, sub.OfficeFax)">Fax will be updated!</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+          <label for="editSubAddress1">Address</label>
+          <input type="text" class="form-control" id="editSubAddress1" name="editSubAddress1" #editSubAddress1="ngModel" [ngModel]="sub.AddressLine1">
+          <div class="text-success" *ngIf="hasFormInputChanged(editSubAddress1.value, sub.AddressLine1)">Address will be updated!</div>
+        </div>
+        <div class="form-group">
+          <label for="editSubAddress2">Address 2</label>
+          <input type="text" class="form-control" id="editSubAddress2" name="editSubAddress2" #editSubAddress2="ngModel" [ngModel]="sub.AddressLine2">
+          <div class="text-success" *ngIf="hasFormInputChanged(editSubAddress2.value, sub.AddressLine2)">Address Line 2 will be updated!</div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="editSubCity">City</label>
+            <input type="text" class="form-control" id="editSubCity" name="editSubCity" #editSubCity="ngModel" [ngModel]="sub.City">
+            <div class="text-success" *ngIf="hasFormInputChanged(editSubCity.value, sub.City)">City will be updated!</div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="editSubState">State</label>
+            <ng-select
+                [items]="states"
+                [multiple]="false"
+                [closeOnSelect]="true"
+                [searchable]="false"
+                placeholder="Select State"
+                name="State" 
+                #editSubState="ngModel"
+                [ngModel]="sub.State">
+            </ng-select>
+            <div class="text-success" *ngIf="hasFormInputChanged(editSubState.value, sub.State)">State will be updated!</div>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="editSubZipCode">Zip</label>
+            <input type="text" class="form-control" id="editSubZipCode" name="editSubZipCode" #editSubZipCode="ngModel" [ngModel]="sub.ZipCode">
+            <div class="text-success" *ngIf="hasFormInputChanged(editSubZipCode.value, sub.ZipCode)">Zip will update!</div>
+          </div>
+        </div>
+  
+      </div>
+  
+      <div class="modal-footer">
+        <button type="button" type="submit" class="btn btn-success" [disabled]="editSubContractorForm.invalid || !hasFormChanged(editSubContractorForm)">Update</button>
+      </div>
+  
+    </form>
+  </ng-template>

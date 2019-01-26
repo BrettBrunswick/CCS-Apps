@@ -1,0 +1,72 @@
+agm-map {
+  height: 325px;
+  width: 325px;
+}
+
+.sub-profile {
+  padding: 3%;
+  margin-top: 5%;
+  margin-bottom: 3%;
+  border-radius: 0.5rem;
+}
+
+.location-img {
+  height: 330px;
+  width: 330px;
+  border-right: groove;
+  border-bottom: groove;
+  text-align: center;
+}
+
+.sub-head h5 {
+  line-height: 0.8;
+}
+
+.sub-edit-btn {
+  width: 80%;
+  padding: 2%;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sub-head .nav-tabs {
+  margin-bottom: 5%;
+}
+
+.sub-head .nav-tabs .nav-link.active {
+  border: none;
+  background-color: #b42a2a;
+}
+
+.sub-work p {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 10%;
+}
+
+.sub-work a {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.sub-tab label {
+  font-weight: bold;
+}
+
+.rounded {
+  border-radius: .5rem !important;
+}
+
+.border-danger {
+  border-color: #E74C3C !important;
+}
+
+.location-spinner {
+  display: inline-block;
+  text-align: center;
+}
+
+.list-group-item-action {
+  cursor: pointer;
+}

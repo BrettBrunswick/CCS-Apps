@@ -1,3 +1,7 @@
+.content {
+    margin-top: 100px;
+}
+
 .nav-link.active {
     background-color: #b42a2a;
 }
@@ -5,6 +9,8 @@
 .icon {
     color: #00bc8c;
     font-size: 20px;
+    padding-right: 5px;
+    padding-left: 2px;
 }
 
 .icon:hover {
@@ -19,4 +25,13 @@
 
 .btn-container {
     padding-bottom: 50px;
+}
+
+.actions {
+    text-align: center;
+}
+
+.add-to-list-sub-name {
+    font-style: italic;
+    font-weight: bold;
 }

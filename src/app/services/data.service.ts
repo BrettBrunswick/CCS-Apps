@@ -7,15 +7,18 @@ import { User } from '../models/User';
 import { NewUser } from '../models/NewUser';
 import { EditUser } from '../models/EditUser';
 import { SubContractor } from '../models/SubContractor';
+import { SubContractorList } from '../models/SubContractorList';
 import { Trade } from '../models/Trade';
+import { Location } from 'src/app/models/Location';
 import { SubContractorSearchRequest } from 'src/app/models/SubContractorSearchRequest';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  readonly rootUrl = 'https://ccsappsapi.azurewebsites.net';
+  readonly rootUrl = environment.apiRootURL;
 
   constructor(private http: HttpClient) { }
 
@@ -26,6 +29,14 @@ export class DataService {
     .set('Authorization', 'Bearer ' + localStorage.getItem("token"));
   }
 
+  //#region Helpers
+
+  isBlankOrNull(str: string)
+  {
+      return (!str || /^\s*$/.test(str));
+  }
+
+  //#endregion
   
   
   //#region User Data
@@ -113,6 +124,15 @@ export class DataService {
     );
   }
 
+  getSubById(id: number): Observable<SubContractor[]> 
+  {
+    return this.http.get<SubContractor[]>(this.rootUrl + '/API/SubContractors/' + id, {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched sub id: ' + id)),
+        catchError(this.handleError('getSubById', []))
+    );
+  }
+
   searchSubs(request?: SubContractorSearchRequest): Observable<SubContractor[]> 
   {
     var companyNameParam = !this.isBlankOrNull(request.CompanyName) ? 'companyName=' + request.CompanyName.trim() : '';
@@ -132,9 +152,30 @@ export class DataService {
     );
   }
 
-  isBlankOrNull(str: string)
+  editSubContractor(subContractor, subId: number)
   {
-      return (!str || /^\s*$/.test(str));
+    console.log(subContractor);
+    const body = 
+    {
+      SubId: subId,
+      Name: subContractor.editSubName,
+      AddressLine1: subContractor.editSubAddress1,
+      AddressLine2: subContractor.editSubAddress2,
+      State: subContractor.State,
+      City: subContractor.editSubCity,     
+      ZipCode: subContractor.editSubZipCode,
+      WebsiteURL: subContractor.editSubWebsite,
+      OfficePhone: subContractor.editSubPhone,
+      OfficeFax: subContractor.editSubFax,
+      OfficeEmail: subContractor.editSubEmail,
+      TradeId: subContractor.Trade.id,
+    }
+    console.log(body);
+    return this.http.post(this.rootUrl + '/API/SubContractors/Edit', body, {headers: this.getHeaders()})
+      .pipe(tap((data: any) => {
+        console.log(data);
+        return true;
+      }));
   }
 
   getTradesParamFromArray(arr: number[])
@@ -165,7 +206,57 @@ export class DataService {
   }
 
   //#endregion
+  
 
+  //#region SubContractorLists
+
+  getAllSubLists(): Observable<SubContractorList[]>
+  {
+    return this.http.get<SubContractorList[]>(this.rootUrl + '/API/SubContractorLists/GetAllSubContractorLists', {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched all sub lists')),
+        catchError(this.handleError('getAllSubs', []))
+    );
+  }
+
+  getAllSubListsBySub(subId: number): Observable<SubContractorList[]>
+  {
+    return this.http.get<SubContractorList[]>(this.rootUrl + '/API/SubContractorLists/GetBySub/' + subId, {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched all sub lists for sub')),
+        catchError(this.handleError('getAllSubListsBySub', []))
+    );
+  }
+
+  addSubToList(listId: number, subId: number): Observable<string[]>
+  {
+    const body = 
+    {
+      ListId: listId,
+      SubId: subId
+    };
+    return this.http.post<string[]>(this.rootUrl + '/API/SubContractorLists/AddSub', body, {headers: this.getHeaders()})
+      .pipe(tap((data: any) => {
+        console.log(data);
+        return true;
+      }));
+  }
+
+  //#endregion
+
+
+  //#region Locations
+
+  getLocationByZip(zipCode: string): Observable<Location[]>
+  {
+    return this.http.get<Location[]>(this.rootUrl + '/API/Locations/GetByZip?zipcode=' + zipCode, {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched location')),
+        catchError(this.handleError('getLocationByZip', []))
+    );
+  }  
+
+  //#endregion
 
   
 

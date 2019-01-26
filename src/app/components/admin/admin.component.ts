@@ -28,6 +28,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   dtElement: DataTableDirective;
 
   showSpinner: boolean;
+  showPostSpinner: boolean = false;
   closeResult: string;
   faTrashAlt = faTrashAlt;
   faPencilAlt = faPencilAlt;
@@ -121,14 +122,17 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   registerNewUser(form: NgForm) 
   {
+    this.showPostSpinner = true;
     this.dataService.registerUser(form.value).subscribe(success => {
       if (success) 
       {
         this.toastr.success('New User successfully registered.', 'Success');
+        this.showPostSpinner = false;
         this.rerenderTable();
       }
     }, (err : HttpErrorResponse) => 
     {
+      this.showPostSpinner = false;
       if (err.status == 400)
       {
         this.toastr.error('Registration failed. If this problem persists please contact IT.', 'Error');
@@ -142,14 +146,17 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   editProfile(form: NgForm)
   {
+    this.showPostSpinner = true;
     this.dataService.editUser(form.value).subscribe(success => {
       if (success) 
       {
         this.toastr.success('Account successfully updated.', 'Success');
+        this.showPostSpinner = false;
         this.rerenderTable();
       }
     }, (err : HttpErrorResponse) => 
     {
+      this.showPostSpinner = false;
       if (err.status == 400)
       {
         this.toastr.error('Account update failed. If this problem persists please contact IT.', 'Error');
@@ -163,14 +170,17 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   deleteProfile()
   {
+    this.showPostSpinner = true;
     this.dataService.deleteUser(this.userToDelete).subscribe(success => {
       if (success) 
       {
         this.toastr.success('User successfully deleted.', 'Success');
+        this.showPostSpinner = false;
         this.rerenderTable();
       }
     }, (err : HttpErrorResponse) => 
     {
+      this.showPostSpinner = false;
       if (err.status == 400)
       {
         this.toastr.error('User deletion failed. If this problem persists please contact IT.', 'Error');

@@ -1,4 +1,4 @@
-<div class="row mt-3">
+<div class="row content">
 
     <div class="col-2">
       <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -14,7 +14,7 @@
         <div class="tab-pane fade show active" id="v-pills-search" role="tabpanel" aria-labelledby="v-pills-search-tab">
           <div class="container">
             <div class="jumbotron">
-              <h2>Search Subs</h2>
+              <h2 class="pb-3">Search Subs</h2>
 
               <form #subContractorSearchForm="ngForm" (ngSubmit)="searchSubContractors(subContractorSearchForm);">
 
@@ -44,7 +44,7 @@
                 <div class="form-row">
                   <div class="form-group col-md-4">
                     <label for="inputCity">City</label>
-                    <input type="text" class="form-control" id="inputCity" placeholder="City" name="City" [(ngModel)]="subContractorSearchRequest.City" [required]="isCityAndStateRequired()" [readonly]="isCityAndStateReadonly()">
+                    <input type="text" class="form-control" id="inputCity" placeholder="City" name="City" [(ngModel)]="subContractorSearchRequest.City"  [readonly]="isCityAndStateReadonly()">
                   </div>
 
                   <div class="form-group col-md-4">
@@ -57,26 +57,25 @@
                         placeholder="Select State"
                         name="State" 
                         [(ngModel)]="subContractorSearchRequest.State"
-                        [required]="isCityAndStateRequired()"
+                        [required]="isStateRequired()"
                         [disabled]="isCityAndStateReadonly()">
                     </ng-select>
+                    <small *ngIf="isStateRequired() && isStateBlank()" class="form-text text-warning">State must be selected if searching by City!</small>
                   </div>
 
                   <div class="form-group col-md-2">
                     <label for="inputZip">Zip</label>
-                    <input type="text" class="form-control" id="inputZip" placeholder="Zip Code" name="ZipCode" [(ngModel)]="subContractorSearchRequest.ZipCode" minlength="5" maxlength="5" [readonly]="isCityAndStateRequired()">
+                    <input type="text" class="form-control" id="inputZip" placeholder="Zip Code" name="ZipCode" [(ngModel)]="subContractorSearchRequest.ZipCode" minlength="5" maxlength="5" [readonly]="isZipDisabled()">
                   </div>
 
                   <div class="form-group col-md-2">
                     <label for="inputRadius">Radius</label>
-                    <input type="number" class="form-control" id="inputRadius" placeholder="Miles" name="Radius" [(ngModel)]="subContractorSearchRequest.Radius" min="0" max="100" [required]="isRadiusRequired()">
+                    <input type="number" class="form-control" id="inputRadius" placeholder="Miles" name="Radius" #Radius="ngModel" [(ngModel)]="subContractorSearchRequest.Radius" min="0" max="100" [required]="isRadiusRequired()" [readonly]="!isRadiusRequired()">
+                    <small *ngIf="isRadiusRequired() && !isRadiusValid() && Radius.dirty" class="form-text text-warning">Must be between 1 and 100!</small>
+                    <small *ngIf="isRadiusRequired() && isRadiusBlank()" class="form-text text-warning">Required for City or Zip!</small>
                   </div>
 
                 </div>
-
-                <small *ngIf="isCityAndStateRequired() && isCityOrStateBlank()" class="form-text text-warning pb-3">* City AND State must be filled out if searching by City or State! *</small>
-                <small *ngIf="isRadiusRequired() && isRadiusBlank()" class="form-text text-warning pb-3">* Radius must be filled out if searching by City, State or Zip Code! *</small>
-                <small *ngIf="isRadiusRequired() && !isRadiusValid()" class="form-text text-warning pb-3">* Radius must be between 1 and 100 *</small>
 
                 <div class="btn-container">
                   <button type="submit" class="btn btn-block btn-success" [disabled]="subContractorSearchForm.invalid || (isRadiusRequired() && !isRadiusValid())">Search</button> 
@@ -84,10 +83,10 @@
                 
               </form>
 
-              <data-spinner *ngIf="showSpinner"></data-spinner>
+              <data-spinner *ngIf="showSubSpinner"></data-spinner>
 
               <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-bordered">
-                <thead *ngIf="!showSpinner">
+                <thead *ngIf="!showSubSpinner">
                   <tr>
                     <th scope="col">Company</th>
                     <th scope="col">Trade</th>
@@ -103,7 +102,8 @@
                     <td>{{sub.city + ", " + sub.state + " " + sub.zipCode}}</td>
                     <td>{{sub.source}}</td>                        
                     <td class="actions">
-                      <fa-icon class="icon" [icon]="faPlus" title="Add To List" (click)="openProfileDeletion(profileDeletion, user.userName)"></fa-icon>
+                      <fa-icon class="icon" [icon]="faPlus" title="Add To List" (click)="openAddToList(addSubToListModal, sub)"></fa-icon>
+                      <a target="_blank" routerLink="/subs/{{sub.id}}"><fa-icon class="icon" [icon]="faInfoCircle" title="Details"></fa-icon></a>
                     </td>
                   </tr>
                 </tbody>
@@ -116,25 +116,28 @@
         <div class="tab-pane fade" id="v-pills-lists" role="tabpanel" aria-labelledby="v-pills-lists-tab">
           <div class="container">
             <div class="jumbotron">
-            <table class="table table-hover table-bordered">
-                <thead>
+              <h2 class="pb-3">Sub Lists</h2>
+
+              <data-spinner *ngIf="showListSpinner"></data-spinner>
+
+              <table datatable [dtOptions]="dtOptionsLists" [dtTrigger]="dtTriggerLists" class="table table-hover table-bordered">
+                <thead *ngIf="!showListSpinner">
                   <tr>
-                    <th scope="col">List Name</th>
-                    <th scope="col"># Subs</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col"># Subs</th>      
+                    <th scope="col">Actions</th>          
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="table-active">
-                    <td>Dublin HVAC Subs</td>
-                    <td>17</td>
-                  </tr>
-                  <tr class="table-active">
-                    <td>Bdubs Louisville</td>
-                    <td>21</td>
-                  </tr>
-                  <tr class="table-active">
-                    <td>Mansfield Painters</td>
-                    <td>4</td>
+                  <tr class="table-active" *ngFor="let list of subContractorLists">
+                    <td>{{list.name}}</td>
+                    <td>This is a placeholder. But a description will go here.</td>
+                    <td>{{list.subContractors.length}}</td>                     
+                    <td class="actions">
+                      <fa-icon class="icon" [icon]="faInfoCircle" title="Details" (click)="openProfileDeletion(profileDeletion, user.userName)"></fa-icon>
+                      <fa-icon class="icon" [icon]="faTrashAlt" title="Delete" (click)="openProfileDeletion(profileDeletion, user.userName)"></fa-icon>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -145,3 +148,37 @@
       </div>  
     </div>
   </div>
+
+  <ng-template #addSubToListModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Add <span class="add-to-list-sub-name text-success">{{selectedSub.name}}</span> To List</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form #addSubToListForm="ngForm" (ngSubmit)="addSubToList(addSubToListForm); modal.dismiss('Form submitted')">
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="subContractorList">Sub List</label>
+          <ng-select 
+              [multiple]="false"
+              [closeOnSelect]="true"
+              [searchable]="true"
+              [(ngModel)]="listIdToAddSubTo"
+              [ngModelOptions]="{standalone:true}">
+              <ng-option *ngFor="let list of subContractorLists" [value]="list.id" [disabled]="isSubAlreadyInList(list.id)">{{list.name}}</ng-option>
+          </ng-select>
+        </div>
+        <post-spinner *ngIf="showAddToListSpinner"></post-spinner>
+        <ul *ngIf="!showAddToListSpinner" class="list-group p-4">
+          <h4>Belongs To:</h4>
+            <li *ngIf="listsSelectedSubBelongsTo.length < 1" class="list-group-item disabled">None</li>
+            <li *ngFor="let list of listsSelectedSubBelongsTo" class="list-group-item list-group-item-action" target="_blank" routerLink="/subs/lists/{{list.id}}">{{list.name}}</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" type="submit" class="btn btn-success" [disabled]="addSubToListForm.invalid || !(listIdToAddSubTo > 0)">Save</button>
+      </div>
+    </form>
+  </ng-template>
+  

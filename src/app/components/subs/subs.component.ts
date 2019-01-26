@@ -76,7 +76,7 @@ export class SubsComponent implements OnInit {
   {
     this.dataService.getSubById(this.subId)
       .subscribe(data => {
-        this.sub.Id = data['id'];
+        this.sub.id = data['id'];
         this.sub.Name = data['name'];
         this.sub.AddressLine1 = data['addressLine1'];
         this.sub.AddressLine2 = data['addressLine2'];

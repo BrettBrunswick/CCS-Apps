@@ -102,7 +102,7 @@
                     <td>{{sub.city + ", " + sub.state + " " + sub.zipCode}}</td>
                     <td>{{sub.source}}</td>                        
                     <td class="actions">
-                      <fa-icon class="icon" [icon]="faPlus" title="Add To List" (click)="openProfileDeletion(profileDeletion, user.userName)"></fa-icon>
+                      <fa-icon class="icon" [icon]="faPlus" title="Add To List" (click)="openAddToList(addSubToListModal, sub)"></fa-icon>
                       <a target="_blank" routerLink="/subs/{{sub.id}}"><fa-icon class="icon" [icon]="faInfoCircle" title="Details"></fa-icon></a>
                     </td>
                   </tr>
@@ -148,3 +148,37 @@
       </div>  
     </div>
   </div>
+
+  <ng-template #addSubToListModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Add <span class="add-to-list-sub-name text-success">{{selectedSub.name}}</span> To List</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form #addSubToListForm="ngForm" (ngSubmit)="addSubToList(addSubToListForm); modal.dismiss('Form submitted')">
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="subContractorList">Sub List</label>
+          <ng-select 
+              [multiple]="false"
+              [closeOnSelect]="true"
+              [searchable]="true"
+              [(ngModel)]="listIdToAddSubTo"
+              [ngModelOptions]="{standalone:true}">
+              <ng-option *ngFor="let list of subContractorLists" [value]="list.id" [disabled]="isSubAlreadyInList(list.id)">{{list.name}}</ng-option>
+          </ng-select>
+        </div>
+        <post-spinner *ngIf="showAddToListSpinner"></post-spinner>
+        <ul *ngIf="!showAddToListSpinner" class="list-group p-4">
+          <h4>Belongs To:</h4>
+            <li *ngIf="listsSelectedSubBelongsTo.length < 1" class="list-group-item disabled">None</li>
+            <li *ngFor="let list of listsSelectedSubBelongsTo" class="list-group-item list-group-item-action" target="_blank" routerLink="/subs/lists/{{list.id}}">{{list.name}}</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" type="submit" class="btn btn-success" [disabled]="addSubToListForm.invalid || !(listIdToAddSubTo > 0)">Save</button>
+      </div>
+    </form>
+  </ng-template>
+  

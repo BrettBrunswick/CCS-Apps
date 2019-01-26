@@ -30,3 +30,8 @@
 .actions {
     text-align: center;
 }
+
+.add-to-list-sub-name {
+    font-style: italic;
+    font-weight: bold;
+}

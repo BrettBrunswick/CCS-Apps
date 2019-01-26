@@ -118,11 +118,10 @@
             <div class="jumbotron">
               <div class="row pb-4">
                 <h2>Sub Lists</h2>
-
-                <data-spinner *ngIf="showListSpinner"></data-spinner>
-
-                <button type="button" class="create-list-btn btn btn-success" (click)="open(createListModal)">Create List</button>
+                <button type="button" class="create-list-btn btn btn-success" (click)="open(createListModal)" [disabled]="showListSpinner">Create List</button>
               </div>
+
+              <data-spinner *ngIf="showListSpinner"></data-spinner>
 
               <table datatable [dtOptions]="dtOptionsLists" [dtTrigger]="dtTriggerLists" class="table table-hover table-bordered">
                 <thead *ngIf="!showListSpinner">

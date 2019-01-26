@@ -18,6 +18,10 @@
     cursor: pointer;
 }
 
+.icon:disabled {
+    cursor: not-allowed !important;
+}
+
 .btn-block {
     width: 50%;
     margin: 0 auto;
@@ -34,4 +38,10 @@
 .add-to-list-sub-name {
     font-style: italic;
     font-weight: bold;
+}
+
+.create-list-btn {
+    height: 40px;
+    margin-left: auto; 
+    margin-right: 0;
 }

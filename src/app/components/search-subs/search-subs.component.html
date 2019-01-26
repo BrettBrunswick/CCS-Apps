@@ -116,24 +116,30 @@
         <div class="tab-pane fade" id="v-pills-lists" role="tabpanel" aria-labelledby="v-pills-lists-tab">
           <div class="container">
             <div class="jumbotron">
-              <h2 class="pb-3">Sub Lists</h2>
+              <div class="row pb-4">
+                <h2>Sub Lists</h2>
 
-              <data-spinner *ngIf="showListSpinner"></data-spinner>
+                <data-spinner *ngIf="showListSpinner"></data-spinner>
+
+                <button type="button" class="create-list-btn btn btn-success" (click)="open(createListModal)">Create List</button>
+              </div>
 
               <table datatable [dtOptions]="dtOptionsLists" [dtTrigger]="dtTriggerLists" class="table table-hover table-bordered">
                 <thead *ngIf="!showListSpinner">
                   <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Description</th>
-                    <th scope="col"># Subs</th>      
+                    <th scope="col"># Subs</th>     
+                    <th scope="col">Created By</th>       
                     <th scope="col">Actions</th>          
                   </tr>
                 </thead>
                 <tbody>
                   <tr class="table-active" *ngFor="let list of subContractorLists">
                     <td>{{list.name}}</td>
-                    <td>This is a placeholder. But a description will go here.</td>
-                    <td>{{list.subContractors.length}}</td>                     
+                    <td>{{list.description}}</td>
+                    <td>{{list.subContractors.length}}</td>
+                    <td>{{list.createdByUser}}</td>                                        
                     <td class="actions">
                       <fa-icon class="icon" [icon]="faInfoCircle" title="Details" (click)="openProfileDeletion(profileDeletion, user.userName)"></fa-icon>
                       <fa-icon class="icon" [icon]="faTrashAlt" title="Delete" (click)="openProfileDeletion(profileDeletion, user.userName)"></fa-icon>
@@ -181,4 +187,31 @@
       </div>
     </form>
   </ng-template>
+
+  <ng-template #createListModal let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Create List</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> 
+      <form #createListForm="ngForm" (ngSubmit)="createNewList(createListForm); modal.close('Save click')">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="name" class="form-control" id="name" placeholder="Enter List Name" name="name" [(ngModel)]="newList.Name" #name="ngModel" minlength="3" maxlength="25" required>
+            <small *ngIf="name.dirty && name.invalid" class="form-text text-warning">Must be between 3 and 25 characters!</small>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="description" class="form-control" id="description" placeholder="Enter List Description" name="description" [(ngModel)]="newList.Description" #description="ngModel" minlength="5" maxlength="100" required>
+            <small *ngIf="description.dirty && description.invalid" class="form-text text-warning">Must be between 5 and 100 characters!</small>
+          </div> 
+        </div>
+        <div class="modal-footer">
+          <button type="button" type="submit" class="btn btn-success create-user-btn" [disabled]=createListForm.invalid>Create List</button>
+        </div>
+      </form>
+    </ng-template>
+    
   

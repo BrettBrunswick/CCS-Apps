@@ -228,6 +228,22 @@ export class DataService {
     );
   }
 
+  createSubContractorList(newList: any): Observable<string[]>
+  {
+    const body = 
+    {
+      Name: newList.name,
+      Description: newList.description,
+      CreatedByUsername: localStorage.getItem('username'),
+      SubContractorIds: []
+    };
+    return this.http.post<string[]>(this.rootUrl + '/API/SubContractorLists/Create', body, {headers: this.getHeaders()})
+      .pipe(tap((data: any) => {
+        console.log(data);
+        return true;
+      }));
+  }
+
   addSubToList(listId: number, subId: number): Observable<string[]>
   {
     const body = 

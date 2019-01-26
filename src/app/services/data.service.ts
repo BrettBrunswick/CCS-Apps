@@ -219,6 +219,29 @@ export class DataService {
     );
   }
 
+  getAllSubListsBySub(subId: number): Observable<SubContractorList[]>
+  {
+    return this.http.get<SubContractorList[]>(this.rootUrl + '/API/SubContractorLists/GetBySub/' + subId, {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched all sub lists for sub')),
+        catchError(this.handleError('getAllSubListsBySub', []))
+    );
+  }
+
+  addSubToList(listId: number, subId: number): Observable<string[]>
+  {
+    const body = 
+    {
+      ListId: listId,
+      SubId: subId
+    };
+    return this.http.post<string[]>(this.rootUrl + '/API/SubContractorLists/AddSub', body, {headers: this.getHeaders()})
+      .pipe(tap((data: any) => {
+        console.log(data);
+        return true;
+      }));
+  }
+
   //#endregion
 
 

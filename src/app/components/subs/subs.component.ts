@@ -29,9 +29,9 @@ export class SubsComponent implements OnInit {
   trades: Trade[];
   states: string[];
 
-  subContractorLists: SubContractorList[];
-  listToAddSubTo: SubContractorList;
-
+  listsSubBelongsTo: SubContractorList[];
+  allSubContractorLists: SubContractorList[];
+  listIdToAddSubTo: number;
 
   showSpinner = true;
   showPostSpinner = true;
@@ -62,8 +62,12 @@ export class SubsComponent implements OnInit {
 
     this.dataService.getAllSubLists()
         .subscribe(data => {
-          this.showSpinner = false;
-          this.subContractorLists = data
+          this.allSubContractorLists = data
+        });
+
+    this.dataService.getAllSubListsBySub(this.subId)
+        .subscribe(data => {
+          this.listsSubBelongsTo = data
         });
   }
 
@@ -107,7 +111,7 @@ export class SubsComponent implements OnInit {
 
   openSmall(content) 
   {
-    this.modalService.open(content, {size: 'sm'});
+    this.modalService.open(content);
   }
 
   editSubContractor(form: NgForm)
@@ -117,7 +121,32 @@ export class SubsComponent implements OnInit {
       if (success) 
       {
         this.toastr.success('Account successfully updated.', 'Success');
-        this.getSubContractor();
+        this.initializeData();
+        this.showSpinner = false;
+      }
+    }, (err : HttpErrorResponse) => 
+    {
+      this.showSpinner = false;
+      if (err.status == 400 || err.status == 500)
+      {
+        this.toastr.error('Account update failed. If this problem persists please contact IT.', 'Error');
+      } 
+      else 
+      {
+        this.toastr.error('There was an error connecting to the database. Please Contact IT.', 'Error');
+      }
+    });
+  }
+
+  addSubToList(form: NgForm)
+  {
+    form.reset();
+    this.showSpinner = true;
+    this.dataService.addSubToList(this.listIdToAddSubTo, this.subId).subscribe(success => {
+      if (success) 
+      {
+        this.toastr.success('Sub added to list!', 'Success');
+        this.initializeData();
         this.showSpinner = false;
       }
     }, (err : HttpErrorResponse) => 
@@ -132,14 +161,13 @@ export class SubsComponent implements OnInit {
         this.toastr.error('There was an error connecting to the database. Please Contact IT.', 'Error');
       }
     });
+    this.listIdToAddSubTo = null;
   }
 
-  addSubToList(form: NgForm)
+  isSubAlreadyInList(listId: any)
   {
-    this.showSpinner = true;
-    console.log('sub id: ' + this.subId);
-    console.log(form.value.subContractorList.name);
-    this.showSpinner = false;
+    var ids = this.listsSubBelongsTo.map(id => id.id);
+    return ids.includes(listId);
   }
 
   isLocationDefined(): boolean

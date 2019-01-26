@@ -187,21 +187,23 @@
     <div class="modal-body">
       <div class="form-group">
         <label for="subContractorList">Sub List</label>
-        <ng-select
-            [required]="true"
-            [items]="subContractorLists"
+        <ng-select 
             [multiple]="false"
             [closeOnSelect]="true"
             [searchable]="true"
-            bindLabel="name"
-            name="subContractorList"
-            #subContractorList="ngModel"
-            [ngModel]="listToAddSubTo">
+            [(ngModel)]="listIdToAddSubTo"
+            [ngModelOptions]="{standalone:true}">
+            <ng-option *ngFor="let list of allSubContractorLists" [value]="list.id" [disabled]="isSubAlreadyInList(list.id)">{{list.name}}</ng-option>
         </ng-select>
       </div>
     </div>
+    <ul class="list-group p-4">
+      <h4>Belongs To:</h4>
+        <li *ngIf="listsSubBelongsTo.length < 1" class="list-group-item disabled">None</li>
+        <li *ngFor="let list of listsSubBelongsTo" class="list-group-item list-group-item-action" target="_blank" routerLink="/subs/lists/{{list.id}}">{{list.name}}</li>
+    </ul>
     <div class="modal-footer">
-      <button type="button" type="submit" class="btn btn-success" [disabled]="addSubToListForm.invalid ">Save</button>
+      <button type="button" type="submit" class="btn btn-success" [disabled]="addSubToListForm.invalid || !(listIdToAddSubTo > 0)">Save</button>
     </div>
   </form>
 </ng-template>

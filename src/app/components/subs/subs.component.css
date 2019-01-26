@@ -66,3 +66,7 @@ agm-map {
   display: inline-block;
   text-align: center;
 }
+
+.list-group-item-action {
+  cursor: pointer;
+}

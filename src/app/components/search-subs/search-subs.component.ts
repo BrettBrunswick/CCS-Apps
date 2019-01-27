@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DataService } from 'src/app/services/data.service';
+import { UserService } from '../../services/user.service';
 import { DataTableDirective } from 'angular-datatables';
 import { SubContractor } from 'src/app/models/SubContractor';
 import { SubContractorList } from 'src/app/models/SubContractorList';
@@ -49,9 +50,9 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
   faInfoCircle = faInfoCircle;
   faTrashAlt = faTrashAlt;
 
-  constructor(private dataService: DataService, private modalService: NgbModal, private toastr: ToastrService) { }
+  constructor(private dataService: DataService, public userService: UserService, private modalService: NgbModal, private toastr: ToastrService) { }
 
-  subContractorSearchRequest= new SubContractorSearchRequest();
+  subContractorSearchRequest = new SubContractorSearchRequest();
 
   ngOnInit() 
   {

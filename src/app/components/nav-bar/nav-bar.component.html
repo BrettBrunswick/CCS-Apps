@@ -20,7 +20,7 @@
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle text-lowercase" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <fa-icon class="icon" [icon]="faUser"></fa-icon>
-          {{this.userService.getCurrentUsername()}}
+          {{userService.getCurrentUsername()}}
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" routerLink="/account">Account</a>

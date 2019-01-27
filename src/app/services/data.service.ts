@@ -258,6 +258,15 @@ export class DataService {
       }));
   }
 
+  deleteSubList(listId: number): Observable<void[]>
+  {
+    return this.http.delete<void[]>(this.rootUrl + '/API/SubContractorLists/' + listId, {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('deleted list')),
+        catchError(this.handleError('deleteSubList', []))
+    );
+  }
+
   //#endregion
 
 

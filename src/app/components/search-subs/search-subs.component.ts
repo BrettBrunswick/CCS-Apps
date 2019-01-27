@@ -31,6 +31,7 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
   listIdToAddSubTo: number;
 
   newList: SubContractorList = new SubContractorList();
+  listToDelete: SubContractorList;
 
 
   dtOptions: DataTables.Settings = {};
@@ -131,12 +132,6 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
     this.dtElements.last.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
     });
-    this.dataService.getAllSubLists()
-        .subscribe(data => {
-          this.showListSpinner = false;
-          this.subContractorLists = data
-          this.dtTriggerLists.next()
-    });
   }
 
   resetSubContractorSearchForm(form?: NgForm) 
@@ -187,6 +182,33 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
     this.modalService.open(content);
   }
 
+  openListDeletion(content, list: SubContractorList)
+  {
+    this.listToDelete = list;
+    this.modalService.open(content);
+  }
+
+  deleteList()
+  {
+    this.rerenderListTable();
+    this.dataService.deleteSubList(this.listToDelete.id)
+      .subscribe( () =>
+        this.successfullyDeletedList(),
+        (err) => this.toastr.error('Could not delete List. If this problem persists please contact IT.', 'Error')
+      );
+  }
+
+  successfullyDeletedList()
+  {
+    this.toastr.success('List deleted!', 'Success')
+    this.dataService.getAllSubLists()
+      .subscribe(data => {
+        this.showListSpinner = false;
+        this.subContractorLists = data
+        this.dtTriggerLists.next()
+      });
+  }
+
   isSubAlreadyInList(listId: any)
   {
     var ids = this.listsSelectedSubBelongsTo.map(ids => ids.id);
@@ -201,6 +223,12 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
       {
         this.rerenderListTable();
         this.toastr.success('Sub added to list!', 'Success');
+        this.dataService.getAllSubLists()
+          .subscribe(data => {
+            this.showListSpinner = false;
+            this.subContractorLists = data
+            this.dtTriggerLists.next()
+          });
       }
     }, (err : HttpErrorResponse) => 
     {
@@ -218,16 +246,26 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
 
   createNewList(form: NgForm) 
   {
+    this.rerenderListTable();
     this.dataService.createSubContractorList(form.value).subscribe(success => {
       if (success) 
       {
-        this.rerenderListTable();
+        this.dataService.getAllSubLists()
+          .subscribe(data => {
+            this.showListSpinner = false;
+            this.subContractorLists = data
+            this.dtTriggerLists.next()
+          });
         this.toastr.success('List successfully created.', 'Success');
-        form.reset();
       }
     }, (err : HttpErrorResponse) => 
     {
-      form.reset();
+      this.dataService.getAllSubLists()
+          .subscribe(data => {
+            this.showListSpinner = false;
+            this.subContractorLists = data
+            this.dtTriggerLists.next()
+          });
       if (err.status == 400)
       {
         this.toastr.error('List creation failed. If this problem persists please contact IT.', 'Error');

@@ -8,6 +8,7 @@ import { AccountComponent } from '../components/account/account.component';
 import { SearchSubsComponent } from '../components/search-subs/search-subs.component';
 import { SubsComponent } from '../components/subs/subs.component';
 import { DashboardComponent } from '../components/dashboard/dashboard.component';
+import { SubListComponent } from '../components/sub-list/sub-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
   { path: 'subs', component: SearchSubsComponent, canActivate: [AuthGuard] },
   { path: 'subs/:id', component: SubsComponent, canActivate: [AuthGuard] },
+  { path: 'lists', component: SubListComponent, canActivate: [AuthGuard] },
   { path: '**', component: NotFoundComponent, canActivate: [AuthGuard] }
 ];
 

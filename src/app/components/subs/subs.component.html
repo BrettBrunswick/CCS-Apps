@@ -8,7 +8,7 @@
 
         <div class="location-img">
           <login-spinner *ngIf="showLocationSpinner" class="location-spinner"></login-spinner>
-          <agm-map #agmMap *ngIf="isLocationDefined() && !showLocationSpinner" [latitude]= "subLocation.Latitude" [longitude]="subLocation.Longitute" [zoom]="10">
+          <agm-map #agmMap *ngIf="isLocationDefined() && !showLocationSpinner" [latitude]= "subLocation.Latitude" [longitude]="subLocation.Longitute">
             <agm-marker [latitude]= "subLocation.Latitude" [longitude]="subLocation.Longitute"></agm-marker>
           </agm-map>
           <img *ngIf="!isLocationDefined() && !showLocationSpinner" src="../../../assets/no-location.png" title="No Location Found!" height="325" width="325">
@@ -178,7 +178,7 @@
 
 <ng-template #addSubToListModal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Add Sub To List</h4>
+    <h4 class="modal-title" id="modal-basic-title">Add <span class="add-to-list-sub-name text-success">{{sub.Name}}</span> To List</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>

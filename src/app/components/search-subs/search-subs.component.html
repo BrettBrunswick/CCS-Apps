@@ -30,7 +30,7 @@
                         [items]="trades"
                         [multiple]="true"
                         [closeOnSelect]="false"
-                        [searchable]="false"
+                        [searchable]="true"
                         bindLabel="name"
                         bindValue="id"
                         placeholder="Select Trades"
@@ -53,7 +53,7 @@
                         [items]="states"
                         [multiple]="false"
                         [closeOnSelect]="true"
-                        [searchable]="false"
+                        [searchable]="true"
                         placeholder="Select State"
                         name="State" 
                         [(ngModel)]="subContractorSearchRequest.State"
@@ -116,7 +116,10 @@
         <div class="tab-pane fade" id="v-pills-lists" role="tabpanel" aria-labelledby="v-pills-lists-tab">
           <div class="container">
             <div class="jumbotron">
-              <h2 class="pb-3">Sub Lists</h2>
+              <div class="row pb-4">
+                <h2>Sub Lists</h2>
+                <button type="button" class="create-list-btn btn btn-success" (click)="open(createListModal)" [disabled]="showListSpinner">Create List</button>
+              </div>
 
               <data-spinner *ngIf="showListSpinner"></data-spinner>
 
@@ -125,18 +128,20 @@
                   <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Description</th>
-                    <th scope="col"># Subs</th>      
+                    <th scope="col"># Subs</th>     
+                    <th scope="col">Created By</th>       
                     <th scope="col">Actions</th>          
                   </tr>
                 </thead>
                 <tbody>
                   <tr class="table-active" *ngFor="let list of subContractorLists">
                     <td>{{list.name}}</td>
-                    <td>This is a placeholder. But a description will go here.</td>
-                    <td>{{list.subContractors.length}}</td>                     
+                    <td>{{list.description}}</td>
+                    <td>{{list.subContractors.length}}</td>
+                    <td>{{list.createdByUser}}</td>                                        
                     <td class="actions">
-                      <fa-icon class="icon" [icon]="faInfoCircle" title="Details" (click)="openProfileDeletion(profileDeletion, user.userName)"></fa-icon>
-                      <fa-icon class="icon" [icon]="faTrashAlt" title="Delete" (click)="openProfileDeletion(profileDeletion, user.userName)"></fa-icon>
+                      <a target="_blank" routerLink="/lists/{{list.id}}"><fa-icon class="icon" [icon]="faInfoCircle" title="Details"></fa-icon></a>
+                      <fa-icon *ngIf="list.createdByUser == userService.getCurrentUsername()" class="icon" [icon]="faTrashAlt" title="Delete" (click)="openListDeletion(deleteListModal, list)"></fa-icon>
                     </td>
                   </tr>
                 </tbody>
@@ -181,4 +186,53 @@
       </div>
     </form>
   </ng-template>
+
+  <ng-template #createListModal let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Create List</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> 
+      <form #createListForm="ngForm" (ngSubmit)="createNewList(createListForm); modal.close('Save click')">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="name" class="form-control" id="name" placeholder="Enter List Name" name="name" [(ngModel)]="newList.Name" #name="ngModel" minlength="3" maxlength="25" required>
+            <small *ngIf="name.dirty && name.invalid" class="form-text text-warning">Must be between 3 and 25 characters!</small>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="description" class="form-control" id="description" placeholder="Enter List Description" name="description" [(ngModel)]="newList.Description" #description="ngModel" minlength="5" maxlength="100" required>
+            <small *ngIf="description.dirty && description.invalid" class="form-text text-warning">Must be between 5 and 100 characters!</small>
+          </div> 
+        </div>
+        <div class="modal-footer">
+          <button type="button" type="submit" class="btn btn-success create-user-btn" [disabled]=createListForm.invalid>Create List</button>
+        </div>
+      </form>
+    </ng-template>
+
+
+    <ng-template #deleteListModal let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-title">Delete List</h4>
+        <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <p><strong>Are you sure you want to delete <span class="text-success">{{listToDelete.name}} </span>?</strong></p>
+        <p>All subs connected to this list will not be permanently deleted. However, this list will be deleted.
+          <span class="text-danger">This operation can not be undone.</span>
+        </p>
+      </div>
+    
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="modal.close('Ok click'); deleteList()">Delete List</button>
+      </div> 
+  </ng-template>
+    
   

@@ -30,6 +30,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { AuthGuard } from './routing/auth.guard';
 import { UserService } from './services/user.service';
 import { DataService } from './services/data.service';
+import { SubListComponent } from './components/sub-list/sub-list.component';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { DataService } from './services/data.service';
     PostSpinnerComponent,
     SubsComponent,
     DashboardComponent,
-    FooterComponent
+    FooterComponent,
+    SubListComponent
   ],
   imports: [
     BrowserModule,

@@ -70,3 +70,8 @@ agm-map {
 .list-group-item-action {
   cursor: pointer;
 }
+
+.add-to-list-sub-name {
+  font-style: italic;
+  font-weight: bold;
+}

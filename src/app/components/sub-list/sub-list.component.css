@@ -1,0 +1,27 @@
+.container {
+    margin-top: 100px;
+}
+
+.created-by-user {
+    font-style: italic
+}
+
+.actions {
+    text-align: center;
+}
+
+.icon {
+    color: #00bc8c;
+    font-size: 20px;
+    padding-right: 5px;
+    padding-left: 2px;
+}
+
+.icon:hover {
+    color: #b42a2a;
+    cursor: pointer;
+}
+
+.delete-spinner {
+    text-align: -webkit-center;
+}

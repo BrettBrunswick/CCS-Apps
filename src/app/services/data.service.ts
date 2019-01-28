@@ -219,6 +219,15 @@ export class DataService {
     );
   }
 
+  getSubListById(id: number): Observable<SubContractorList[]>
+  {
+    return this.http.get<SubContractorList[]>(this.rootUrl + '/API/SubContractorLists/' + id, {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched sub list')),
+        catchError(this.handleError('getSubListById', []))
+    );
+  }
+
   getAllSubListsBySub(subId: number): Observable<SubContractorList[]>
   {
     return this.http.get<SubContractorList[]>(this.rootUrl + '/API/SubContractorLists/GetBySub/' + subId, {headers: this.getHeaders()})
@@ -226,6 +235,22 @@ export class DataService {
         tap(_ => console.log('fetched all sub lists for sub')),
         catchError(this.handleError('getAllSubListsBySub', []))
     );
+  }
+
+  createSubContractorList(newList: any): Observable<string[]>
+  {
+    const body = 
+    {
+      Name: newList.name,
+      Description: newList.description,
+      CreatedByUsername: localStorage.getItem('username'),
+      SubContractorIds: []
+    };
+    return this.http.post<string[]>(this.rootUrl + '/API/SubContractorLists/Create', body, {headers: this.getHeaders()})
+      .pipe(tap((data: any) => {
+        console.log(data);
+        return true;
+      }));
   }
 
   addSubToList(listId: number, subId: number): Observable<string[]>
@@ -240,6 +265,29 @@ export class DataService {
         console.log(data);
         return true;
       }));
+  }
+
+  deleteSubFromList(listId: number, subId: number): Observable<string[]>
+  {
+    const body = 
+    {
+      ListId: listId,
+      SubId: subId
+    };
+    return this.http.post<string[]>(this.rootUrl + '/API/SubContractorLists/DeleteSub', body, {headers: this.getHeaders()})
+      .pipe(tap((data: any) => {
+        console.log(data);
+        return true;
+      }));
+  }
+
+  deleteSubList(listId: number): Observable<void[]>
+  {
+    return this.http.delete<void[]>(this.rootUrl + '/API/SubContractorLists/' + listId, {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('deleted list')),
+        catchError(this.handleError('deleteSubList', []))
+    );
   }
 
   //#endregion

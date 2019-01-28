@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChildren, QueryList } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DataService } from 'src/app/services/data.service';
+import { UserService } from '../../services/user.service';
 import { DataTableDirective } from 'angular-datatables';
 import { SubContractor } from 'src/app/models/SubContractor';
 import { SubContractorList } from 'src/app/models/SubContractorList';
@@ -18,7 +19,8 @@ import { faPlus, faInfoCircle, faTrashAlt } from '@fortawesome/free-solid-svg-ic
   styleUrls: ['./search-subs.component.css']
 })
 export class SearchSubsComponent implements OnInit, OnDestroy {
-  @ViewChild(DataTableDirective) datatableElement: DataTableDirective;
+  @ViewChildren(DataTableDirective)
+  dtElements: QueryList<DataTableDirective>;
 
   subContractors: SubContractor[];
   subContractorLists: SubContractorList[];
@@ -28,6 +30,10 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
   selectedSub: SubContractor;
   listsSelectedSubBelongsTo: SubContractorList[] = [];
   listIdToAddSubTo: number;
+
+  newList: SubContractorList = new SubContractorList();
+  listToDelete: SubContractorList;
+
 
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<SubContractor[]> = new Subject();
@@ -44,25 +50,36 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
   faInfoCircle = faInfoCircle;
   faTrashAlt = faTrashAlt;
 
-  constructor(private dataService: DataService, private modalService: NgbModal, private toastr: ToastrService) { }
+  constructor(private dataService: DataService, public userService: UserService, private modalService: NgbModal, private toastr: ToastrService) { }
 
-  subContractorSearchRequest= new SubContractorSearchRequest();
+  subContractorSearchRequest = new SubContractorSearchRequest();
 
   ngOnInit() 
   {
-    this.initializeData();    
-    this.dtOptions = {
-      columnDefs: [{
-        targets:[4],
-        orderable: false
-      }]
-    };
+    this.initializeData();
+    this.initializeTables(); 
   }
 
   ngOnDestroy(): void 
   {
     this.dtTrigger.unsubscribe();
     this.dtTriggerLists.unsubscribe();
+  }
+
+  initializeTables(): void
+  {
+    this.dtOptions = {
+      columnDefs: [{
+        targets:[4],
+        orderable: false
+      }]
+    };
+    this.dtOptionsLists = {
+      columnDefs: [{
+        targets:[4],
+        orderable: false
+      }]
+    };
   }
 
   initializeData(): void
@@ -93,6 +110,7 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
 
         this.dataService.getAllSubLists()
         .subscribe(data => {
+          console.log(data)
           this.showListSpinner = false;
           this.subContractorLists = data
           this.dtTriggerLists.next()
@@ -103,7 +121,7 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
   {
     this.showSubSpinner = true;
     this.subContractors.splice(0, this.subContractors.length);
-    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+    this.dtElements.first.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
     });
   }
@@ -112,14 +130,8 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
   {
     this.showListSpinner = true;
     this.subContractorLists.splice(0, this.subContractorLists.length);
-    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+    this.dtElements.last.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
-    });
-    this.dataService.getAllSubLists()
-        .subscribe(data => {
-          this.showListSpinner = false;
-          this.subContractorLists = data
-          this.dtTriggerLists.next()
     });
   }
 
@@ -166,6 +178,38 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
     this.modalService.open(content);
   }
 
+  open(content)
+  {
+    this.modalService.open(content);
+  }
+
+  openListDeletion(content, list: SubContractorList)
+  {
+    this.listToDelete = list;
+    this.modalService.open(content);
+  }
+
+  deleteList()
+  {
+    this.rerenderListTable();
+    this.dataService.deleteSubList(this.listToDelete.id)
+      .subscribe( () =>
+        this.successfullyDeletedList(),
+        (err) => this.toastr.error('Could not delete List. If this problem persists please contact IT.', 'Error')
+      );
+  }
+
+  successfullyDeletedList()
+  {
+    this.toastr.success('List deleted!', 'Success')
+    this.dataService.getAllSubLists()
+      .subscribe(data => {
+        this.showListSpinner = false;
+        this.subContractorLists = data
+        this.dtTriggerLists.next()
+      });
+  }
+
   isSubAlreadyInList(listId: any)
   {
     var ids = this.listsSelectedSubBelongsTo.map(ids => ids.id);
@@ -178,13 +222,20 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
     this.dataService.addSubToList(this.listIdToAddSubTo, this.selectedSub.id).subscribe(success => {
       if (success) 
       {
+        this.rerenderListTable();
         this.toastr.success('Sub added to list!', 'Success');
+        this.dataService.getAllSubLists()
+          .subscribe(data => {
+            this.showListSpinner = false;
+            this.subContractorLists = data
+            this.dtTriggerLists.next()
+          });
       }
     }, (err : HttpErrorResponse) => 
     {
       if (err.status == 400)
       {
-        this.toastr.error('Account update failed. If this problem persists please contact IT.', 'Error');
+        this.toastr.error('Could not add Sub to List. If this problem persists please contact IT.', 'Error');
       } 
       else 
       {
@@ -192,6 +243,39 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
       }
     });
     this.listIdToAddSubTo = null;
+  }
+
+  createNewList(form: NgForm) 
+  {
+    this.rerenderListTable();
+    this.dataService.createSubContractorList(form.value).subscribe(success => {
+      if (success) 
+      {
+        this.dataService.getAllSubLists()
+          .subscribe(data => {
+            this.showListSpinner = false;
+            this.subContractorLists = data
+            this.dtTriggerLists.next()
+          });
+        this.toastr.success('List successfully created.', 'Success');
+      }
+    }, (err : HttpErrorResponse) => 
+    {
+      this.dataService.getAllSubLists()
+          .subscribe(data => {
+            this.showListSpinner = false;
+            this.subContractorLists = data
+            this.dtTriggerLists.next()
+          });
+      if (err.status == 400)
+      {
+        this.toastr.error('List creation failed. If this problem persists please contact IT.', 'Error');
+      } 
+      else 
+      {
+        this.toastr.error('There was an error connecting to the database. Please Contact IT.', 'Error');
+      }
+    });
   }
 
   isRadiusRequired(): boolean

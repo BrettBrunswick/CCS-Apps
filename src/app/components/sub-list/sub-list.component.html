@@ -1,13 +1,14 @@
 <div class="container">
   <div class="jumbotron">
     <data-spinner *ngIf="showSpinner"></data-spinner>
-    <div *ngIf="!showSubSpinner">
+    <div>
       <h3 class="display-4">{{subList.Name}}</h3>
       <p class="lead">{{subList.description}}</p>
-      <div class="lead">Created by: <span class="text-success created-by-user">{{subList.createdByUser}}</span></div>
+      <div *ngIf="!showSpinner" class="lead">Created by: <span class="text-success created-by-user">{{subList.createdByUser}}</span></div>
+      <div class="delete-spinner"><post-spinner *ngIf="deleteSpinner"></post-spinner></div>
       <div class="mt-5">
           <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-bordered">
-            <thead *ngIf="!showSubSpinner">
+            <thead *ngIf="!showSpinner">
               <tr>
                 <th scope="col">Company</th>
                 <th scope="col">Trade</th>
@@ -38,7 +39,7 @@
                 <td>{{sub.source}}</td>                        
                 <td class="actions">
                   <a target="_blank" routerLink="/subs/{{sub.id}}"><fa-icon class="icon" [icon]="faInfoCircle" title="Details"></fa-icon></a>
-                  <fa-icon class="icon" [icon]="faTrash" title="Add To List" (click)="openAddToList(addSubToListModal, sub)"></fa-icon>
+                  <fa-icon class="icon" [icon]="faTrash" title="Add To List" (click)="openModal(subFromListDeletion, sub)"></fa-icon>
                 </td>
               </tr>
             </tbody>
@@ -47,3 +48,22 @@
     </div>
   </div>
 </div>
+
+<ng-template #subFromListDeletion let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-title">Remove <span class="text-success font-italic">{{subToRemove.name}}</span> from <span class="text-success font-italic">{{subList.Name}}</span></h4>
+      <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <p><strong>Are you sure you want to remove {{subToRemove.name}} from {{subList.Name}} ?</strong></p>
+      <p>This sub will remain in the database but will be removed from this particular list.</p>
+    </div>
+  
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
+      <button type="button" class="btn btn-danger" (click)="modal.close('Ok click'); deleteSubFromList()">Remove Sub</button>
+    </div> 
+</ng-template>

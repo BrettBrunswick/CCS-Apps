@@ -21,3 +21,7 @@
     color: #b42a2a;
     cursor: pointer;
 }
+
+.delete-spinner {
+    text-align: -webkit-center;
+}

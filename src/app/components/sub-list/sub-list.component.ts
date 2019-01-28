@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -17,15 +17,19 @@ import { faTrashAlt, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./sub-list.component.css']
 })
 export class SubListComponent implements OnInit {
+  @ViewChild(DataTableDirective) datatableElement: DataTableDirective;
 
   subListId = +this.route.snapshot.paramMap.get('id');
   subList: SubContractorList = new SubContractorList();
+
+  subToRemove: SubContractor;
 
   dtOptions: any = {};
   dtTrigger: Subject<SubContractor[]> = new Subject();
   dtElement: DataTableDirective;
 
   showSpinner: boolean = true;
+  deleteSpinner: boolean = false;
   faTrash = faTrashAlt;
   faInfoCircle = faInfoCircle;
 
@@ -44,7 +48,6 @@ export class SubListComponent implements OnInit {
       buttons: [
         {
           extend: 'csv',
-          filename: 'test',
           className: 'btn-success',
           exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8] }
         },
@@ -69,6 +72,25 @@ export class SubListComponent implements OnInit {
     this.dtTrigger.unsubscribe();
   }
 
+  rerenderTable(): void 
+  {
+    this.deleteSpinner = true;
+    this.subList = new SubContractorList();
+    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.destroy();
+    });
+    this.dataService.getSubListById(this.subListId)
+      .subscribe(data => {
+        this.subList.id = data['id'];
+        this.subList.Name = data['name'];
+        this.subList.description = data['description'];
+        this.subList.createdByUser = data['createdByUser']
+        this.subList.SubContractors = data['subContractors'];
+        this.deleteSpinner = false;
+        this.dtTrigger.next()      
+      });
+  }
+
   getSubContractorList()
   {
     console.log(this.subListId);
@@ -84,6 +106,36 @@ export class SubListComponent implements OnInit {
         this.showSpinner = false;
         this.dtTrigger.next()      
       });
+  }
+
+  openModal(content, sub) 
+  {
+    this.subToRemove = sub;
+    this.modalService.open(content)
+  }
+
+  deleteSubFromList()
+  {
+    this.deleteSpinner = true;
+    this.dataService.deleteSubFromList(this.subList.id, this.subToRemove.id).subscribe(success => {
+      if (success) 
+      {
+        this.toastr.success('Sub successfully removed from list.', 'Success');
+        this.showSpinner = false;
+        this.rerenderTable();
+      }
+    }, (err : HttpErrorResponse) => 
+    {
+      this.deleteSpinner = false;
+      if (err.status == 400)
+      {
+        this.toastr.error('Sub deletion failed. If this problem persists please contact IT.', 'Error');
+      } 
+      else 
+      {
+        this.toastr.error('Sub was an error connecting to the database. Please Contact IT.', 'Error');
+      }
+    });
   }
 
 }

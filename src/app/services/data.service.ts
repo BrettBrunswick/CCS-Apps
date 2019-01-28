@@ -267,6 +267,20 @@ export class DataService {
       }));
   }
 
+  deleteSubFromList(listId: number, subId: number): Observable<string[]>
+  {
+    const body = 
+    {
+      ListId: listId,
+      SubId: subId
+    };
+    return this.http.post<string[]>(this.rootUrl + '/API/SubContractorLists/DeleteSub', body, {headers: this.getHeaders()})
+      .pipe(tap((data: any) => {
+        console.log(data);
+        return true;
+      }));
+  }
+
   deleteSubList(listId: number): Observable<void[]>
   {
     return this.http.delete<void[]>(this.rootUrl + '/API/SubContractorLists/' + listId, {headers: this.getHeaders()})

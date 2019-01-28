@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
   { path: 'subs', component: SearchSubsComponent, canActivate: [AuthGuard] },
   { path: 'subs/:id', component: SubsComponent, canActivate: [AuthGuard] },
-  { path: 'lists', component: SubListComponent, canActivate: [AuthGuard] },
+  { path: 'lists/:id', component: SubListComponent, canActivate: [AuthGuard] },
   { path: '**', component: NotFoundComponent, canActivate: [AuthGuard] }
 ];
 

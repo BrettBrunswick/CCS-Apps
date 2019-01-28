@@ -219,6 +219,15 @@ export class DataService {
     );
   }
 
+  getSubListById(id: number): Observable<SubContractorList[]>
+  {
+    return this.http.get<SubContractorList[]>(this.rootUrl + '/API/SubContractorLists/' + id, {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched sub list')),
+        catchError(this.handleError('getSubListById', []))
+    );
+  }
+
   getAllSubListsBySub(subId: number): Observable<SubContractorList[]>
   {
     return this.http.get<SubContractorList[]>(this.rootUrl + '/API/SubContractorLists/GetBySub/' + subId, {headers: this.getHeaders()})

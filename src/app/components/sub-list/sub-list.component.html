@@ -1,8 +1,36 @@
 <div class="container">
   <div class="jumbotron">
-    <h1 class="display-4">List Name</h1>
-    <p class="lead">
-        really long description really long description really long description really long description real
+    <data-spinner *ngIf="showSpinner"></data-spinner>
+    <div *ngIf="!showSubSpinner">
+      <h1 class="display-4">{{subList.Name}}</h1>
+      <p class="lead">
+          {{subList.description}}
       </p>
+      <div *ngIf="!showSubSpinner" class="table-wrapper">
+          <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Company</th>
+                <th scope="col">Trade</th>
+                <th scope="col">Location</th>
+                <th scope="col">Source</th>
+                <th scope="col">Actions</th>                    
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="table-active" *ngFor="let sub of subList.SubContractors">
+                <td>{{sub.name}}</td>
+                <td>{{sub.trade.name}}</td>
+                <td>{{sub.city + ", " + sub.state + " " + sub.zipCode}}</td>
+                <td>{{sub.source}}</td>                        
+                <td class="actions">
+                  <a target="_blank" routerLink="/subs/{{sub.id}}"><fa-icon class="icon" [icon]="faInfoCircle" title="Details"></fa-icon></a>
+                  <fa-icon class="icon" [icon]="faTrash" title="Add To List" (click)="openAddToList(addSubToListModal, sub)"></fa-icon>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div> 
+    </div>
   </div>
 </div>

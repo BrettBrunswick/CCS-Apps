@@ -21,7 +21,7 @@ export class SubListComponent implements OnInit {
   subListId = +this.route.snapshot.paramMap.get('id');
   subList: SubContractorList = new SubContractorList();
 
-  dtOptions: DataTables.Settings = {};
+  dtOptions: any = {};
   dtTrigger: Subject<SubContractor[]> = new Subject();
   dtElement: DataTableDirective;
 
@@ -36,11 +36,32 @@ export class SubListComponent implements OnInit {
   {
     this.getSubContractorList();
     this.dtOptions = {
-      columnDefs: [{
-        targets:[4],
-        orderable: false
-      }]
+      columnDefs: [
+        { targets:[4], orderable: false },
+        { targets:[2, 3, 4, 5, 6, 7, 8], visible: false },
+      ],
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'csv',
+          filename: 'test',
+          className: 'btn-success',
+          exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8] }
+        },
+        {
+          extend: 'excel',
+          filename: this.subList.Name,
+          className: 'btn-success',
+          title: this.subList.Name,
+          exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8] }
+        },
+        {
+          text: 'To Procore',
+          className: 'btn-warning disabled'        
+        }
+      ]
     };
+
   }
 
   ngOnDestroy(): void 

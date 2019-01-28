@@ -2,16 +2,22 @@
   <div class="jumbotron">
     <data-spinner *ngIf="showSpinner"></data-spinner>
     <div *ngIf="!showSubSpinner">
-      <h1 class="display-4">{{subList.Name}}</h1>
-      <p class="lead">
-          {{subList.description}}
-      </p>
-      <div *ngIf="!showSubSpinner" class="table-wrapper">
+      <h3 class="display-4">{{subList.Name}}</h3>
+      <p class="lead">{{subList.description}}</p>
+      <div class="lead">Created by: <span class="text-success created-by-user">{{subList.createdByUser}}</span></div>
+      <div class="mt-5">
           <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-bordered">
-            <thead>
+            <thead *ngIf="!showSubSpinner">
               <tr>
                 <th scope="col">Company</th>
                 <th scope="col">Trade</th>
+                <th scope="col">Address</th>
+                <th scope="col">City</th>
+                <th scope="col">State</th>
+                <th scope="col">Zip Code</th>
+                <th scope="col">Contact</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Email</th>
                 <th scope="col">Location</th>
                 <th scope="col">Source</th>
                 <th scope="col">Actions</th>                    
@@ -21,6 +27,13 @@
               <tr class="table-active" *ngFor="let sub of subList.SubContractors">
                 <td>{{sub.name}}</td>
                 <td>{{sub.trade.name}}</td>
+                <td>{{sub.addressLine1}}  {{sub.addressLine2}}</td>
+                <td>{{sub.city}}</td>
+                <td>{{sub.state}}</td>
+                <td>{{sub.zipCode}}</td>
+                <td>Test Contact</td>
+                <td>{{sub.officePhone}}</td>
+                <td>{{sub.officeEmail}}</td>
                 <td>{{sub.city + ", " + sub.state + " " + sub.zipCode}}</td>
                 <td>{{sub.source}}</td>                        
                 <td class="actions">

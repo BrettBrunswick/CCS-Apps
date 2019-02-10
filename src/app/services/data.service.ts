@@ -133,6 +133,15 @@ export class DataService {
     );
   }
 
+  getSimilarSubsById(id: number): Observable<SubContractor[]> 
+  {
+    return this.http.get<SubContractor[]>(this.rootUrl + '/API/SubContractors/Similar/' + id, {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched similar subs for sub: ' + id)),
+        catchError(this.handleError('getSimilarSubsById', []))
+    );
+  }
+
   searchSubs(request?: SubContractorSearchRequest): Observable<SubContractor[]> 
   {
     var companyNameParam = !this.isBlankOrNull(request.CompanyName) ? 'companyName=' + request.CompanyName.trim() : '';

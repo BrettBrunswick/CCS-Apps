@@ -23,6 +23,8 @@ export class SubsComponent implements OnInit {
   subId = +this.route.snapshot.paramMap.get('id');
   sub: SubContractor = new SubContractor();
 
+  similarSubs: SubContractor[];
+
   subLocation: Location = new Location();
   showLocationSpinner = true;
 
@@ -69,6 +71,12 @@ export class SubsComponent implements OnInit {
         .subscribe(data => {
           this.listsSubBelongsTo = data
         });
+
+    this.dataService.getSimilarSubsById(this.subId)
+    .subscribe(data => {
+      this.similarSubs = data
+      console.log(data)
+    });
   }
 
 

@@ -18,11 +18,11 @@
             <p>QUICK LINKS</p>
             <a href="{{sub.WebsiteURL}}" target="_blank">{{sub.WebsiteURL}}</a><br/>
             <p>SIMILAR COMPANIES</p>
-            <a href="">Test</a><br/>
-            <a href="">Test</a><br/>
-            <a href="">Test</a><br/>
-            <a href="">Test</a><br/>
-            <a href="">Test</a><br/>
+            <ng-container *ngFor="let sub of similarSubs">
+              <ng-template #popContent>Trade: {{sub.trade.name}}<br />Location: {{sub.city + ', ' + sub.state + ' ' + sub.zipCode}}</ng-template>
+              <a data-html="true" routerLink="/subs/{{sub.id}}" target="_blank" popoverTitle="{{sub.name}}" [ngbPopover]="popContent" placement="right" container="body" triggers="mouseenter:mouseleave">{{sub.name}}</a>
+              <br/>
+            </ng-container>  
         </div>
 
       </div>
@@ -200,7 +200,7 @@
     <ul class="list-group p-4">
       <h4>Belongs To:</h4>
         <li *ngIf="listsSubBelongsTo.length < 1" class="list-group-item disabled">None</li>
-        <li *ngFor="let list of listsSubBelongsTo" class="list-group-item list-group-item-action" target="_blank" routerLink="/subs/lists/{{list.id}}">{{list.name}}</li>
+        <li *ngFor="let list of listsSubBelongsTo" class="list-group-item list-group-item-action" target="_blank" routerLink="/lists/{{list.id}}" (click)="modal.dismiss('Navigated to List')">{{list.name}}</li>
     </ul>
     <div class="modal-footer">
       <button type="button" type="submit" class="btn btn-success" [disabled]="addSubToListForm.invalid || !(listIdToAddSubTo > 0)">Save</button>

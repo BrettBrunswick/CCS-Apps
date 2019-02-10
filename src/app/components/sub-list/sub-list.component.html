@@ -38,8 +38,8 @@
                 <td>{{sub.city + ", " + sub.state + " " + sub.zipCode}}</td>
                 <td>{{sub.source}}</td>                        
                 <td class="actions">
-                  <a target="_blank" routerLink="/subs/{{sub.id}}"><fa-icon class="icon" [icon]="faInfoCircle" title="Details"></fa-icon></a>
-                  <fa-icon class="icon" [icon]="faTrash" title="Add To List" (click)="openModal(subFromListDeletion, sub)"></fa-icon>
+                  <a target="_blank" routerLink="/subs/{{sub.id}}"><fa-icon class="icon" [icon]="faInfoCircle" ngbPopover="Sub Details" container="body" triggers="mouseenter:mouseleave"></fa-icon></a>
+                  <fa-icon class="icon" [icon]="faTrash" ngbPopover="Remove Sub from List" container="body" triggers="mouseenter:mouseleave" (click)="openModal(subFromListDeletion, sub)"></fa-icon>
                 </td>
               </tr>
             </tbody>

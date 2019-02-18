@@ -98,7 +98,10 @@ export class SubsComponent implements OnInit {
         this.sub.Source = data['source'];
         this.sub.Trade = data['trade'];
         this.showSpinner = false;
-        this.getLocation();
+        if (this.sub.ZipCode.length == 5)
+        {
+          this.getLocation();
+        }
       });
   }
 
@@ -242,6 +245,16 @@ export class SubsComponent implements OnInit {
               this.hasFormInputChanged(form.value.State, this.sub.State) ||
               this.hasFormInputChanged(form.value.editSubZipCode, this.sub.ZipCode)
     );
+  }
+
+  getSubWebsiteURL(url) : string
+  {
+    if (!this.dataService.isBlankOrNull(url))
+    {
+      return url.startsWith('http://') || url.startsWith('https://') ? url : 'http://' + url;
+    } else {
+      return '';
+    }
   }
 
 }

@@ -16,7 +16,10 @@
 
         <div class="sub-work">
             <p>QUICK LINKS</p>
-            <a href="{{sub.WebsiteURL}}" target="_blank">{{sub.WebsiteURL}}</a><br/>
+            <a href="{{getSubWebsiteURL(sub.WebsiteURL)}}" target="_blank">
+              {{sub.WebsiteURL}}
+            </a>
+            <br/>
             <p>SIMILAR COMPANIES</p>
             <ng-container *ngFor="let sub of similarSubs">
               <ng-template #popContent>Trade: {{sub.trade.name}}<br />Location: {{sub.city + ', ' + sub.state + ' ' + sub.zipCode}}</ng-template>

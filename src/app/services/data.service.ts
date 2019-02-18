@@ -124,6 +124,15 @@ export class DataService {
     );
   }
 
+  getRandomSubs(batchSize: number): Observable<SubContractor[]> 
+  {
+    return this.http.get<SubContractor[]>(this.rootUrl + '/API/SubContractors/Random/' + batchSize, {headers: this.getHeaders()})
+      .pipe(
+        tap(_ => console.log('fetched random subs')),
+        catchError(this.handleError('getRandomSubs', []))
+    );
+  }
+
   getSubById(id: number): Observable<SubContractor[]> 
   {
     return this.http.get<SubContractor[]>(this.rootUrl + '/API/SubContractors/' + id, {headers: this.getHeaders()})

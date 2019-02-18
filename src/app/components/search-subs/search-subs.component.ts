@@ -89,7 +89,7 @@ export class SearchSubsComponent implements OnInit, OnDestroy {
 
     this.resetSubContractorSearchForm();
 
-    this.dataService.getAllSubs()
+    this.dataService.getRandomSubs(300)
         .subscribe(data => {
           console.log(data)
           this.showSubSpinner = false;

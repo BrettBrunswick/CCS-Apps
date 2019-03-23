@@ -5,7 +5,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { SubContractor } from 'src/app/models/SubContractor';
 import { SubContractorList } from 'src/app/models/SubContractorList';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgForm } from '@angular/forms';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr'; 
@@ -20,6 +19,7 @@ export class SubListComponent implements OnInit {
   @ViewChild(DataTableDirective) datatableElement: DataTableDirective;
 
   subListId = +this.route.snapshot.paramMap.get('id');
+  exportFileName = this.route.snapshot.paramMap.get('listName');
   subList: SubContractorList = new SubContractorList();
 
   subToRemove: SubContractor;
@@ -48,14 +48,15 @@ export class SubListComponent implements OnInit {
       buttons: [
         {
           extend: 'csv',
+          filename: this.exportFileName,
           className: 'btn-success',
           exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8] }
         },
         {
           extend: 'excel',
-          filename: this.subList.Name,
+          filename: this.exportFileName,
           className: 'btn-success',
-          title: this.subList.Name,
+          title: null,
           exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8] }
         },
         {

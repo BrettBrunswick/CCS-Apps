@@ -140,7 +140,7 @@
                     <td>{{list.subContractors.length}}</td>
                     <td>{{list.createdByUser}}</td>                                        
                     <td class="actions">
-                      <a target="_blank" routerLink="/lists/{{list.id}}"><fa-icon class="icon" [icon]="faInfoCircle" ngbPopover="List Details" container="body" triggers="mouseenter:mouseleave"></fa-icon></a>
+                      <a target="_blank" routerLink="/lists/{{list.id}}/{{list.name}}"><fa-icon class="icon" [icon]="faInfoCircle" ngbPopover="List Details" container="body" triggers="mouseenter:mouseleave"></fa-icon></a>
                       <fa-icon *ngIf="list.createdByUser == userService.getCurrentUsername()" class="icon" [icon]="faTrashAlt" ngbPopover="Delete List" container="body" triggers="mouseenter:mouseleave" (click)="openListDeletion(deleteListModal, list)"></fa-icon>
                     </td>
                   </tr>
